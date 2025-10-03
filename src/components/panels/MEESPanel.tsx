@@ -1,39 +1,78 @@
+import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { PanelSection, KPIBar, ActionButtons } from './DetailPanel';
-
-const epcDistribution = [
-  { rating: 'A', count: 0, color: '#22C55E' },
-  { rating: 'B', count: 0, color: '#84CC16' },
-  { rating: 'C', count: 2, color: '#EAB308' },
-  { rating: 'D', count: 1, color: '#F59E0B' },
-  { rating: 'E', count: 1, color: '#EF4444' },
-  { rating: 'F', count: 0, color: '#DC2626' },
-  { rating: 'G', count: 0, color: '#991B1B' },
-];
-
-const complianceTimeline = [
-  { milestone: 'Today (2025)', compliant: 2, atRisk: 2, total: 4 },
-  { milestone: '2027 (EPC C)', compliant: 2, atRisk: 2, total: 4 },
-  { milestone: '2030 (EPC B)', compliant: 0, atRisk: 4, total: 4 },
-];
-
-const unitDetails = [
-  { unit: 'Ground Floor Retail', epc: 'C', rent: 425000, size: 850, compliant2027: '✓', compliant2030: '✗', action: 'Upgrade to B by 2030' },
-  { unit: '1st-5th Floor Offices', epc: 'C', rent: 840000, size: 4200, compliant2027: '✓', compliant2030: '✗', action: 'Upgrade to B by 2030' },
-  { unit: '6th Floor Office', epc: 'D', rent: 187000, size: 850, compliant2027: '✗', compliant2030: '✗', action: 'Immediate upgrade to C' },
-  { unit: 'Common Areas', epc: 'E', rent: 0, size: 650, compliant2027: '✗', compliant2030: '✗', action: 'Immediate upgrade to C' },
-];
+import { useBuildingData } from '../../hooks/useBuildingData';
 
 export function MEESPanelContent() {
+  const { meesSummary, epcDistribution, unitDetails, loading, error } = useBuildingData();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F97316]"></div>
+        <p className="text-[#6B7280] ml-4">Loading MEES compliance data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <p className="text-red-800">Error loading MEES data: {error}</p>
+      </div>
+    );
+  }
+
+  if (!meesSummary || !epcDistribution || !unitDetails) {
+    return (
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <p className="text-gray-600">No MEES compliance data available</p>
+      </div>
+    );
+  }
+
+  // Calculate compliance timeline
+  const complianceTimeline = [
+    { 
+      milestone: 'Today (2025)', 
+      compliant: meesSummary.totalUnits - meesSummary.unitsAtRisk2027, 
+      atRisk: meesSummary.unitsAtRisk2027, 
+      total: meesSummary.totalUnits 
+    },
+    { 
+      milestone: '2027 (EPC C)', 
+      compliant: meesSummary.totalUnits - meesSummary.unitsAtRisk2027, 
+      atRisk: meesSummary.unitsAtRisk2027, 
+      total: meesSummary.totalUnits 
+    },
+    { 
+      milestone: '2030 (EPC B)', 
+      compliant: meesSummary.totalUnits - meesSummary.unitsAtRisk2030, 
+      atRisk: meesSummary.unitsAtRisk2030, 
+      total: meesSummary.totalUnits 
+    },
+  ];
+
+  // Format rent at risk
+  const formatRent = (amount: number) => {
+    if (amount >= 1000000) {
+      return `£${(amount / 1000000).toFixed(1)}M`;
+    } else if (amount >= 1000) {
+      return `£${(amount / 1000).toFixed(0)}k`;
+    } else {
+      return `£${amount.toLocaleString()}`;
+    }
+  };
+
   return (
     <>
       {/* KPI Bar */}
       <KPIBar
         items={[
-          { label: 'Total Units', value: '4' },
-          { label: 'At Risk 2027', value: '50%', highlight: 'risk' },
-          { label: 'Rent at Risk', value: '£187k', highlight: 'risk' },
-          { label: 'Action Required', value: 'Urgent', highlight: 'risk' },
+          { label: 'Total Units', value: meesSummary.totalUnits.toString() },
+          { label: 'At Risk 2027', value: `${meesSummary.percentageAtRisk2027.toFixed(0)}%`, highlight: 'risk' },
+          { label: 'Rent at Risk', value: formatRent(meesSummary.rentAtRisk2027), highlight: 'risk' },
+          { label: 'Action Required', value: meesSummary.unitsAtRisk2027 > 0 ? 'Urgent' : 'None', highlight: meesSummary.unitsAtRisk2027 > 0 ? 'risk' : 'success' },
         ]}
       />
 
@@ -88,7 +127,7 @@ export function MEESPanelContent() {
             </ResponsiveContainer>
             <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded">
               <p className="text-sm text-red-800">
-                <span style={{ fontWeight: 600 }}>⚠️ 2027 Deadline:</span> 50% of units (£187k rent) require immediate upgrade to meet minimum EPC C standard.
+                <span style={{ fontWeight: 600 }}>⚠️ 2027 Deadline:</span> {meesSummary.percentageAtRisk2027.toFixed(0)}% of units ({formatRent(meesSummary.rentAtRisk2027)} rent) require immediate upgrade to meet minimum EPC C standard.
               </p>
             </div>
           </div>
@@ -110,26 +149,31 @@ export function MEESPanelContent() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {unitDetails.map((unit, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm">{unit.unit}</td>
+              {unitDetails.map((unit) => (
+                <tr key={unit.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-3 text-sm">{unit.name}</td>
                   <td className="px-4 py-3 text-center">
                     <span className={`inline-flex items-center justify-center w-8 h-8 rounded text-white text-sm ${
-                      unit.epc === 'C' ? 'bg-amber-500' :
-                      unit.epc === 'D' ? 'bg-orange-500' :
-                      'bg-red-500'
+                      unit.epc_rating === 'A' ? 'bg-green-600' :
+                      unit.epc_rating === 'B' ? 'bg-green-500' :
+                      unit.epc_rating === 'C' ? 'bg-amber-500' :
+                      unit.epc_rating === 'D' ? 'bg-orange-500' :
+                      unit.epc_rating === 'E' ? 'bg-red-500' :
+                      unit.epc_rating === 'F' ? 'bg-red-600' :
+                      unit.epc_rating === 'G' ? 'bg-red-700' :
+                      'bg-gray-500'
                     }`} style={{ fontWeight: 700 }}>
-                      {unit.epc}
+                      {unit.epc_rating || 'N/A'}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-sm text-right" style={{ fontWeight: 600 }}>
-                    {unit.rent > 0 ? `£${unit.rent.toLocaleString()}` : 'N/A'}
+                    {unit.current_rent && unit.current_rent > 0 ? formatRent(unit.current_rent) : 'N/A'}
                   </td>
                   <td className="px-4 py-3 text-center text-lg">
-                    {unit.compliant2027 === '✓' ? '✅' : '❌'}
+                    {unit.compliant2027 ? '✅' : '❌'}
                   </td>
                   <td className="px-4 py-3 text-center text-lg">
-                    {unit.compliant2030 === '✓' ? '✅' : '❌'}
+                    {unit.compliant2030 ? '✅' : '❌'}
                   </td>
                   <td className="px-4 py-3 text-xs text-[#6B7280]">{unit.action}</td>
                 </tr>
@@ -140,12 +184,12 @@ export function MEESPanelContent() {
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-3 bg-red-50 border border-red-200 rounded">
             <p className="text-sm text-red-800">
-              <span style={{ fontWeight: 600 }}>2027 Risk:</span> Units D & E (£187k rent) cannot be let from April 2027 without upgrade to EPC C minimum.
+              <span style={{ fontWeight: 600 }}>2027 Risk:</span> {meesSummary.unitsAtRisk2027} units ({formatRent(meesSummary.rentAtRisk2027)} rent) cannot be let from April 2027 without upgrade to EPC C minimum.
             </p>
           </div>
           <div className="p-3 bg-amber-50 border border-amber-200 rounded">
             <p className="text-sm text-amber-800">
-              <span style={{ fontWeight: 600 }}>2030 Risk:</span> All units require upgrade to EPC B (£1.45M total rent at risk if not compliant).
+              <span style={{ fontWeight: 600 }}>2030 Risk:</span> {meesSummary.unitsAtRisk2030} units require upgrade to EPC B ({formatRent(meesSummary.rentAtRisk2030)} total rent at risk if not compliant).
             </p>
           </div>
         </div>
@@ -156,7 +200,7 @@ export function MEESPanelContent() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-gradient-to-br from-red-50 to-white rounded-lg border-2 border-red-200 p-4">
             <h4 className="text-sm text-[#6B7280] mb-2">Do Nothing</h4>
-            <p className="text-2xl text-red-600 mb-1" style={{ fontWeight: 700 }}>£187k</p>
+            <p className="text-2xl text-red-600 mb-1" style={{ fontWeight: 700 }}>{formatRent(meesSummary.rentAtRisk2027)}</p>
             <p className="text-xs text-red-600">Rent unlettable from 2027</p>
           </div>
           <div className="bg-gradient-to-br from-amber-50 to-white rounded-lg border-2 border-amber-200 p-4">
@@ -176,7 +220,7 @@ export function MEESPanelContent() {
       <PanelSection title="💡 Key Insights & Guidance">
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
           <p className="text-sm">
-            <span style={{ fontWeight: 600 }}>🔴 Immediate Action Required:</span> 50% of portfolio (2 units, £187k rent) cannot be legally let from April 2027 without EPC C minimum.
+            <span style={{ fontWeight: 600 }}>🔴 Immediate Action Required:</span> {meesSummary.percentageAtRisk2027.toFixed(0)}% of portfolio ({meesSummary.unitsAtRisk2027} units, {formatRent(meesSummary.rentAtRisk2027)} rent) cannot be legally let from April 2027 without EPC C minimum.
           </p>
           <p className="text-sm">
             <span style={{ fontWeight: 600 }}>📅 2027 MEES Threshold:</span> All domestic and non-domestic lettings require minimum EPC C from April 2027 (existing tenancies) and April 2030 (all tenancies).
@@ -185,7 +229,7 @@ export function MEESPanelContent() {
             <span style={{ fontWeight: 600 }}>💡 Strategic Recommendation:</span> Upgrade all units to EPC B now to avoid double-spend (C in 2027, then B in 2030) and protect full rental income.
           </p>
           <p className="text-sm">
-            <span style={{ fontWeight: 600 }}>✅ Retrofit Solution:</span> Proposed EPC C pathway brings all units to C+ standard, eliminating 2027 risk and protecting £187k rent.
+            <span style={{ fontWeight: 600 }}>✅ Retrofit Solution:</span> Proposed EPC C pathway brings all units to C+ standard, eliminating 2027 risk and protecting {formatRent(meesSummary.rentAtRisk2027)} rent.
           </p>
         </div>
       </PanelSection>

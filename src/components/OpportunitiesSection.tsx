@@ -1,12 +1,50 @@
+import React, { useEffect, useState } from 'react';
 import { CompactScenarioCard } from './CompactScenarioCard';
 import { AddScenarioCard } from './AddScenarioCard';
+import { RentCalculationConfig } from './RentCalculationConfig';
 import { TrendingUp, Lightbulb } from 'lucide-react';
+import { supabase } from '../utils/supabase/queries';
+import { useBuildingData } from '../hooks/useBuildingData';
+import { formatRent, getDefaultRentParams } from '../utils/rentCalculations';
 
 interface OpportunitiesSectionProps {
   onScenarioClick?: (scenarioName: string) => void;
 }
 
 export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionProps) {
+  const [scenarios, setScenarios] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [rentParams, setRentParams] = useState(getDefaultRentParams());
+  const { rentCalculations, meesSummary } = useBuildingData(undefined, rentParams);
+
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      const { data, error } = await supabase
+        .from('scenarios')
+        .select('*')
+        .in('type', ['epc_c_2027', 'net_zero_2050'])
+        .order('is_recommended', { ascending: false });
+      
+      if (isMounted && data) {
+        setScenarios(data);
+      }
+      setLoading(false);
+    })();
+    return () => { isMounted = false; };
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="opportunities" className="mb-12 pt-12 border-t-4 border-[#F97316]">
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F97316] mx-auto"></div>
+          <p className="text-[#6B7280] mt-4">Loading scenarios...</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="opportunities" className="mb-12 pt-12 border-t-4 border-[#F97316]">
       {/* Section Header */}
@@ -24,62 +62,65 @@ export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionPr
 
       {/* Retrofit Pathways Subsection */}
       <div className="mb-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-blue-100 rounded-lg">
-            <Lightbulb className="w-4 h-4 text-blue-600" />
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Lightbulb className="w-4 h-4 text-blue-600" />
+            </div>
+            <div>
+              <h3 className="text-[#1A1A1A] mb-0">Retrofit Pathways</h3>
+              <p className="text-sm text-[#6B7280]">Compare investment options to meet compliance and reduce operating costs</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-[#1A1A1A] mb-0">Retrofit Pathways</h3>
-            <p className="text-sm text-[#6B7280]">Compare investment options to meet compliance and reduce operating costs</p>
-          </div>
+          <RentCalculationConfig
+            epcAUpliftPercent={rentParams.epcAUpliftPercent}
+            epcBUpliftPercent={rentParams.epcBUpliftPercent}
+            onUpdate={setRentParams}
+          />
         </div>
       </div>
 
       {/* Scenario Cards - 3 Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* EPC C by 2027 */}
-        <CompactScenarioCard
-          title="EPC C by 2027"
-          badge="Recommended"
-          badgeColor="amber"
-          tagline="Quick compliance with strong ROI and immediate rent protection"
-          capex="£2.8M"
-          rentProtected="£1.2M"
-          annualSavings="£68k"
-          payback="8.5 years"
-          energyReduction="35%"
-          carbonReduction="35%"
-          strandedYear="2036"
-          keyBenefits={[
-            'Meets MEES 2027 minimum standard',
-            'Protects £1.2M rental income',
-            'Strong payback period (8.5 years)',
-            'Moderate upfront investment',
-          ]}
-          onViewDetails={() => onScenarioClick?.('EPC C by 2027')}
-        />
-
-        {/* Net Zero 2050 */}
-        <CompactScenarioCard
-          title="Net Zero 2050"
-          badge="Future-proof"
-          badgeColor="green"
-          tagline="Maximum carbon reduction with long-term CRREM alignment and rental uplift"
-          capex="£6.2M"
-          rentProtected="£1.3M"
-          annualSavings="£142k"
-          payback="11 years"
-          energyReduction="58%"
-          carbonReduction="95%"
-          strandedYear="2050+"
-          keyBenefits={[
-            'CRREM aligned until 2050+',
-            '8% rental uplift via ESG premium',
-            'Future-proofs asset value',
-            'Maximum carbon impact (95%)',
-          ]}
-          onViewDetails={() => onScenarioClick?.('Net Zero 2050')}
-        />
+        {scenarios.map((scenario) => {
+          // Get calculated rent protected value based on scenario type
+          let calculatedRentProtected = '—';
+          let calculatedRentUplift = '—';
+          let totalRentBenefit = '—';
+          
+          if (rentCalculations) {
+            const rentCalc = scenario.type === 'epc_c_2027' ? rentCalculations.epcC2027 : 
+                           scenario.type === 'net_zero_2050' ? rentCalculations.netZero2050 : 
+                           rentCalculations.bau;
+            
+            calculatedRentProtected = formatRent(rentCalc.rentProtected);
+            calculatedRentUplift = formatRent(rentCalc.rentUplift);
+            totalRentBenefit = formatRent(rentCalc.rentProtected + rentCalc.rentUplift);
+          }
+          
+          return (
+            <CompactScenarioCard
+              title={scenario.name}
+              badge={scenario.is_recommended ? 'Recommended' : 'Future-proof'}
+              badgeColor={scenario.is_recommended ? 'amber' : 'green'}
+              tagline={scenario.description || ''}
+              capex={scenario.capex ? `£${(scenario.capex / 1_000_000).toFixed(1)}M` : '—'}
+              rentProtected={totalRentBenefit}
+              annualSavings={scenario.annual_savings ? `£${(scenario.annual_savings / 1000).toFixed(0)}k` : '—'}
+              payback={scenario.simple_payback_years ? `${scenario.simple_payback_years} years` : '—'}
+              energyReduction={scenario.energy_reduction ? `${scenario.energy_reduction}%` : '—'}
+              carbonReduction={scenario.carbon_reduction ? `${scenario.carbon_reduction}%` : '—'}
+              strandedYear={scenario.crrem_aligned_until || '—'}
+              keyBenefits={[
+                scenario.is_recommended ? 'Meets MEES 2027 minimum standard' : 'CRREM aligned until 2050+',
+                scenario.is_recommended ? `Protects ${calculatedRentProtected} rental income` : `${calculatedRentUplift} rental uplift via ESG premium`,
+                scenario.is_recommended ? `Strong payback period (${scenario.simple_payback_years || '—'} years)` : 'Future-proofs asset value',
+                scenario.is_recommended ? 'Moderate upfront investment' : `Maximum carbon impact (${scenario.carbon_reduction || '—'}%)`,
+              ]}
+              onViewDetails={() => onScenarioClick?.(scenario.name)}
+            />
+          );
+        })}
 
         {/* Add Scenario Placeholder */}
         <AddScenarioCard />
@@ -94,52 +135,128 @@ export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionPr
               <tr className="border-b border-gray-200">
                 <th className="text-left py-3 px-4 text-[#6B7280]">Metric</th>
                 <th className="text-left py-3 px-4 text-[#6B7280]">Do Nothing</th>
-                <th className="text-left py-3 px-4 text-amber-600 bg-amber-50">EPC C by 2027</th>
-                <th className="text-left py-3 px-4 text-green-600 bg-green-50">Net Zero 2050</th>
+                {scenarios.map((scenario, idx) => (
+                  <th
+                    key={scenario.id}
+                    className={`text-left py-3 px-4 ${
+                      scenario.is_recommended ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50'
+                    }`}
+                  >
+                    {scenario.name}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">CAPEX</td>
                 <td className="py-3 px-4">£0</td>
-                <td className="py-3 px-4 bg-amber-50">£2.8M</td>
-                <td className="py-3 px-4 bg-green-50">£6.2M</td>
+                {scenarios.map((scenario) => (
+                  <td
+                    key={scenario.id}
+                    className={`py-3 px-4 ${
+                      scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                    }`}
+                  >
+                    {scenario.capex ? `£${(scenario.capex / 1_000_000).toFixed(1)}M` : '—'}
+                  </td>
+                ))}
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Annual Savings</td>
                 <td className="py-3 px-4 text-red-600">£0</td>
-                <td className="py-3 px-4 bg-amber-50 text-green-600">£68k/year</td>
-                <td className="py-3 px-4 bg-green-50 text-green-600">£142k/year</td>
+                {scenarios.map((scenario) => (
+                  <td
+                    key={scenario.id}
+                    className={`py-3 px-4 text-green-600 ${
+                      scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                    }`}
+                  >
+                    {scenario.annual_savings ? `£${(scenario.annual_savings / 1000).toFixed(0)}k/year` : '—'}
+                  </td>
+                ))}
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Payback Period</td>
                 <td className="py-3 px-4">N/A</td>
-                <td className="py-3 px-4 bg-amber-50">8.5 years</td>
-                <td className="py-3 px-4 bg-green-50">11 years</td>
+                {scenarios.map((scenario) => (
+                  <td
+                    key={scenario.id}
+                    className={`py-3 px-4 ${
+                      scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                    }`}
+                  >
+                    {scenario.simple_payback_years ? `${scenario.simple_payback_years} years` : '—'}
+                  </td>
+                ))}
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Rent Protected</td>
-                <td className="py-3 px-4 text-red-600">-£1.2M at risk</td>
-                <td className="py-3 px-4 bg-amber-50 text-green-600">£1.2M protected</td>
-                <td className="py-3 px-4 bg-green-50 text-green-600">£1.3M (inc. uplift)</td>
+                <td className="py-3 px-4 text-red-600">
+                  {meesSummary ? `-${formatRent(meesSummary.rentAtRisk2027)} at risk` : '-£1.2M at risk'}
+                </td>
+                {scenarios.map((scenario) => {
+                  let calculatedRentBenefit = '—';
+                  if (rentCalculations) {
+                    const rentCalc = scenario.type === 'epc_c_2027' ? rentCalculations.epcC2027 : 
+                                   scenario.type === 'net_zero_2050' ? rentCalculations.netZero2050 : 
+                                   rentCalculations.bau;
+                    calculatedRentBenefit = formatRent(rentCalc.rentProtected + rentCalc.rentUplift);
+                  }
+                  
+                  return (
+                    <td
+                      key={scenario.id}
+                      className={`py-3 px-4 text-green-600 ${
+                        scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                      }`}
+                    >
+                      {calculatedRentBenefit} protected
+                    </td>
+                  );
+                })}
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Energy Reduction</td>
                 <td className="py-3 px-4 text-red-600">0%</td>
-                <td className="py-3 px-4 bg-amber-50 text-green-600">35%</td>
-                <td className="py-3 px-4 bg-green-50 text-green-600">58%</td>
+                {scenarios.map((scenario) => (
+                  <td
+                    key={scenario.id}
+                    className={`py-3 px-4 text-green-600 ${
+                      scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                    }`}
+                  >
+                    {scenario.energy_reduction ? `${scenario.energy_reduction}%` : '—'}
+                  </td>
+                ))}
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Carbon Reduction</td>
                 <td className="py-3 px-4 text-red-600">0%</td>
-                <td className="py-3 px-4 bg-amber-50 text-green-600">35%</td>
-                <td className="py-3 px-4 bg-green-50 text-green-600">95%</td>
+                {scenarios.map((scenario) => (
+                  <td
+                    key={scenario.id}
+                    className={`py-3 px-4 text-green-600 ${
+                      scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                    }`}
+                  >
+                    {scenario.carbon_reduction ? `${scenario.carbon_reduction}%` : '—'}
+                  </td>
+                ))}
               </tr>
               <tr>
                 <td className="py-3 px-4 text-[#6B7280]">CRREM Aligned Until</td>
                 <td className="py-3 px-4 text-red-600">2029 (stranded)</td>
-                <td className="py-3 px-4 bg-amber-50 text-amber-600">2036</td>
-                <td className="py-3 px-4 bg-green-50 text-green-600">2050+</td>
+                {scenarios.map((scenario) => (
+                  <td
+                    key={scenario.id}
+                    className={`py-3 px-4 ${
+                      scenario.is_recommended ? 'bg-amber-50 text-amber-600' : 'bg-green-50 text-green-600'
+                    }`}
+                  >
+                    {scenario.crrem_aligned_until || '—'}
+                  </td>
+                ))}
               </tr>
             </tbody>
           </table>

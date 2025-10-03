@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, Download, Share2, Filter, Plus, TrendingUp, DollarSign, HelpCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -6,6 +6,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Slider } from './ui/slider';
 import { Tooltip, TooltipTrigger, TooltipContent } from './ui/tooltip';
+import { supabase } from '../utils/supabase/queries';
 
 interface ScenarioDetailPageProps {
   scenarioName: string;
@@ -41,7 +42,7 @@ function FinancialKPICard({ label, value, subtitle, tooltip, valueColor = 'text-
   );
 }
 
-// Mock data for charts
+// Mock data for charts (kept for now; can be moved to DB later)
 const energyPathwayData = [
   { year: 2024, baseline: 260, scenario: 260, crrem: 220 },
   { year: 2025, baseline: 258, scenario: 245, crrem: 210 },
@@ -87,77 +88,9 @@ const cashflowData = [
   { year: 2045, bau: 0, scenario: 1210 },
 ];
 
-const interventionBubbleData = [
-  { name: 'Double Glazing', capex: 2622, roi: 2, carbon: 73, x: 2622, y: 2, z: 400 },
-  { name: 'Low Energy Lighting', capex: 681, roi: 15, carbon: 61, x: 681, y: 15, z: 300 },
-  { name: 'Heat Pump', capex: 890, roi: 8, carbon: 95, x: 890, y: 8, z: 500 },
-  { name: 'Solar PV', capex: 450, roi: 12, carbon: 45, x: 450, y: 12, z: 250 },
-  { name: 'BMS Upgrade', capex: 120, roi: 22, carbon: 28, x: 120, y: 22, z: 150 },
-  { name: 'Thermostat', capex: 0, roi: 999, carbon: 124, x: 10, y: 50, z: 200 },
-];
+type BubbleDatum = { name: string; capex: number; roi: number; carbon: number; x: number; y: number; z: number };
 
-const interventionTableData = [
-  {
-    strategy: 'Deep Retrofit',
-    initiative: 'Replace Windows (Double Glazing)',
-    capex: 2622600,
-    electricitySaving: 77818,
-    gasSaving: 485430,
-    costSaving: 15205,
-    co2Saved: 72721,
-    payback: '>20'
-  },
-  {
-    strategy: 'Light Retrofit',
-    initiative: 'Low Energy Lighting',
-    capex: 681410,
-    electricitySaving: 450090,
-    gasSaving: -175160,
-    costSaving: 102620,
-    co2Saved: 61137,
-    payback: '7'
-  },
-  {
-    strategy: 'Optimisation',
-    initiative: 'Adjust Thermostat Setpoints',
-    capex: 0,
-    electricitySaving: 198690,
-    gasSaving: 450770,
-    costSaving: 83527,
-    co2Saved: 123630,
-    payback: 'Immediate'
-  },
-  {
-    strategy: 'Deep Retrofit',
-    initiative: 'Air Source Heat Pump',
-    capex: 890000,
-    electricitySaving: -120000,
-    gasSaving: 680000,
-    costSaving: 48000,
-    co2Saved: 95000,
-    payback: '18'
-  },
-  {
-    strategy: 'Light Retrofit',
-    initiative: 'Solar PV Installation',
-    capex: 450000,
-    electricitySaving: 280000,
-    gasSaving: 0,
-    costSaving: 38000,
-    co2Saved: 45000,
-    payback: '12'
-  },
-  {
-    strategy: 'Optimisation',
-    initiative: 'BMS System Upgrade',
-    capex: 120000,
-    electricitySaving: 180000,
-    gasSaving: 95000,
-    costSaving: 35000,
-    co2Saved: 28000,
-    payback: '3.5'
-  },
-];
+type TableRow = { strategy: string; initiative: string; capex: number; electricitySaving: number; gasSaving: number; costSaving: number; co2Saved: number; payback: string };
 
 // Gantt chart data for roadmap - EPC C by 2027
 const roadmapDataEPCC = [
@@ -308,59 +241,120 @@ export function ScenarioDetailPage({ scenarioName, onBack }: ScenarioDetailPageP
   // Interactive highlighting
   const [selectedIntervention, setSelectedIntervention] = useState<string | null>(null);
   
-  // Select intervention timeline based on scenario
-  const interventionTimeline = scenarioName === 'EPC C by 2027' ? interventionTimelineEPCC : interventionTimelineNetZero;
-  const roadmapData = scenarioName === 'EPC C by 2027' ? roadmapDataEPCC : roadmapDataNetZero;
-  const milestones = scenarioName === 'EPC C by 2027' ? milestonesEPCC : milestonesNetZero;
+  // Loaded from Supabase
+  const [scenarioData, setScenarioData] = useState<any | null>(null);
+  const [interventionTableData, setInterventionTableData] = useState<TableRow[]>([]);
+  const [interventionBubbleData, setInterventionBubbleData] = useState<BubbleDatum[]>([]);
+  const [roadmapData, setRoadmapData] = useState(roadmapDataEPCC);
+  const [milestones, setMilestones] = useState(milestonesEPCC);
+  const [interventionTimeline, setInterventionTimeline] = useState(interventionTimelineEPCC);
 
-  // Scenario-specific data
-  const scenarioData = scenarioName === 'EPC C by 2027' ? {
-    badge: { text: 'Recommended', color: 'amber' as const },
-    kpis: {
-      capex: '£2.8M',
-      rentProtected: '£1.2M',
-      annualSavings: '£68k',
-      payback: '8.5 years',
-      energyReduction: '35%',
-      carbonReduction: '35%',
-      crremAlignedUntil: '2036'
-    },
-    summary: 'This scenario focuses on achieving minimum EPC C compliance by 2027. It balances investment with risk protection, securing £1.2M rental income at risk and aligning CRREM performance until 2036.',
-    euiBaseline: 260,
-    euiScenario: 190,
-    euiCRREM: 180,
-    capexNum: 2800000,
-    annualSavingsNum: 68000,
-  } : {
-    badge: { text: 'Future-proof', color: 'green' as const },
-    kpis: {
-      capex: '£6.2M',
-      rentProtected: '£1.3M',
-      annualSavings: '£142k',
-      payback: '11 years',
-      energyReduction: '58%',
-      carbonReduction: '95%',
-      crremAlignedUntil: '2050+'
-    },
-    summary: 'This scenario achieves near-complete decarbonisation and future-proofs the asset beyond 2050. It includes premium measures like heat pumps, solar PV, and advanced controls, delivering maximum carbon reduction and an 8% rental uplift via ESG premium.',
-    euiBaseline: 260,
-    euiScenario: 168,
-    euiCRREM: 123,
-    capexNum: 6200000,
-    annualSavingsNum: 142000,
-  };
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      const { data: scenario, error } = await supabase
+        .from('scenarios')
+        .select('*')
+        .eq('name', scenarioName)
+        .maybeSingle();
+      if (error) return;
+      if (!isMounted || !scenario) return;
 
-  const badgeColor = scenarioData.badge.color === 'amber' ? 'bg-amber-500' : 'bg-green-600';
+      const badge = scenario.is_recommended ? { text: 'Recommended', color: 'amber' as const } : { text: 'Future-proof', color: 'green' as const };
+      const kpis = {
+        capex: scenario.capex != null ? `£${(scenario.capex/1_000_000).toFixed(1)}M` : '—',
+        rentProtected: scenario.rent_protected != null ? `£${(scenario.rent_protected/1_000_000).toFixed(1)}M` : '—',
+        annualSavings: scenario.annual_savings != null ? `£${(scenario.annual_savings/1000).toFixed(0)}k` : '—',
+        payback: scenario.simple_payback_years != null ? `${scenario.simple_payback_years} years` : '—',
+        energyReduction: scenario.energy_reduction != null ? `${scenario.energy_reduction}%` : '—',
+        carbonReduction: scenario.carbon_reduction != null ? `${scenario.carbon_reduction}%` : '—',
+        crremAlignedUntil: scenario.crrem_aligned_until || '—',
+      };
+      const capexNum = scenario.capex || 0;
+      const annualSavingsNum = scenario.annual_savings || 0;
+      setScenarioData({
+        badge,
+        kpis,
+        summary: scenario.description || '',
+        euiBaseline: 260,
+        euiScenario: 190,
+        euiCRREM: 180,
+        capexNum,
+        annualSavingsNum,
+      });
+
+      // Interventions for bubble and table
+      const { data: interventions } = await supabase
+        .from('unit_interventions')
+        .select('*')
+        .eq('scenario_id', scenario.id);
+
+      const tableRows: TableRow[] = (interventions || []).map((iv: any) => ({
+        strategy: iv.category || '—',
+        initiative: iv.intervention_name,
+        capex: Math.round(iv.capex || 0),
+        electricitySaving: Math.round(iv.energy_reduction_kwh || 0),
+        gasSaving: 0,
+        costSaving: Math.round(iv.annual_saving || 0),
+        co2Saved: Math.round((iv.carbon_reduction_tco2e || 0) * 1000),
+        payback: iv.payback_years != null ? String(iv.payback_years) : '—',
+      }));
+      setInterventionTableData(tableRows);
+
+      const bubbles: BubbleDatum[] = (interventions || []).map((iv: any) => {
+        const capexK = (iv.capex || 0) / 1000;
+        const roi = iv.payback_years && iv.payback_years > 0 ? Math.max(0, Math.min(100, Math.round((iv.annual_saving || 0) / (iv.capex || 1) * 100))) : 0;
+        const carbonT = Math.max(0, (iv.carbon_reduction_tco2e || 0));
+        return { name: iv.intervention_name, capex: capexK, roi, carbon: carbonT, x: capexK, y: roi, z: Math.max(50, carbonT * 10) };
+      });
+      setInterventionBubbleData(bubbles);
+
+      // Roadmap and timeline from intervention years
+      const timeline = (interventions || [])
+        .filter((iv: any) => iv.planned_start_year && iv.planned_end_year)
+        .map((iv: any) => ({ intervention: iv.intervention_name, start: iv.planned_start_year, end: iv.planned_end_year, strategy: iv.category || 'Optimisation' }));
+      setRoadmapData(timeline.length ? timeline : roadmapDataEPCC);
+      setInterventionTimeline(
+        (interventions || [])
+          .filter((iv: any) => iv.planned_start_year)
+          .map((iv: any) => ({ year: iv.planned_start_year, name: iv.intervention_name, capex: Math.round((iv.capex || 0)/1000), annualSaving: Math.round((iv.annual_saving || 0)/1000) }))
+      );
+
+      // Milestones by building
+      const { data: milestonesData } = await supabase
+        .from('milestones')
+        .select('*')
+        .eq('building_id', scenario.building_id)
+        .order('year');
+      const ms = (milestonesData || []).map((m: any) => ({ year: m.year, label: m.name, color: m.milestone_type === 'compliance' ? 'amber' : (m.milestone_type === 'leasing' ? 'blue' : 'purple') }));
+      setMilestones(ms.length ? ms : milestonesEPCC);
+    })();
+    return () => { isMounted = false };
+  }, [scenarioName]);
+
+  const badgeColor = scenarioData && scenarioData.badge.color === 'amber' ? 'bg-amber-500' : 'bg-green-600';
   
   // Calculate financial metrics with current settings
   const cashflowData = generateCashflowData(
-    scenarioData.capexNum,
-    scenarioData.annualSavingsNum,
+    (scenarioData?.capexNum || 0),
+    (scenarioData?.annualSavingsNum || 0),
     discountRate[0] / 100,
     energyEscalation[0] / 100,
     includeOpex,
     interventionTimeline
   );
+  
+  // Show loading state while data is being fetched
+  if (!scenarioData) {
+    return (
+      <div className="min-h-screen bg-[#FAFAFA] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#F97316] mx-auto mb-4"></div>
+          <p className="text-[#6B7280]">Loading scenario data...</p>
+        </div>
+      </div>
+    );
+  }
   
   // Calculate NPV, IRR, and other metrics
   const cashflowsForIRR = cashflowData.map(d => d.netAnnual * 1000);
@@ -371,7 +365,7 @@ export function ScenarioDetailPage({ scenarioName, onBack }: ScenarioDetailPageP
   
   // Simple payback calculation (years until cumulative > 0)
   const simplePaybackYear = cashflowData.find(d => d.cumulativeUndiscounted > 0)?.year;
-  const simplePayback = simplePaybackYear ? simplePaybackYear - 2024 : parseFloat(scenarioData.kpis.payback);
+  const simplePayback = simplePaybackYear ? simplePaybackYear - 2024 : (scenarioData?.kpis?.payback ? parseFloat(String(scenarioData.kpis.payback)) : 0);
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
@@ -391,7 +385,7 @@ export function ScenarioDetailPage({ scenarioName, onBack }: ScenarioDetailPageP
               <div className="h-8 w-px bg-gray-200" />
               <div className="flex items-center gap-3">
                 <h1 className="text-[#1A1A1A]">{scenarioName}</h1>
-                <Badge className={`${badgeColor} text-white`}>{scenarioData.badge.text}</Badge>
+                <Badge className={`${badgeColor} text-white`}>{scenarioData?.badge.text || ''}</Badge>
               </div>
             </div>
             <div className="flex gap-3">
@@ -414,37 +408,37 @@ export function ScenarioDetailPage({ scenarioName, onBack }: ScenarioDetailPageP
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
             <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
               <p className="text-xs text-[#6B7280] mb-2">CAPEX</p>
-              <p className="text-[24px] text-[#1A1A1A]" style={{ fontWeight: 700 }}>{scenarioData.kpis.capex}</p>
+              <p className="text-[24px] text-[#1A1A1A]" style={{ fontWeight: 700 }}>{scenarioData?.kpis.capex || '—'}</p>
             </div>
 
             <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
               <p className="text-xs text-[#6B7280] mb-2">Rent Protected</p>
-              <p className="text-[24px] text-green-600" style={{ fontWeight: 700 }}>{scenarioData.kpis.rentProtected}</p>
+              <p className="text-[24px] text-green-600" style={{ fontWeight: 700 }}>{scenarioData?.kpis.rentProtected || '—'}</p>
             </div>
 
             <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
               <p className="text-xs text-[#6B7280] mb-2">Annual Savings</p>
-              <p className="text-[24px] text-green-600" style={{ fontWeight: 700 }}>{scenarioData.kpis.annualSavings}</p>
+              <p className="text-[24px] text-green-600" style={{ fontWeight: 700 }}>{scenarioData?.kpis.annualSavings || '—'}</p>
             </div>
 
             <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
               <p className="text-xs text-[#6B7280] mb-2">Payback</p>
-              <p className="text-[24px] text-[#1A1A1A]" style={{ fontWeight: 700 }}>{scenarioData.kpis.payback}</p>
+              <p className="text-[24px] text-[#1A1A1A]" style={{ fontWeight: 700 }}>{scenarioData?.kpis.payback || '—'}</p>
             </div>
 
             <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
               <p className="text-xs text-[#6B7280] mb-2">Energy ↓</p>
-              <p className="text-[24px] text-green-600" style={{ fontWeight: 700 }}>{scenarioData.kpis.energyReduction}</p>
+              <p className="text-[24px] text-green-600" style={{ fontWeight: 700 }}>{scenarioData?.kpis.energyReduction || '—'}</p>
             </div>
 
             <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
               <p className="text-xs text-[#6B7280] mb-2">Carbon ↓</p>
-              <p className="text-[24px] text-green-600" style={{ fontWeight: 700 }}>{scenarioData.kpis.carbonReduction}</p>
+              <p className="text-[24px] text-green-600" style={{ fontWeight: 700 }}>{scenarioData?.kpis.carbonReduction || '—'}</p>
             </div>
 
             <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
               <p className="text-xs text-[#6B7280] mb-2">CRREM Until</p>
-              <p className="text-[24px] text-green-600" style={{ fontWeight: 700 }}>{scenarioData.kpis.crremAlignedUntil}</p>
+              <p className="text-[24px] text-green-600" style={{ fontWeight: 700 }}>{scenarioData?.kpis.crremAlignedUntil || '—'}</p>
             </div>
           </div>
 
@@ -452,7 +446,7 @@ export function ScenarioDetailPage({ scenarioName, onBack }: ScenarioDetailPageP
           <div className="bg-blue-50 border-l-4 border-[#F97316] rounded-lg p-6">
             <p className="text-sm text-[#1A1A1A]">
               <span style={{ fontWeight: 600 }}>Scenario Summary: </span>
-              {scenarioData.summary}
+              {scenarioData?.summary || ''}
             </p>
           </div>
         </section>
@@ -549,8 +543,8 @@ export function ScenarioDetailPage({ scenarioName, onBack }: ScenarioDetailPageP
             <div className="mt-6 p-4 bg-gray-50 rounded-lg">
               <p className="text-sm text-[#6B7280]">
                 <span style={{ fontWeight: 600 }}>Insight: </span>
-                This shows how the scenario reduces energy use and emissions relative to baseline. The dotted line represents CRREM's decarbonisation pathway, with this scenario aligned until {scenarioData.kpis.crremAlignedUntil}. 
-                Baseline EUI: {scenarioData.euiBaseline} kWh/m² → Scenario: {scenarioData.euiScenario} kWh/m² (CRREM 2030: {scenarioData.euiCRREM} kWh/m²).
+                This shows how the scenario reduces energy use and emissions relative to baseline. The dotted line represents CRREM's decarbonisation pathway, with this scenario aligned until {scenarioData?.kpis?.crremAlignedUntil || '—'}. 
+                Baseline EUI: {scenarioData?.euiBaseline || '—'} kWh/m² → Scenario: {scenarioData?.euiScenario || '—'} kWh/m² (CRREM 2030: {scenarioData?.euiCRREM || '—'} kWh/m²).
               </p>
             </div>
           </div>

@@ -1,18 +1,42 @@
+import React from 'react';
 import { Button } from './ui/button';
 import { AlertTriangle } from 'lucide-react';
 import { TrafficLight } from './TrafficLight';
+import { useBuildingData } from '../hooks/useBuildingData';
 
 interface TransitionRiskCardProps {
   onViewDetails?: () => void;
 }
 
 export function TransitionRiskCard({ onViewDetails }: TransitionRiskCardProps) {
+  const { meesSummary, loading, error } = useBuildingData();
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm p-6 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#F97316]"></div>
+        <p className="text-[#6B7280] ml-3">Loading...</p>
+      </div>
+    );
+  }
+
+  if (error || !meesSummary) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <p className="text-red-600">Error loading MEES data</p>
+      </div>
+    );
+  }
+
   // Traffic light logic:
   // Red: Any units below EPC C (immediate 2027 risk)
   // Amber: All units ≥C but some below B (2030 risk)
   // Green: All units meet or exceed EPC B
-  const trafficLevel = 'high'; // Currently any units below C
-  const trafficText = 'High Risk - Below EPC C';
+  const trafficLevel = meesSummary.unitsAtRisk2027 > 0 ? 'high' : 
+                      meesSummary.unitsAtRisk2030 > 0 ? 'medium' : 'low';
+  const trafficText = meesSummary.unitsAtRisk2027 > 0 ? 'High Risk - Below EPC C' :
+                      meesSummary.unitsAtRisk2030 > 0 ? 'Medium Risk - Below EPC B' :
+                      'Low Risk - Compliant';
   return (
     <div 
       className={`bg-white rounded-lg shadow-sm p-6 flex flex-col hover:shadow-lg transition-all h-full ${
@@ -88,10 +112,14 @@ export function TransitionRiskCard({ onViewDetails }: TransitionRiskCardProps) {
                   <span className="text-sm text-[#6B7280]">Min EPC C</span>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <span className="text-[18px]" style={{ fontWeight: 700 }}>18%</span>
+                  <span className="text-[18px]" style={{ fontWeight: 700 }}>{meesSummary.percentageAtRisk2027.toFixed(0)}%</span>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <span className="text-[18px] text-amber-600" style={{ fontWeight: 700 }}>£1.2M</span>
+                  <span className="text-[18px] text-amber-600" style={{ fontWeight: 700 }}>
+                    {meesSummary.rentAtRisk2027 >= 1000000 ? `£${(meesSummary.rentAtRisk2027 / 1000000).toFixed(1)}M` : 
+                     meesSummary.rentAtRisk2027 >= 1000 ? `£${(meesSummary.rentAtRisk2027 / 1000).toFixed(0)}k` : 
+                     `£${meesSummary.rentAtRisk2027.toLocaleString()}`}
+                  </span>
                 </td>
               </tr>
               {/* 2030 */}
@@ -103,10 +131,14 @@ export function TransitionRiskCard({ onViewDetails }: TransitionRiskCardProps) {
                   <span className="text-sm text-[#6B7280]">Min EPC B</span>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <span className="text-[18px]" style={{ fontWeight: 700 }}>42%</span>
+                  <span className="text-[18px]" style={{ fontWeight: 700 }}>{meesSummary.percentageAtRisk2030.toFixed(0)}%</span>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <span className="text-[18px] text-red-600" style={{ fontWeight: 700 }}>£2.5M</span>
+                  <span className="text-[18px] text-red-600" style={{ fontWeight: 700 }}>
+                    {meesSummary.rentAtRisk2030 >= 1000000 ? `£${(meesSummary.rentAtRisk2030 / 1000000).toFixed(1)}M` : 
+                     meesSummary.rentAtRisk2030 >= 1000 ? `£${(meesSummary.rentAtRisk2030 / 1000).toFixed(0)}k` : 
+                     `£${meesSummary.rentAtRisk2030.toLocaleString()}`}
+                  </span>
                 </td>
               </tr>
             </tbody>
@@ -116,13 +148,13 @@ export function TransitionRiskCard({ onViewDetails }: TransitionRiskCardProps) {
 
       {/* Summary stats */}
       <div className="mb-3 space-y-1">
-        <p className="text-sm text-[#6B7280]">50% of portfolio (20 units) below EPC C standard</p>
-        <p className="text-sm text-[#6B7280]">15% already compliant with 2030 standards (A-B)</p>
+        <p className="text-sm text-[#6B7280]">{meesSummary.percentageAtRisk2027.toFixed(0)}% of portfolio ({meesSummary.totalUnits} units) below EPC C standard</p>
+        <p className="text-sm text-[#6B7280]">{((meesSummary.totalUnits - meesSummary.unitsAtRisk2030) / meesSummary.totalUnits * 100).toFixed(0)}% already compliant with 2030 standards (A-B)</p>
       </div>
 
       {/* Opportunity */}
       <p className="mb-4 text-sm text-[#9CA3AF] italic">
-        Retrofit to EPC C protects £1.2M and extends compliance to 2027 → see scenarios below.
+        Retrofit to EPC C protects {meesSummary.rentAtRisk2027 >= 1000000 ? `£${(meesSummary.rentAtRisk2027 / 1000000).toFixed(1)}M` : `£${(meesSummary.rentAtRisk2027 / 1000).toFixed(0)}k`} and extends compliance to 2027 → see scenarios below.
       </p>
 
       {/* CTA */}

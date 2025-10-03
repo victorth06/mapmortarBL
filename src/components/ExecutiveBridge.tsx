@@ -1,7 +1,49 @@
+import React from 'react';
 import { AlertTriangle, TrendingUp, ArrowRight, Download, Share2 } from 'lucide-react';
 import { Button } from './ui/button';
+import { useBuildingData } from '../hooks/useBuildingData';
 
 export function ExecutiveBridge() {
+  const { meesSummary, rentCalculations, loading, error } = useBuildingData();
+
+  if (loading) {
+    return (
+      <section className="mb-12">
+        <div className="bg-gradient-to-r from-red-50 via-gray-50 to-green-50 rounded-lg border-2 border-gray-200 shadow-md overflow-hidden">
+          <div className="px-8 pt-6 pb-4 bg-white/80 backdrop-blur-sm">
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F97316]"></div>
+              <p className="text-[#6B7280] ml-4">Loading risk data...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error || !meesSummary || !rentCalculations) {
+    return (
+      <section className="mb-12">
+        <div className="bg-gradient-to-r from-red-50 via-gray-50 to-green-50 rounded-lg border-2 border-gray-200 shadow-md overflow-hidden">
+          <div className="px-8 pt-6 pb-4 bg-white/80 backdrop-blur-sm">
+            <p className="text-red-600">Error loading risk data</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Format rent amounts
+  const formatRent = (amount: number) => {
+    if (amount >= 1000000) {
+      return `£${(amount / 1000000).toFixed(1)}M`;
+    } else if (amount >= 1000) {
+      return `£${(amount / 1000).toFixed(0)}k`;
+    } else {
+      return `£${amount.toLocaleString()}`;
+    }
+  };
+
   return (
     <section className="mb-12">
       {/* Compact Bridge Card with Gradient */}
@@ -29,13 +71,13 @@ export function ExecutiveBridge() {
               {/* Rent at Risk 2027 */}
               <div className="bg-white rounded-lg p-5 border-l-4 border-red-500 shadow-sm">
                 <p className="text-xs text-[#6B7280] mb-1">Rental income at risk (2027)</p>
-                <p className="text-[36px] text-red-600 leading-none" style={{ fontWeight: 700 }}>£1.2M</p>
+                <p className="text-[36px] text-red-600 leading-none" style={{ fontWeight: 700 }}>{formatRent(meesSummary.rentAtRisk2027)}</p>
               </div>
               
               {/* Rent at Risk 2030 */}
               <div className="bg-white rounded-lg p-5 border-l-4 border-red-500 shadow-sm">
                 <p className="text-xs text-[#6B7280] mb-1">Rental income at risk (2030)</p>
-                <p className="text-[36px] text-red-600 leading-none" style={{ fontWeight: 700 }}>£2.5M</p>
+                <p className="text-[36px] text-red-600 leading-none" style={{ fontWeight: 700 }}>{formatRent(meesSummary.rentAtRisk2030)}</p>
               </div>
               
               {/* Asset Stranded Year */}
@@ -57,21 +99,25 @@ export function ExecutiveBridge() {
             </div>
             
             <div className="space-y-3">
-              {/* Rent Protected */}
+              {/* Rent Protected - Use Net Zero 2050 scenario (highest benefit) */}
               <div className="bg-white rounded-lg p-5 border-l-4 border-green-500 shadow-sm">
                 <p className="text-xs text-[#6B7280] mb-1">Rent protected</p>
-                <p className="text-[36px] text-green-600 leading-none" style={{ fontWeight: 700 }}>£1.3M</p>
-                <p className="text-xs text-[#6B7280] mt-1">Inc. 8% ESG rental uplift</p>
+                <p className="text-[36px] text-green-600 leading-none" style={{ fontWeight: 700 }}>
+                  {formatRent(rentCalculations.netZero2050.rentProtected + rentCalculations.netZero2050.rentUplift)}
+                </p>
+                <p className="text-xs text-[#6B7280] mt-1">
+                  Inc. {rentCalculations.netZero2050.rentUplift > 0 ? formatRent(rentCalculations.netZero2050.rentUplift) : '0'} ESG rental uplift
+                </p>
               </div>
               
-              {/* Annual Savings */}
+              {/* Annual Savings - This would come from scenario data, keeping hardcoded for now */}
               <div className="bg-white rounded-lg p-5 border-l-4 border-green-500 shadow-sm">
                 <p className="text-xs text-[#6B7280] mb-1">Annual energy savings</p>
                 <p className="text-[36px] text-green-600 leading-none" style={{ fontWeight: 700 }}>£142k</p>
                 <p className="text-xs text-[#6B7280] mt-1">Operational cost reduction</p>
               </div>
               
-              {/* Energy & Carbon Reductions */}
+              {/* Energy & Carbon Reductions - These would come from scenario data, keeping hardcoded for now */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-white rounded-lg p-4 border-l-4 border-green-500 shadow-sm">
                   <p className="text-xs text-[#6B7280] mb-1">Energy reduction</p>
