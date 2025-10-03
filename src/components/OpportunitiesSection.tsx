@@ -1,0 +1,174 @@
+import { CompactScenarioCard } from './CompactScenarioCard';
+import { AddScenarioCard } from './AddScenarioCard';
+import { TrendingUp, Lightbulb } from 'lucide-react';
+
+interface OpportunitiesSectionProps {
+  onScenarioClick?: (scenarioName: string) => void;
+}
+
+export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionProps) {
+  return (
+    <section id="opportunities" className="mb-12 pt-12 border-t-4 border-[#F97316]">
+      {/* Section Header */}
+      <div className="mb-8">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="p-2 bg-green-100 rounded-lg">
+            <TrendingUp className="w-5 h-5 text-green-600" />
+          </div>
+          <div>
+            <h2 className="text-[#F97316] mb-1">Opportunities</h2>
+            <p className="text-[#6B7280]">Protect asset value and unlock upside through strategic retrofit</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Retrofit Pathways Subsection */}
+      <div className="mb-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2 bg-blue-100 rounded-lg">
+            <Lightbulb className="w-4 h-4 text-blue-600" />
+          </div>
+          <div>
+            <h3 className="text-[#1A1A1A] mb-0">Retrofit Pathways</h3>
+            <p className="text-sm text-[#6B7280]">Compare investment options to meet compliance and reduce operating costs</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Scenario Cards - 3 Column Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* EPC C by 2027 */}
+        <CompactScenarioCard
+          title="EPC C by 2027"
+          badge="Recommended"
+          badgeColor="amber"
+          tagline="Quick compliance with strong ROI and immediate rent protection"
+          capex="£2.8M"
+          rentProtected="£1.2M"
+          annualSavings="£68k"
+          payback="8.5 years"
+          energyReduction="35%"
+          carbonReduction="35%"
+          strandedYear="2036"
+          keyBenefits={[
+            'Meets MEES 2027 minimum standard',
+            'Protects £1.2M rental income',
+            'Strong payback period (8.5 years)',
+            'Moderate upfront investment',
+          ]}
+          onViewDetails={() => onScenarioClick?.('EPC C by 2027')}
+        />
+
+        {/* Net Zero 2050 */}
+        <CompactScenarioCard
+          title="Net Zero 2050"
+          badge="Future-proof"
+          badgeColor="green"
+          tagline="Maximum carbon reduction with long-term CRREM alignment and rental uplift"
+          capex="£6.2M"
+          rentProtected="£1.3M"
+          annualSavings="£142k"
+          payback="11 years"
+          energyReduction="58%"
+          carbonReduction="95%"
+          strandedYear="2050+"
+          keyBenefits={[
+            'CRREM aligned until 2050+',
+            '8% rental uplift via ESG premium',
+            'Future-proofs asset value',
+            'Maximum carbon impact (95%)',
+          ]}
+          onViewDetails={() => onScenarioClick?.('Net Zero 2050')}
+        />
+
+        {/* Add Scenario Placeholder */}
+        <AddScenarioCard />
+      </div>
+
+      {/* Quick Comparison Table */}
+      <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+        <h4 className="mb-4">Quick Comparison</h4>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="text-left py-3 px-4 text-[#6B7280]">Metric</th>
+                <th className="text-left py-3 px-4 text-[#6B7280]">Do Nothing</th>
+                <th className="text-left py-3 px-4 text-amber-600 bg-amber-50">EPC C by 2027</th>
+                <th className="text-left py-3 px-4 text-green-600 bg-green-50">Net Zero 2050</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-100">
+                <td className="py-3 px-4 text-[#6B7280]">CAPEX</td>
+                <td className="py-3 px-4">£0</td>
+                <td className="py-3 px-4 bg-amber-50">£2.8M</td>
+                <td className="py-3 px-4 bg-green-50">£6.2M</td>
+              </tr>
+              <tr className="border-b border-gray-100">
+                <td className="py-3 px-4 text-[#6B7280]">Annual Savings</td>
+                <td className="py-3 px-4 text-red-600">£0</td>
+                <td className="py-3 px-4 bg-amber-50 text-green-600">£68k/year</td>
+                <td className="py-3 px-4 bg-green-50 text-green-600">£142k/year</td>
+              </tr>
+              <tr className="border-b border-gray-100">
+                <td className="py-3 px-4 text-[#6B7280]">Payback Period</td>
+                <td className="py-3 px-4">N/A</td>
+                <td className="py-3 px-4 bg-amber-50">8.5 years</td>
+                <td className="py-3 px-4 bg-green-50">11 years</td>
+              </tr>
+              <tr className="border-b border-gray-100">
+                <td className="py-3 px-4 text-[#6B7280]">Rent Protected</td>
+                <td className="py-3 px-4 text-red-600">-£1.2M at risk</td>
+                <td className="py-3 px-4 bg-amber-50 text-green-600">£1.2M protected</td>
+                <td className="py-3 px-4 bg-green-50 text-green-600">£1.3M (inc. uplift)</td>
+              </tr>
+              <tr className="border-b border-gray-100">
+                <td className="py-3 px-4 text-[#6B7280]">Energy Reduction</td>
+                <td className="py-3 px-4 text-red-600">0%</td>
+                <td className="py-3 px-4 bg-amber-50 text-green-600">35%</td>
+                <td className="py-3 px-4 bg-green-50 text-green-600">58%</td>
+              </tr>
+              <tr className="border-b border-gray-100">
+                <td className="py-3 px-4 text-[#6B7280]">Carbon Reduction</td>
+                <td className="py-3 px-4 text-red-600">0%</td>
+                <td className="py-3 px-4 bg-amber-50 text-green-600">35%</td>
+                <td className="py-3 px-4 bg-green-50 text-green-600">95%</td>
+              </tr>
+              <tr>
+                <td className="py-3 px-4 text-[#6B7280]">CRREM Aligned Until</td>
+                <td className="py-3 px-4 text-red-600">2029 (stranded)</td>
+                <td className="py-3 px-4 bg-amber-50 text-amber-600">2036</td>
+                <td className="py-3 px-4 bg-green-50 text-green-600">2050+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Key Takeaways */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-amber-50 rounded-lg p-5 border-l-4 border-amber-500">
+          <h4 className="text-amber-900 mb-2">Best for Immediate Compliance</h4>
+          <p className="text-sm text-amber-800">
+            <span style={{ fontWeight: 600 }}>EPC C by 2027</span> offers the fastest path to MEES compliance with strong financial returns and moderate investment.
+          </p>
+        </div>
+
+        <div className="bg-green-50 rounded-lg p-5 border-l-4 border-green-500">
+          <h4 className="text-green-900 mb-2">Best for Long-Term Value</h4>
+          <p className="text-sm text-green-800">
+            <span style={{ fontWeight: 600 }}>Net Zero 2050</span> maximizes carbon reduction, adds rental uplift, and future-proofs the asset until 2050+.
+          </p>
+        </div>
+
+        <div className="bg-blue-50 rounded-lg p-5 border-l-4 border-blue-500">
+          <h4 className="text-blue-900 mb-2">Decision Support</h4>
+          <p className="text-sm text-blue-800">
+            Both pathways protect your rental income. Choose based on capital availability and long-term strategic goals.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
