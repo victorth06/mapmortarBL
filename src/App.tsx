@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { VerticalNav } from './components/VerticalNav';
 import { StickyNav } from './components/StickyNav';
 import { StickyActionBar } from './components/StickyActionBar';
@@ -7,11 +7,13 @@ import { ExecutiveOverview } from './components/ExecutiveOverview';
 import { ExecutiveBridge } from './components/ExecutiveBridge';
 import { OpportunitiesSection } from './components/OpportunitiesSection';
 import { ScenarioDetailPage } from './components/ScenarioDetailPage';
+import { PortfolioDashboard } from './components/PortfolioDashboard';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('overview');
-  const [currentView, setCurrentView] = useState<'report' | 'scenario'>('report');
+  const [currentView, setCurrentView] = useState<'portfolio' | 'report' | 'scenario'>('portfolio');
   const [selectedScenario, setSelectedScenario] = useState<string | null>(null);
+  const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
 
   const handleScenarioClick = (scenarioName: string) => {
     setSelectedScenario(scenarioName);
@@ -21,6 +23,19 @@ export default function App() {
 
   const handleBackToReport = () => {
     setCurrentView('report');
+    setSelectedScenario(null);
+    window.scrollTo(0, 0);
+  };
+
+  const handleViewBuilding = (buildingId: string) => {
+    setSelectedBuilding(buildingId);
+    setCurrentView('report');
+    window.scrollTo(0, 0);
+  };
+
+  const handleBackToPortfolio = () => {
+    setCurrentView('portfolio');
+    setSelectedBuilding(null);
     setSelectedScenario(null);
     window.scrollTo(0, 0);
   };
@@ -47,6 +62,11 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Show portfolio dashboard
+  if (currentView === 'portfolio') {
+    return <PortfolioDashboard onViewBuilding={handleViewBuilding} />;
+  }
+
   // Show scenario detail page if selected
   if (currentView === 'scenario' && selectedScenario) {
     return (
@@ -64,7 +84,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] pb-24">
-      <VerticalNav />
+      <VerticalNav onViewBuilding={handleViewBuilding} selectedBuilding={selectedBuilding} />
       <div className="ml-16">
         <StickyNav activeSection={activeSection} />
         <StickyActionBar />
@@ -77,6 +97,7 @@ export default function App() {
           reportDate="2 October 2025"
           buildingImage="https://images.unsplash.com/photo-1676679992426-1803645cdd40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsb25kb24lMjBvZmZpY2UlMjBidWlsZGluZ3xlbnwxfHx8fDE3NTkzOTI1MDF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
           mapImage="https://images.unsplash.com/photo-1542382257-80dedb725088?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXR5JTIwbWFwJTIwYWVyaWFsfGVufDF8fHx8MTc1OTM5MjUwMnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+          onBackToPortfolio={handleBackToPortfolio}
         />
 
         <ExecutiveOverview />

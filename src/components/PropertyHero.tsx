@@ -1,3 +1,4 @@
+import React from 'react';
 import { MapPin, Download, ArrowLeft } from 'lucide-react';
 import { Button } from './ui/button';
 import { ImageWithFallback } from './figma/ImageWithFallback';
@@ -9,6 +10,7 @@ interface PropertyHeroProps {
   reportDate: string;
   buildingImage: string;
   mapImage: string;
+  onBackToPortfolio?: () => void;
 }
 
 export function PropertyHero({
@@ -18,6 +20,7 @@ export function PropertyHero({
   reportDate,
   buildingImage,
   mapImage,
+  onBackToPortfolio,
 }: PropertyHeroProps) {
   const handleExport = () => {
     window.print();
@@ -67,6 +70,7 @@ export function PropertyHero({
           <Button
             variant="outline"
             className="rounded-full px-6"
+            onClick={onBackToPortfolio}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Portfolio
