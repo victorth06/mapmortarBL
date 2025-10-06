@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building2, MapPin, PoundSterling, Zap, CheckCircle, Plus, Sparkles, ArrowRight, TrendingUp, AlertTriangle, Shield, Target, Clock, Users, BarChart3 } from 'lucide-react';
+import { Building2, MapPin, PoundSterling, Zap, CheckCircle, Plus, Sparkles, ArrowRight, TrendingUp, AlertTriangle, Shield, Target, Clock, Users, BarChart3, Building, Leaf } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
@@ -311,82 +311,152 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
         </div>
       </div>
 
-      {/* 2️⃣ Opportunities Summary */}
+      {/* 2️⃣ Portfolio Retrofit Opportunities */}
       <div className="mb-8">
-        <h2 className="text-2xl font-semibold text-[#1A1A1A] mb-6">Portfolio Opportunities</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <KPICard
-            title="CAPEX & Payback"
-            icon={TrendingUp}
-            iconColor="text-green-600"
-            iconBgColor="bg-green-100"
-          >
-            <div className="space-y-4">
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold text-[#1A1A1A] mb-2">Portfolio Retrofit Opportunities</h2>
+          <p className="text-sm text-[#6B7280]">The potential impact of upgrading underperforming assets.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Card 1 - Investment & Payback */}
+          <div className="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg transition-all flex flex-col h-full hover:border-[#F97316] border-2 border-transparent">
+            <div className="flex items-start justify-between mb-3">
+              <p className="text-[#6B7280]">Investment & Payback</p>
+              <div className="p-2 bg-orange-50 rounded-lg">
+                <PoundSterling className="w-5 h-5 text-[#F97316]" />
+              </div>
+            </div>
+            <div className="space-y-4 flex-1">
               <div>
                 <p className="text-3xl font-bold text-[#1A1A1A]">£12.4M</p>
-                <p className="text-sm text-[#6B7280]">CAPEX required</p>
+                <p className="text-sm text-[#6B7280]">Total Investment Budget</p>
               </div>
               <div>
-                <p className="text-2xl font-semibold text-[#1A1A1A]">4.2 years</p>
-                <p className="text-sm text-[#6B7280]">Average payback</p>
+                <p className="text-2xl font-semibold text-[#1A1A1A]">£1.9M/year</p>
+                <p className="text-sm text-[#6B7280]">Estimated Cost Savings</p>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-[#6B7280]">Energy reduction</span>
-                  <span className="text-sm font-medium text-[#1A1A1A]">34%</span>
+                  <span className="text-sm text-[#6B7280]">Payback distribution</span>
                 </div>
-                <Progress value={34} className="h-2" />
+                <div className="flex h-4 bg-gray-200 rounded-full overflow-hidden mb-2">
+                  <div className="bg-green-500 h-full" style={{ width: '41.7%' }} title="5 buildings: 3-4 years"></div>
+                  <div className="bg-amber-500 h-full" style={{ width: '33.3%' }} title="4 buildings: 4-6 years"></div>
+                  <div className="bg-red-500 h-full" style={{ width: '25%' }} title="3 buildings: 6+ years"></div>
+                </div>
+                <div className="flex justify-between text-xs text-[#6B7280]">
+                  <span>3-4y: 5</span>
+                  <span>4-6y: 4</span>
+                  <span>6+y: 3</span>
+                </div>
+              </div>
+              <div className="pt-2 border-t border-gray-200 mt-auto">
+                <p className="text-xs text-[#6B7280]">
+                  Average payback: <span className="font-medium text-[#1A1A1A]">4.2 years</span> based on all modelled retrofit opportunities.
+                </p>
               </div>
             </div>
-          </KPICard>
+          </div>
 
-          <KPICard
-            title="Carbon & Energy Impact"
-            icon={Target}
-            iconColor="text-blue-600"
-            iconBgColor="bg-blue-100"
-          >
-            <div className="space-y-4">
+          {/* Card 2 - Energy & Carbon Reduction */}
+          <div className="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg transition-all flex flex-col h-full hover:border-[#F97316] border-2 border-transparent">
+            <div className="flex items-start justify-between mb-3">
+              <p className="text-[#6B7280]">Energy & Carbon Reduction</p>
+              <div className="p-2 bg-orange-50 rounded-lg">
+                <Zap className="w-5 h-5 text-[#F97316]" />
+              </div>
+            </div>
+            <div className="space-y-4 flex-1">
               <div>
-                <p className="text-3xl font-bold text-[#1A1A1A]">2,870</p>
-                <p className="text-sm text-[#6B7280]">tCO₂e reduction</p>
+                <p className="text-3xl font-bold text-[#1A1A1A]">2,870 tCO₂e</p>
+                <p className="text-sm text-[#6B7280]">carbon savings per year</p>
               </div>
               <div>
-                <p className="text-2xl font-semibold text-[#1A1A1A]">34%</p>
-                <p className="text-sm text-[#6B7280]">Energy reduction</p>
+                <p className="text-2xl font-semibold text-[#1A1A1A]">~£850k/year</p>
+                <p className="text-sm text-[#6B7280]">energy cost reduction</p>
               </div>
-              <div>
+              <div className="space-y-4">
+                <div className="bg-gradient-to-r from-blue-50 to-white p-4 rounded-lg border border-blue-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Zap className="w-5 h-5 text-blue-600" />
+                    <span className="text-sm text-[#6B7280]">Energy Use Reduction</span>
+                    <span className="ml-auto text-blue-600" style={{ fontWeight: 700 }}>34%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div 
+                      className="bg-blue-600 h-3 rounded-full transition-all duration-500" 
+                      style={{ width: '34%' }}
+                    />
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-green-50 to-white p-4 rounded-lg border border-green-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Leaf className="w-5 h-5 text-green-600" />
+                    <span className="text-sm text-[#6B7280]">Carbon Reduction</span>
+                    <span className="ml-auto text-green-600" style={{ fontWeight: 700 }}>42%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div 
+                      className="bg-green-600 h-3 rounded-full transition-all duration-500" 
+                      style={{ width: '42%' }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
                 <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                  Aligned until 2035
+                  🟩 Aligned until 2035 (CRREM)
                 </Badge>
-                <p className="text-xs text-[#6B7280] mt-1">CRREM alignment</p>
+              </div>
+              <div className="pt-2 border-t border-gray-200 mt-auto">
+                <p className="text-xs text-[#6B7280]">
+                  Retrofit extends portfolio compliance by +13 years.
+                </p>
               </div>
             </div>
-          </KPICard>
+          </div>
+        </div>
 
-          <KPICard
-            title="Portfolio Opportunity Summary"
-            icon={BarChart3}
-            iconColor="text-purple-600"
-            iconBgColor="bg-purple-100"
-          >
-            <div className="space-y-4">
-              <div>
-                <p className="text-3xl font-bold text-[#1A1A1A]">£6.2M</p>
-                <p className="text-sm text-[#6B7280]">Rent protected after retrofit</p>
+        {/* Portfolio Upgrade Outcome - Full-width Banner */}
+        <div className="mt-6 bg-gradient-to-r from-orange-50 to-white rounded-xl border-l-4 border-[#FF6B00] p-6">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-[#1A1A1A] mb-3">Portfolio Upgrade Outcome</h3>
+              <div className="space-y-2 mb-4">
+                <p className="text-sm text-[#6B7280]">
+                  Invest <span className="font-semibold text-[#1A1A1A]">£12.4M</span> to bring all 12 buildings to EPC C or better.
+                </p>
+                <p className="text-sm text-[#6B7280]">
+                  Protects <span className="font-semibold text-[#1A1A1A]">£6.2M rent</span> and unlocks <span className="font-semibold text-[#1A1A1A]">+£360k annual uplift</span> through ESG-aligned premiums.
+                </p>
+                <p className="text-sm text-[#6B7280]">
+                  Portfolio alignment improves from <span className="font-semibold text-[#1A1A1A]">58% → 100% EPC C+</span>.
+                </p>
               </div>
-              <div>
-                <p className="text-2xl font-semibold text-[#1A1A1A]">£5.6M</p>
-                <p className="text-sm text-[#6B7280]">Rent at risk by 2030</p>
+              <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+                <div className="bg-gradient-to-r from-orange-400 to-orange-600 h-2 rounded-full transition-all duration-1000" style={{ width: '58%' }}></div>
               </div>
+              <div className="flex justify-between text-xs text-[#6B7280]">
+                <span>Current: 58%</span>
+                <span>Target: 100%</span>
+              </div>
+            </div>
+            <div className="ml-6">
               <Button
-                variant="outline"
-                className="w-full border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-700"
+                className="bg-[#FF6B00] hover:bg-orange-600 text-white transition-colors"
               >
-                Explore Retrofit Potential →
+                🟠 Explore Retrofit Plan →
               </Button>
             </div>
-          </KPICard>
+          </div>
+        </div>
+        
+        {/* Section Footer */}
+        <div className="mt-6 text-right">
+          <p className="text-xs text-[#6B7280]">
+            Portfolio insights update monthly based on latest EPC and scenario data.
+          </p>
         </div>
       </div>
 
