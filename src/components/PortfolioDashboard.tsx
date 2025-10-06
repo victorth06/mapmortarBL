@@ -3,6 +3,7 @@ import { Building2, MapPin, PoundSterling, Zap, CheckCircle, Plus, Sparkles, Arr
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
+import PortfolioPerformanceChart from './PortfolioPerformanceChart';
 
 interface PortfolioDashboardProps {
   onViewBuilding: (id: string) => void;
@@ -416,16 +417,8 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
             </div>
           </div>
 
-          {/* Right Column - Bubble Chart Placeholder */}
-          <div className="flex items-center justify-center bg-neutral-50 border border-dashed border-gray-300 rounded-xl h-full min-h-[400px] text-gray-400">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-3 bg-gray-200 rounded-full flex items-center justify-center">
-                <BarChart3 className="w-8 h-8 text-gray-400" />
-              </div>
-              <p className="text-lg font-medium">Bubble Chart Placeholder</p>
-              <p className="text-sm mt-1">Portfolio retrofit opportunities visualization</p>
-            </div>
-          </div>
+          {/* Right Column - Portfolio Performance Chart */}
+          <PortfolioPerformanceChart />
         </div>
         
         {/* Section Footer */}
