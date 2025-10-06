@@ -1,0 +1,1373 @@
+{
+    "attributes": {
+        "available_calibration_reference_years": [],
+        "building_address": "130 Shoe Ln, London EC4A 2BH, UK",
+        "building_name": "Goldman Sachs",
+        "calibration_reference_year": null,
+        "cooling_efficiency": null,
+        "cooling_setpoint": null,
+        "cooling_source": "https://mapmortar.io/#cooling-source-none",
+        "dhw_efficiency": null,
+        "dhw_source": "https://mapmortar.io/#gas-boiler",
+        "equipment_power_density": null,
+        "exterior_floor_system": "https://mapmortar.io/#exterior-floor-system-112",
+        "fenestration_system": "https://mapmortar.io/#fenestration-system-316",
+        "footprint": "POLYGON ((-0.1057746 51.5142917, -0.1057805 51.5142799, -0.1057928 51.5142724, -0.1058085 51.5142681, -0.1059459 51.5142691, -0.1060926 51.5142688, -0.1061095 51.5142798, -0.1061192 51.5142942, -0.1061089 51.5144577, -0.1057689 51.5144535, -0.1057746 51.5142917))",
+        "footprint_gfa": 490.88803783090043,
+        "footprint_gia": 466.3436359393554,
+        "gfa": 2945.3282269854026,
+        "gross_internal_area": 2798.0618156361325,
+        "heating_efficiency": null,
+        "heating_setpoint": null,
+        "heating_source": "https://mapmortar.io/#gas-boiler",
+        "height": 21.0,
+        "heritage_designation": "https://mapmortar.io/#heritage-none",
+        "is_calibrated": false,
+        "latitude": 51.51437385,
+        "lighting_power_density": null,
+        "longitude": -0.10594294412886579,
+        "natural_gas_is_available": true,
+        "nla": null,
+        "no_stories": 6,
+        "no_underground_stories": 0,
+        "occupancy_classification": "https://bedes.lbl.gov/bedes-online/office",
+        "osm_id": "32893368",
+        "people_per_floor_area": null,
+        "roof_system": "https://mapmortar.io/#roof-system-432",
+        "space_infiltration_ach": null,
+        "specific_fan_power": null,
+        "ventilation_source": "https://bedes.lbl.gov/bedes-online/mechanical-ventilation",
+        "wall_system": "https://mapmortar.io/#wall-system-20",
+        "wwr": 0.3
+    },
+    "building_groups": [],
+    "building_id": "0199a031a7693db1dfcfa0aeacd3b446",
+    "building_version_id": "0199a8ac9996f711c4bdb89507fd1b2c",
+    "confidence_report": {
+        "fields": [
+            {
+                "attribute_id": "building_address",
+                "attribute_weight": 0.07905138339920949,
+                "maximum_score": 0.07905138339920949,
+                "provenance_id": "google-maps",
+                "score": 1.0,
+                "score_contribution": 0.07905138339920949
+            },
+            {
+                "attribute_id": "cooling_efficiency",
+                "attribute_weight": 0.016362786348761104,
+                "maximum_score": 0.016362786348761104,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.003272557269752221
+            },
+            {
+                "attribute_id": "cooling_setpoint",
+                "attribute_weight": 0.018700327255726977,
+                "maximum_score": 0.018700327255726977,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.0037400654511453957
+            },
+            {
+                "attribute_id": "cooling_source",
+                "attribute_weight": 0.02337540906965872,
+                "maximum_score": 0.02337540906965872,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.004675081813931744
+            },
+            {
+                "attribute_id": "dhw_efficiency",
+                "attribute_weight": 0.016362786348761104,
+                "maximum_score": 0.016362786348761104,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.003272557269752221
+            },
+            {
+                "attribute_id": "dhw_source",
+                "attribute_weight": 0.02337540906965872,
+                "maximum_score": 0.02337540906965872,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.004675081813931744
+            },
+            {
+                "attribute_id": "equipment_power_density",
+                "attribute_weight": 0.04940711462450593,
+                "maximum_score": 0.04940711462450593,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.009881422924901186
+            },
+            {
+                "attribute_id": "exterior_floor_system",
+                "attribute_weight": 0.013377926421404682,
+                "maximum_score": 0.013377926421404682,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.0026755852842809368
+            },
+            {
+                "attribute_id": "fenestration_system",
+                "attribute_weight": 0.05351170568561873,
+                "maximum_score": 0.05351170568561873,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.010702341137123747
+            },
+            {
+                "attribute_id": "footprint",
+                "attribute_weight": 0.03450655624568668,
+                "maximum_score": 0.03450655624568668,
+                "provenance_id": "openstreetmap",
+                "score": 1.0,
+                "score_contribution": 0.03450655624568668
+            },
+            {
+                "attribute_id": "heating_efficiency",
+                "attribute_weight": 0.016362786348761104,
+                "maximum_score": 0.016362786348761104,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.003272557269752221
+            },
+            {
+                "attribute_id": "heating_setpoint",
+                "attribute_weight": 0.018700327255726977,
+                "maximum_score": 0.018700327255726977,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.0037400654511453957
+            },
+            {
+                "attribute_id": "heating_source",
+                "attribute_weight": 0.02337540906965872,
+                "maximum_score": 0.02337540906965872,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.004675081813931744
+            },
+            {
+                "attribute_id": "heritage_designation",
+                "attribute_weight": 0.015810276679841896,
+                "maximum_score": 0.015810276679841896,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.0031620553359683794
+            },
+            {
+                "attribute_id": "lighting_power_density",
+                "attribute_weight": 0.0691699604743083,
+                "maximum_score": 0.0691699604743083,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.013833992094861662
+            },
+            {
+                "attribute_id": "natural_gas_is_available",
+                "attribute_weight": 0.018700327255726977,
+                "maximum_score": 0.018700327255726977,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.0037400654511453957
+            },
+            {
+                "attribute_id": "no_stories",
+                "attribute_weight": 0.03450655624568668,
+                "maximum_score": 0.03450655624568668,
+                "provenance_id": "openstreetmap",
+                "score": 1.0,
+                "score_contribution": 0.03450655624568668
+            },
+            {
+                "attribute_id": "no_underground_stories",
+                "attribute_weight": 0.03450655624568668,
+                "maximum_score": 0.03450655624568668,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.006901311249137336
+            },
+            {
+                "attribute_id": "occupancy_classification",
+                "attribute_weight": 0.07905138339920949,
+                "maximum_score": 0.07905138339920949,
+                "provenance_id": "openstreetmap",
+                "score": 1.0,
+                "score_contribution": 0.07905138339920949
+            },
+            {
+                "attribute_id": "people_per_floor_area",
+                "attribute_weight": 0.09881422924901186,
+                "maximum_score": 0.09881422924901186,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.019762845849802372
+            },
+            {
+                "attribute_id": "roof_system",
+                "attribute_weight": 0.026755852842809364,
+                "maximum_score": 0.026755852842809364,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.0053511705685618735
+            },
+            {
+                "attribute_id": "space_infiltration_ach",
+                "attribute_weight": 0.026755852842809364,
+                "maximum_score": 0.026755852842809364,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.0053511705685618735
+            },
+            {
+                "attribute_id": "specific_fan_power",
+                "attribute_weight": 0.018700327255726977,
+                "maximum_score": 0.018700327255726977,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.0037400654511453957
+            },
+            {
+                "attribute_id": "ventilation_source",
+                "attribute_weight": 0.02337540906965872,
+                "maximum_score": 0.02337540906965872,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.004675081813931744
+            },
+            {
+                "attribute_id": "wall_system",
+                "attribute_weight": 0.05351170568561873,
+                "maximum_score": 0.05351170568561873,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.010702341137123747
+            },
+            {
+                "attribute_id": "wwr",
+                "attribute_weight": 0.02760524499654934,
+                "maximum_score": 0.02760524499654934,
+                "provenance_id": "defaults",
+                "score": 0.2,
+                "score_contribution": 0.005521048999309868
+            }
+        ],
+        "group_scores": {
+            "envelope": 0.20000000000000004,
+            "form_geometry": 0.6210526315789474,
+            "general": 0.9272727272727274,
+            "hvac_systems": 0.2,
+            "internal_loads": 0.2
+        },
+        "score": 0.398846470749794
+    },
+    "derived_attributes": [
+        {
+            "attribute": {
+                "attribute_id": "building-total-energy-consumption",
+                "url": "/attributes/building-total-energy-consumption"
+            },
+            "value": 329195.0001887357
+        },
+        {
+            "attribute": {
+                "attribute_id": "building-total-energy-consumption-per-m2",
+                "url": "/attributes/building-total-energy-consumption-per-m2"
+            },
+            "value": 117.65108202725466
+        },
+        {
+            "attribute": {
+                "attribute_id": "building-total-co2-emissions",
+                "url": "/attributes/building-total-co2-emissions"
+            },
+            "value": 64786.70755477705
+        },
+        {
+            "attribute": {
+                "attribute_id": "building-total-energy-cost",
+                "url": "/attributes/building-total-energy-cost"
+            },
+            "value": 61193.6712838184
+        }
+    ],
+    "derived_attributes_v2": {
+        "bill_scaling_available": false,
+        "co2_emissions": 64786.70755477705,
+        "co2_emissions_per_m2": 23.154137336328986,
+        "co2_emissions_variants": {
+            "purchased": 64786.70755477705,
+            "scaled": null,
+            "total": 64786.70755477705
+        },
+        "co2_intensity_variants": {
+            "purchased": 23.154137336328986,
+            "scaled": null,
+            "total": 23.154137336328986
+        },
+        "consumption_relative_to_benchmark": {
+            "electricity_benchmark_range": {
+                "area_basis": "GIA",
+                "good_practice": 67.0,
+                "institution": "CIBSE",
+                "source": "CIBSE-DEC",
+                "typical": 95.0,
+                "units": "kWh/m2/year"
+            },
+            "electricity_consumption": 67.52554367323853,
+            "gas_benchmark_range": {
+                "area_basis": "GIA",
+                "good_practice": 75.5,
+                "institution": "CIBSE",
+                "source": "CIBSE-DEC",
+                "typical": 106.0,
+                "units": "kWh/m2/year"
+            },
+            "gas_consumption": 50.12553835401612,
+            "rag_status": "green",
+            "source": "CIBSE-DEC"
+        },
+        "electricity_co2_emissions": 39120.16061602347,
+        "electricity_consumption": 188940.64533215878,
+        "electricity_consumption_per_m2": 67.52554367323853,
+        "electricity_consumption_per_m2_variants": {
+            "purchased": 67.52554367323853,
+            "scaled": null,
+            "total": 67.52554367323853
+        },
+        "electricity_consumption_variants": {
+            "purchased": 188940.64533215878,
+            "scaled": null,
+            "total": 188940.64533215878
+        },
+        "electricity_monthly_ts_variants": {
+            "purchased": {
+                "monthly_values": [
+                    16134.326025937236,
+                    14656.528884306783,
+                    16376.707934363521,
+                    14994.20991035345,
+                    16302.415188289524,
+                    15687.358922873367,
+                    15591.101977748338,
+                    16305.544247496171,
+                    15369.912105668172,
+                    15933.187443604313,
+                    15780.658710525917,
+                    15808.693980991991
+                ],
+                "timeseries_type": "basic-monthly-timeseries"
+            },
+            "scaled": null,
+            "total": null
+        },
+        "electricity_purchased": 188940.64533215878,
+        "energy_consumption": 329195.0001887357,
+        "energy_consumption_per_m2": 117.65108202725466,
+        "energy_consumption_variants": {
+            "purchased": 329195.0001887357,
+            "scaled": null,
+            "total": 329195.0001887357
+        },
+        "energy_cost": 61193.6712838184,
+        "energy_cost_variants": {
+            "purchased": 61193.6712838184,
+            "scaled": null,
+            "total": 61193.6712838184
+        },
+        "energy_purchased": 329195.0001887357,
+        "energy_purchased_per_m2": 117.65108202725466,
+        "energy_tariffs": {
+            "electricity": {
+                "daily_standing_charge": 5.35248,
+                "supplier_name": "(Default)",
+                "tariff_classification": "commercial",
+                "tariff_type": "basic-energy-tariff",
+                "unit_rate": 0.25698435
+            },
+            "natural_gas": {
+                "daily_standing_charge": 0.3836196,
+                "supplier_name": "(Default)",
+                "tariff_classification": "commercial",
+                "tariff_type": "basic-energy-tariff",
+                "unit_rate": 0.0751863
+            },
+            "tariffs_type": "basic-energy-tariffs"
+        },
+        "energy_use_intensity_variants": {
+            "purchased": 117.65108202725466,
+            "scaled": null,
+            "total": 117.65108202725466
+        },
+        "energy_use_variants": {
+            "purchased": {
+                "consumption_breakdown_type": "basic-consumption-breakdown",
+                "per_fuel": {
+                    "Electricity": {
+                        "cooling": 0.0,
+                        "domestic_hot_water": 0.0,
+                        "fans": 25105.0300327516,
+                        "heating": 0.0,
+                        "interior_equipment": 97403.96524276155,
+                        "interior_lighting": 66431.65005664564
+                    },
+                    "Natural Gas": {
+                        "domestic_hot_water": 12299.07171429824,
+                        "heating": 127955.2831422787,
+                        "interior_equipment": 0.0
+                    }
+                },
+                "source": "simulated-purchased-energy",
+                "total_per_fuel": {
+                    "Electricity": 188940.64533215878,
+                    "Natural Gas": 140254.35485657695
+                }
+            },
+            "scaled": null,
+            "total": {
+                "consumption_breakdown_type": "basic-consumption-breakdown",
+                "per_fuel": {
+                    "Electricity": {
+                        "cooling": 0.0,
+                        "domestic_hot_water": 0.0,
+                        "fans": 25105.0300327516,
+                        "heating": 0.0,
+                        "interior_equipment": 97403.96524276155,
+                        "interior_lighting": 66431.65005664564
+                    },
+                    "Natural Gas": {
+                        "domestic_hot_water": 12299.07171429824,
+                        "heating": 127955.2831422787,
+                        "interior_equipment": 0.0
+                    }
+                },
+                "source": "simulated-total-energy",
+                "total_per_fuel": {
+                    "Electricity": 188940.64533215878,
+                    "Natural Gas": 140254.35485657695
+                }
+            }
+        },
+        "epc_domestic": null,
+        "epc_mixed": null,
+        "epc_non_domestic": null,
+        "equipment_energy_consumption": 97403.96524276155,
+        "estimated_epc_rating": null,
+        "gas_co2_emissions": 25666.54693875358,
+        "gas_consumption": 140254.35485657695,
+        "gas_consumption_per_m2": 50.12553835401612,
+        "gas_consumption_per_m2_variants": {
+            "purchased": 50.12553835401612,
+            "scaled": null,
+            "total": 50.12553835401612
+        },
+        "gas_consumption_variants": {
+            "purchased": 140254.35485657695,
+            "scaled": null,
+            "total": 140254.35485657695
+        },
+        "gross_internal_area": 2798.0618156361325,
+        "measures_first_cost": 0.0,
+        "measures_first_cost_structure": {},
+        "natural_gas_is_available": true,
+        "natural_gas_monthly_ts_variants": {
+            "purchased": {
+                "monthly_values": [
+                    33410.770538981385,
+                    27163.304955910913,
+                    14507.990885067298,
+                    3208.0324292955365,
+                    1125.085580652257,
+                    1032.1249240165062,
+                    1010.0501368295782,
+                    1076.4776464262757,
+                    1167.0614853167017,
+                    5427.452453901611,
+                    18380.40083546728,
+                    32745.602984711593
+                ],
+                "timeseries_type": "basic-monthly-timeseries"
+            },
+            "scaled": null,
+            "total": {
+                "monthly_values": [
+                    33410.770538981385,
+                    27163.304955910913,
+                    14507.990885067298,
+                    3208.0324292955365,
+                    1125.085580652257,
+                    1032.1249240165062,
+                    1010.0501368295782,
+                    1076.4776464262757,
+                    1167.0614853167017,
+                    5427.452453901611,
+                    18380.40083546728,
+                    32745.602984711593
+                ],
+                "timeseries_type": "basic-monthly-timeseries"
+            }
+        },
+        "rag_status": "green",
+        "scope1_co2_emissions": 64786.70755477705,
+        "scope2_co2_emissions": 0.0,
+        "simulation_id": "0199a8ac9f9870ce4d6cad9d8493268631177b94655006b4b1738826482f447f6d3f1436d522e24fbd76cf60f93f6d9e",
+        "use_class": "E(g)(i)"
+    },
+    "image_url": null,
+    "masked_footprints": null,
+    "masked_ids": null,
+    "messages": [],
+    "owned": true,
+    "portfolio": "DemoThierry",
+    "portfolio_id": "0199a030c7ec0892481edea7d30701e7",
+    "source_attributes": [
+        {
+            "attribute_id": "building_address",
+            "provenance": {
+                "metadata": null,
+                "source_id": "google-maps",
+                "timestamp": "2025-10-01T14:33:44.963681Z"
+            },
+            "rating": 50.0,
+            "value": "130 Shoe Ln, London EC4A 2BH, UK"
+        },
+        {
+            "attribute_id": "building_name",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": ""
+        },
+        {
+            "attribute_id": "building_name",
+            "provenance": {
+                "metadata": null,
+                "source_id": "openstreetmap",
+                "timestamp": "2025-04-01T00:00:00Z"
+            },
+            "rating": 3.0,
+            "value": "Goldman Sachs"
+        },
+        {
+            "attribute_id": "cooling_source",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": "https://mapmortar.io/#cooling-source-none"
+        },
+        {
+            "attribute_id": "dhw_source",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": "https://mapmortar.io/#gas-boiler"
+        },
+        {
+            "attribute_id": "exterior_floor_system",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": "https://mapmortar.io/#exterior-floor-system-112"
+        },
+        {
+            "attribute_id": "fenestration_system",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": "https://mapmortar.io/#fenestration-system-316"
+        },
+        {
+            "attribute_id": "footprint",
+            "provenance": {
+                "metadata": null,
+                "source_id": "openstreetmap",
+                "timestamp": "2025-04-01T00:00:00Z"
+            },
+            "rating": 80.0,
+            "value": "POLYGON ((-0.1057746 51.5142917, -0.1057805 51.5142799, -0.1057928 51.5142724, -0.1058085 51.5142681, -0.1059459 51.5142691, -0.1060926 51.5142688, -0.1061095 51.5142798, -0.1061192 51.5142942, -0.1061089 51.5144577, -0.1057689 51.5144535, -0.1057746 51.5142917))"
+        },
+        {
+            "attribute_id": "heating_source",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": "https://mapmortar.io/#gas-boiler"
+        },
+        {
+            "attribute_id": "height",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": 7
+        },
+        {
+            "attribute_id": "heritage_designation",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": "https://mapmortar.io/#heritage-none"
+        },
+        {
+            "attribute_id": "natural_gas_is_available",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": true
+        },
+        {
+            "attribute_id": "no_stories",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": 2
+        },
+        {
+            "attribute_id": "no_stories",
+            "provenance": {
+                "metadata": null,
+                "source_id": "openstreetmap",
+                "timestamp": "2025-04-01T00:00:00Z"
+            },
+            "rating": 80.0,
+            "value": 6
+        },
+        {
+            "attribute_id": "no_underground_stories",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": 0
+        },
+        {
+            "attribute_id": "occupancy_classification",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": "https://bedes.lbl.gov/bedes-online/residential"
+        },
+        {
+            "attribute_id": "occupancy_classification",
+            "provenance": {
+                "metadata": null,
+                "source_id": "openstreetmap",
+                "timestamp": "2025-04-01T00:00:00Z"
+            },
+            "rating": 80.0,
+            "value": "https://bedes.lbl.gov/bedes-online/office"
+        },
+        {
+            "attribute_id": "osm_id",
+            "provenance": {
+                "metadata": null,
+                "source_id": "openstreetmap",
+                "timestamp": "2025-04-01T00:00:00Z"
+            },
+            "rating": 3.0,
+            "value": "32893368"
+        },
+        {
+            "attribute_id": "roof_system",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": "https://mapmortar.io/#roof-system-432"
+        },
+        {
+            "attribute_id": "ventilation_source",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": "https://bedes.lbl.gov/bedes-online/mechanical-ventilation"
+        },
+        {
+            "attribute_id": "wall_system",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": "https://mapmortar.io/#wall-system-20"
+        },
+        {
+            "attribute_id": "wwr",
+            "provenance": {
+                "metadata": null,
+                "source_id": "defaults",
+                "timestamp": "2025-10-02T10:12:39.456527Z"
+            },
+            "rating": 0.0,
+            "value": 0.3
+        },
+        {
+            "attribute_id": "height",
+            "provenance": {
+                "metadata": null,
+                "source_id": "derived",
+                "timestamp": null
+            },
+            "rating": 90.0,
+            "value": 21.0
+        },
+        {
+            "attribute_id": "is_calibrated",
+            "provenance": {
+                "metadata": null,
+                "source_id": "derived",
+                "timestamp": null
+            },
+            "rating": 90.0,
+            "value": false
+        },
+        {
+            "attribute_id": "available_calibration_reference_years",
+            "provenance": {
+                "metadata": null,
+                "source_id": "derived",
+                "timestamp": null
+            },
+            "rating": 90.0,
+            "value": []
+        },
+        {
+            "attribute_id": "longitude",
+            "provenance": {
+                "metadata": null,
+                "source_id": "derived",
+                "timestamp": null
+            },
+            "rating": 90.0,
+            "value": -0.10594294412886579
+        },
+        {
+            "attribute_id": "latitude",
+            "provenance": {
+                "metadata": null,
+                "source_id": "derived",
+                "timestamp": null
+            },
+            "rating": 90.0,
+            "value": 51.51437385
+        },
+        {
+            "attribute_id": "footprint_gfa",
+            "provenance": {
+                "metadata": null,
+                "source_id": "derived",
+                "timestamp": null
+            },
+            "rating": 90.0,
+            "value": 490.88803783090043
+        },
+        {
+            "attribute_id": "footprint_gia",
+            "provenance": {
+                "metadata": null,
+                "source_id": "derived",
+                "timestamp": null
+            },
+            "rating": 90.0,
+            "value": 466.3436359393554
+        },
+        {
+            "attribute_id": "gfa",
+            "provenance": {
+                "metadata": null,
+                "source_id": "derived",
+                "timestamp": null
+            },
+            "rating": 90.0,
+            "value": 2945.3282269854026
+        },
+        {
+            "attribute_id": "gross_internal_area",
+            "provenance": {
+                "metadata": null,
+                "source_id": "derived",
+                "timestamp": null
+            },
+            "rating": 50.0,
+            "value": 2798.0618156361325
+        }
+    ],
+    "spaces": [
+        {
+            "attributes": {
+                "cooling_efficiency": null,
+                "cooling_setpoint": null,
+                "cooling_source": "https://mapmortar.io/#cooling-source-none",
+                "dhw_efficiency": null,
+                "dhw_source": "https://mapmortar.io/#gas-boiler",
+                "equipment_power_density": null,
+                "fenestration_system": "https://mapmortar.io/#fenestration-system-316",
+                "gross_internal_area": 45.0,
+                "heating_efficiency": null,
+                "heating_setpoint": null,
+                "heating_source": "https://mapmortar.io/#gas-boiler",
+                "landlord_area_flag": null,
+                "level": 0,
+                "lighting_power_density": null,
+                "natural_gas_is_available": true,
+                "occupancy_classification": "https://bedes.lbl.gov/bedes-online/office",
+                "people_per_floor_area": null,
+                "space_address": "Flat 1, address",
+                "space_epc_id": null,
+                "space_epc_label": null,
+                "space_epc_potential_rating": null,
+                "space_epc_rating": null,
+                "space_epc_transition_risk": null,
+                "space_infiltration_ach": null,
+                "space_name": "Flat 1",
+                "specific_fan_power": null,
+                "tenant_name": null,
+                "ventilation_source": "https://bedes.lbl.gov/bedes-online/mechanical-ventilation",
+                "wwr": 0.3
+            },
+            "derived_attributes": [],
+            "derived_attributes_v2": {
+                "co2_emissions": 2508.0131480283226,
+                "co2_emissions_per_m2": 55.7336255117405,
+                "consumption_relative_to_benchmark": {
+                    "electricity_benchmark_range": {
+                        "area_basis": "GIA",
+                        "good_practice": 67.0,
+                        "institution": "CIBSE",
+                        "source": "CIBSE-DEC",
+                        "typical": 95.0,
+                        "units": "kWh/m2/year"
+                    },
+                    "electricity_consumption": 150.64482320394993,
+                    "gas_benchmark_range": {
+                        "area_basis": "GIA",
+                        "good_practice": 75.5,
+                        "institution": "CIBSE",
+                        "source": "CIBSE-DEC",
+                        "typical": 106.0,
+                        "units": "kWh/m2/year"
+                    },
+                    "gas_consumption": 134.11264954842989,
+                    "rag_status": "red",
+                    "source": "CIBSE-DEC"
+                },
+                "electricity_co2_emissions": 1403.5954789970024,
+                "electricity_consumption": 6779.017044177746,
+                "electricity_consumption_per_m2": 150.64482320394993,
+                "electricity_purchased": 6779.017044177746,
+                "energy_consumption": 12814.08627385709,
+                "energy_consumption_per_m2": 284.7574727523798,
+                "energy_cost": 4289.532168360379,
+                "energy_purchased": 12814.08627385709,
+                "energy_purchased_per_m2": 284.7574727523798,
+                "energy_tariffs": {
+                    "electricity": {
+                        "daily_standing_charge": 5.35248,
+                        "supplier_name": "(Default)",
+                        "tariff_classification": "commercial",
+                        "tariff_type": "basic-energy-tariff",
+                        "unit_rate": 0.25698435
+                    },
+                    "natural_gas": {
+                        "daily_standing_charge": 0.3836196,
+                        "supplier_name": "(Default)",
+                        "tariff_classification": "commercial",
+                        "tariff_type": "basic-energy-tariff",
+                        "unit_rate": 0.0751863
+                    },
+                    "tariffs_type": "basic-energy-tariffs"
+                },
+                "energy_use_breakdown": {
+                    "consumption_breakdown_type": "basic-consumption-breakdown",
+                    "per_fuel": {
+                        "Electricity": {
+                            "cooling": 0.0,
+                            "domestic_hot_water": 0.0,
+                            "fans": 914.3338805408689,
+                            "heating": 0.0,
+                            "interior_equipment": 3486.686298255465,
+                            "interior_lighting": 2377.996865381411
+                        },
+                        "Natural Gas": {
+                            "domestic_hot_water": 440.25933359722393,
+                            "heating": 5594.809896082121,
+                            "interior_equipment": 0.0
+                        }
+                    },
+                    "source": "simulated-total-energy",
+                    "total_per_fuel": {
+                        "Electricity": 6779.0170441777445,
+                        "Natural Gas": 6035.069229679345
+                    }
+                },
+                "equipment_energy_consumption": 3486.686298255465,
+                "estimated_epc_rating": null,
+                "gas_co2_emissions": 1104.4176690313202,
+                "gas_consumption": 6035.069229679345,
+                "gas_consumption_per_m2": 134.11264954842989,
+                "gross_internal_area": 45.0,
+                "measures_first_cost": 0.0,
+                "measures_first_cost_structure": {},
+                "natural_gas_is_available": true,
+                "natural_gas_monthly_ts": {
+                    "monthly_values": [
+                        1499.2707462089354,
+                        1182.0140381036713,
+                        579.5300051663003,
+                        106.15791477207779,
+                        38.47178348674345,
+                        36.931934465355354,
+                        36.155899442671675,
+                        38.471783486743455,
+                        37.28577890082785,
+                        223.6868110026478,
+                        819.8050050791885,
+                        1437.2875295641818
+                    ],
+                    "timeseries_type": "basic-monthly-timeseries"
+                },
+                "purchased_electricity_monthly_ts": {
+                    "monthly_values": [
+                        583.1641543684264,
+                        529.0335393308959,
+                        586.0927586651478,
+                        536.6019622777108,
+                        583.5384283124539,
+                        561.5469480721498,
+                        558.1013206703977,
+                        583.6750041367309,
+                        550.1319924941834,
+                        570.3264510654519,
+                        566.3203799249039,
+                        570.484104859293
+                    ],
+                    "timeseries_type": "basic-monthly-timeseries"
+                },
+                "purchased_energy_use_breakdown": {
+                    "consumption_breakdown_type": "basic-consumption-breakdown",
+                    "per_fuel": {
+                        "Electricity": {
+                            "cooling": 0.0,
+                            "domestic_hot_water": 0.0,
+                            "fans": 914.3338805408689,
+                            "heating": 0.0,
+                            "interior_equipment": 3486.686298255465,
+                            "interior_lighting": 2377.996865381411
+                        },
+                        "Natural Gas": {
+                            "domestic_hot_water": 440.25933359722393,
+                            "heating": 5594.809896082121,
+                            "interior_equipment": 0.0
+                        }
+                    },
+                    "source": "simulated-purchased-energy",
+                    "total_per_fuel": {
+                        "Electricity": 6779.0170441777445,
+                        "Natural Gas": 6035.069229679345
+                    }
+                },
+                "rag_status": "red",
+                "scope1_co2_emissions": 2508.0131480283226,
+                "scope2_co2_emissions": 0.0,
+                "simulation_id": "0199a8ac9f9870ce4d6cad9d8493268631177b94655006b4b1738826482f447f6d3f1436d522e24fbd76cf60f93f6d9e"
+            },
+            "id": "0199a8ac997b3f878af40f5eef710b31",
+            "messages": [],
+            "source_attributes": [
+                {
+                    "attribute_id": "cooling_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "container-defaults",
+                        "timestamp": "2025-10-02T10:12:39.456554Z"
+                    },
+                    "rating": 2.0,
+                    "value": "https://mapmortar.io/#cooling-source-none"
+                },
+                {
+                    "attribute_id": "cooling_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "defaults",
+                        "timestamp": "2025-10-02T10:12:39.456527Z"
+                    },
+                    "rating": 0.0,
+                    "value": "https://mapmortar.io/#cooling-source-none"
+                },
+                {
+                    "attribute_id": "cooling_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": "https://mapmortar.io/#cooling-source-none"
+                },
+                {
+                    "attribute_id": "dhw_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "container-defaults",
+                        "timestamp": "2025-10-02T10:12:39.456554Z"
+                    },
+                    "rating": 2.0,
+                    "value": "https://mapmortar.io/#gas-boiler"
+                },
+                {
+                    "attribute_id": "dhw_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "defaults",
+                        "timestamp": "2025-10-02T10:12:39.456527Z"
+                    },
+                    "rating": 0.0,
+                    "value": "https://mapmortar.io/#gas-boiler"
+                },
+                {
+                    "attribute_id": "dhw_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": "https://mapmortar.io/#gas-boiler"
+                },
+                {
+                    "attribute_id": "fenestration_system",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "container-defaults",
+                        "timestamp": "2025-10-02T10:12:39.456554Z"
+                    },
+                    "rating": 2.0,
+                    "value": "https://mapmortar.io/#fenestration-system-316"
+                },
+                {
+                    "attribute_id": "fenestration_system",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "defaults",
+                        "timestamp": "2025-10-02T10:12:39.456527Z"
+                    },
+                    "rating": 0.0,
+                    "value": "https://mapmortar.io/#fenestration-system-316"
+                },
+                {
+                    "attribute_id": "fenestration_system",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": "https://mapmortar.io/#fenestration-system-316"
+                },
+                {
+                    "attribute_id": "gross_internal_area",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": 45.0
+                },
+                {
+                    "attribute_id": "heating_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "container-defaults",
+                        "timestamp": "2025-10-02T10:12:39.456554Z"
+                    },
+                    "rating": 2.0,
+                    "value": "https://mapmortar.io/#gas-boiler"
+                },
+                {
+                    "attribute_id": "heating_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "defaults",
+                        "timestamp": "2025-10-02T10:12:39.456527Z"
+                    },
+                    "rating": 0.0,
+                    "value": "https://mapmortar.io/#gas-boiler"
+                },
+                {
+                    "attribute_id": "heating_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": "https://mapmortar.io/#gas-boiler"
+                },
+                {
+                    "attribute_id": "level",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": 0
+                },
+                {
+                    "attribute_id": "natural_gas_is_available",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "container-defaults",
+                        "timestamp": "2025-10-02T10:12:39.456554Z"
+                    },
+                    "rating": 2.0,
+                    "value": true
+                },
+                {
+                    "attribute_id": "natural_gas_is_available",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "defaults",
+                        "timestamp": "2025-10-02T10:12:39.456527Z"
+                    },
+                    "rating": 0.0,
+                    "value": true
+                },
+                {
+                    "attribute_id": "natural_gas_is_available",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": true
+                },
+                {
+                    "attribute_id": "occupancy_classification",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "container-defaults",
+                        "timestamp": "2025-10-02T10:12:39.456554Z"
+                    },
+                    "rating": 2.0,
+                    "value": "https://bedes.lbl.gov/bedes-online/office"
+                },
+                {
+                    "attribute_id": "occupancy_classification",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "defaults",
+                        "timestamp": "2025-10-02T10:12:39.456527Z"
+                    },
+                    "rating": 0.0,
+                    "value": "https://bedes.lbl.gov/bedes-online/residential"
+                },
+                {
+                    "attribute_id": "occupancy_classification",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": "https://bedes.lbl.gov/bedes-online/office"
+                },
+                {
+                    "attribute_id": "space_address",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": "Flat 1, address"
+                },
+                {
+                    "attribute_id": "space_name",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": "Flat 1"
+                },
+                {
+                    "attribute_id": "ventilation_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "container-defaults",
+                        "timestamp": "2025-10-02T10:12:39.456554Z"
+                    },
+                    "rating": 2.0,
+                    "value": "https://bedes.lbl.gov/bedes-online/mechanical-ventilation"
+                },
+                {
+                    "attribute_id": "ventilation_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "defaults",
+                        "timestamp": "2025-10-02T10:12:39.456527Z"
+                    },
+                    "rating": 0.0,
+                    "value": "https://bedes.lbl.gov/bedes-online/mechanical-ventilation"
+                },
+                {
+                    "attribute_id": "ventilation_source",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": "https://bedes.lbl.gov/bedes-online/mechanical-ventilation"
+                },
+                {
+                    "attribute_id": "wwr",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "container-defaults",
+                        "timestamp": "2025-10-02T10:12:39.456554Z"
+                    },
+                    "rating": 2.0,
+                    "value": 0.3
+                },
+                {
+                    "attribute_id": "wwr",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "defaults",
+                        "timestamp": "2025-10-02T10:12:39.456527Z"
+                    },
+                    "rating": 0.0,
+                    "value": 0.3
+                },
+                {
+                    "attribute_id": "wwr",
+                    "provenance": {
+                        "metadata": null,
+                        "source_id": "user",
+                        "timestamp": "2025-10-03T06:05:07.831919Z"
+                    },
+                    "rating": 100.0,
+                    "value": 0.3
+                }
+            ]
+        }
+    ],
+    "stories": [],
+    "user_data": null,
+    "user_permissions": {
+        "bills": {
+            "create": true,
+            "delete": true,
+            "edit": true,
+            "view": true
+        },
+        "budgets": {
+            "create": true,
+            "delete": true,
+            "edit": true,
+            "view": true
+        },
+        "building": {
+            "create": true,
+            "delete": true,
+            "edit": true,
+            "view": true
+        },
+        "decarb_suggestions": {
+            "create": true,
+            "delete": true,
+            "edit": true,
+            "view": true
+        },
+        "files": {
+            "create": true,
+            "delete": true,
+            "edit": true,
+            "view": true
+        },
+        "plans": {
+            "create": true,
+            "delete": true,
+            "edit": true,
+            "view": true
+        },
+        "roadmaps": {
+            "create": true,
+            "delete": true,
+            "edit": true,
+            "view": true
+        },
+        "spaces": {
+            "create": true,
+            "delete": true,
+            "edit": true,
+            "view": true
+        },
+        "stories": {
+            "create": true,
+            "delete": true,
+            "edit": true,
+            "view": true
+        },
+        "targets": {
+            "create": true,
+            "delete": true,
+            "edit": true,
+            "view": true
+        }
+    },
+    "warnings": {
+        "building_can_be_simulated": true,
+        "building_warnings": [],
+        "space_warnings": [],
+        "spaces_with_no_simulation": [],
+        "storey_warnings": []
+    }
+}

@@ -1,9 +1,15 @@
+import React from 'react';
 import { Building2, LayoutGrid, Settings, FileText, Users } from 'lucide-react';
 
-export function VerticalNav() {
+interface VerticalNavProps {
+  currentView: 'portfolio' | 'building';
+  onNavigate: (view: 'portfolio' | 'building') => void;
+}
+
+export function VerticalNav({ currentView, onNavigate }: VerticalNavProps) {
   const navItems = [
-    { id: 'portfolio', label: 'Portfolio', icon: LayoutGrid, active: true },
-    { id: 'assets', label: 'Assets', icon: Building2, active: false },
+    { id: 'portfolio', label: 'Portfolio', icon: LayoutGrid, active: currentView === 'portfolio' },
+    { id: 'building', label: 'Building', icon: Building2, active: currentView === 'building' },
     { id: 'reports', label: 'Reports', icon: FileText, active: false },
     { id: 'team', label: 'Team', icon: Users, active: false },
     { id: 'settings', label: 'Settings', icon: Settings, active: false },
@@ -25,6 +31,11 @@ export function VerticalNav() {
           return (
             <button
               key={item.id}
+              onClick={() => {
+                if (item.id === 'portfolio' || item.id === 'building') {
+                  onNavigate(item.id as 'portfolio' | 'building');
+                }
+              }}
               className={`relative w-12 h-12 rounded-lg flex items-center justify-center transition-colors group ${
                 item.active
                   ? 'bg-orange-50 text-[#F97316]'

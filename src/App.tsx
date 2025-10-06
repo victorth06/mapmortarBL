@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { VerticalNav } from './components/VerticalNav';
 import { StickyNav } from './components/StickyNav';
 import { StickyActionBar } from './components/StickyActionBar';
@@ -7,11 +7,13 @@ import { ExecutiveOverview } from './components/ExecutiveOverview';
 import { ExecutiveBridge } from './components/ExecutiveBridge';
 import { OpportunitiesSection } from './components/OpportunitiesSection';
 import { ScenarioDetailPage } from './components/ScenarioDetailPage';
+import PortfolioDashboard from './components/PortfolioDashboard';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('overview');
   const [currentView, setCurrentView] = useState<'report' | 'scenario'>('report');
   const [selectedScenario, setSelectedScenario] = useState<string | null>(null);
+  const [mainView, setMainView] = useState<'portfolio' | 'building'>('portfolio');
 
   const handleScenarioClick = (scenarioName: string) => {
     setSelectedScenario(scenarioName);
@@ -22,6 +24,16 @@ export default function App() {
   const handleBackToReport = () => {
     setCurrentView('report');
     setSelectedScenario(null);
+    window.scrollTo(0, 0);
+  };
+
+  const handleMainNavigation = (view: 'portfolio' | 'building') => {
+    setMainView(view);
+    window.scrollTo(0, 0);
+  };
+
+  const handleViewBuilding = (buildingId: string) => {
+    setMainView('building');
     window.scrollTo(0, 0);
   };
 
@@ -51,7 +63,7 @@ export default function App() {
   if (currentView === 'scenario' && selectedScenario) {
     return (
       <div className="min-h-screen bg-[#FAFAFA]">
-        <VerticalNav />
+        <VerticalNav currentView={mainView} onNavigate={handleMainNavigation} />
         <div className="ml-16">
           <ScenarioDetailPage 
             scenarioName={selectedScenario}
@@ -64,37 +76,44 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] pb-24">
-      <VerticalNav />
+      <VerticalNav currentView={mainView} onNavigate={handleMainNavigation} />
       <div className="ml-16">
-        <StickyNav activeSection={activeSection} />
-        <StickyActionBar />
-        
-        <main className="max-w-7xl mx-auto px-6 py-8">
-        <PropertyHero
-          buildingName="135 Bishopsgate"
-          address="London EC2M 3YD"
-          reportId="SAR-2024-001"
-          reportDate="2 October 2025"
-          buildingImage="https://images.unsplash.com/photo-1676679992426-1803645cdd40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsb25kb24lMjBvZmZpY2UlMjBidWlsZGluZ3xlbnwxfHx8fDE3NTkzOTI1MDF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-          mapImage="https://images.unsplash.com/photo-1542382257-80dedb725088?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXR5JTIwbWFwJTIwYWVyaWFsfGVufDF8fHx8MTc1OTM5MjUwMnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-        />
+        {mainView === 'portfolio' ? (
+          <PortfolioDashboard onViewBuilding={handleViewBuilding} />
+        ) : (
+          <>
+            <StickyNav activeSection={activeSection} />
+            <StickyActionBar />
+            
+            <main className="max-w-7xl mx-auto px-6 py-8">
+            <PropertyHero
+              buildingName="135 Bishopsgate"
+              address="London EC2M 3YD"
+              reportId="SAR-2024-001"
+              reportDate="2 October 2025"
+              buildingImage="https://images.unsplash.com/photo-1676679992426-1803645cdd40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsb25kb24lMjBvZmZpY2UlMjBidWlsZGluZ3xlbnwxfHx8fDE3NTkzOTI1MDF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+              mapImage="https://images.unsplash.com/photo-1542382257-80dedb725088?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXR5JTIwbWFwJTIwYWVyaWFsfGVufDF8fHx8MTc1OTM5MjUwMnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+              onBackToPortfolio={() => handleMainNavigation('portfolio')}
+            />
 
-        <ExecutiveOverview />
-        <ExecutiveBridge />
-        <OpportunitiesSection onScenarioClick={handleScenarioClick} />
+            <ExecutiveOverview />
+            <ExecutiveBridge />
+            <OpportunitiesSection onScenarioClick={handleScenarioClick} />
 
-        <footer className="mt-12 pt-8 border-t border-gray-200 text-center text-[#6B7280]">
-          <p className="mb-2">
-            This report was generated on 2 October 2025 for 135 Bishopsgate, London EC2M 3YD
-          </p>
-          <p className="text-sm">
-            Data sources: EPC Register, CRREM Tool v2.0, CIBSE TM46, building energy meters
-          </p>
-          <p className="text-sm mt-2">
-            © 2025 Sustainable Asset Reports. All rights reserved.
-          </p>
-        </footer>
-        </main>
+            <footer className="mt-12 pt-8 border-t border-gray-200 text-center text-[#6B7280]">
+              <p className="mb-2">
+                This report was generated on 2 October 2025 for 135 Bishopsgate, London EC2M 3YD
+              </p>
+              <p className="text-sm">
+                Data sources: EPC Register, CRREM Tool v2.0, CIBSE TM46, building energy meters
+              </p>
+              <p className="text-sm mt-2">
+                © 2025 Sustainable Asset Reports. All rights reserved.
+              </p>
+            </footer>
+            </main>
+          </>
+        )}
       </div>
 
       <style>{`
