@@ -16,6 +16,28 @@ interface InfoCardProps {
   iconBgColor: string;
 }
 
+interface ConfidenceBarProps {
+  high: number;
+  medium: number;
+  low: number;
+  total: number;
+}
+
+interface MiniChartProps {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+  iconColor: string;
+  iconBgColor: string;
+  segments: Array<{
+    label: string;
+    count: number;
+    color: string;
+    bgColor: string;
+  }>;
+  total: number;
+}
+
 function InfoCard({ icon: Icon, label, value, iconColor, iconBgColor }: InfoCardProps) {
   return (
     <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-gray-200">
@@ -25,6 +47,99 @@ function InfoCard({ icon: Icon, label, value, iconColor, iconBgColor }: InfoCard
       <div className="min-w-0">
         <p className="text-xs text-[#6B7280] mb-0.5">{label}</p>
         <p className="text-[#1A1A1A]" style={{ fontWeight: 700 }}>{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function ConfidenceBar({ high, medium, low, total }: ConfidenceBarProps) {
+  const highPercentage = (high / total) * 100;
+  const mediumPercentage = (medium / total) * 100;
+  const lowPercentage = (low / total) * 100;
+
+  return (
+    <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-gray-200">
+      <div className="p-2 bg-green-100 rounded-lg flex-shrink-0">
+        <CheckCircle className="w-4 h-4 text-green-600" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-xs text-[#6B7280] mb-2">Data Confidence</p>
+        <div className="space-y-2">
+          {/* Visual Bar */}
+          <div className="flex h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className="bg-green-500 h-full transition-all duration-300"
+              style={{ width: `${highPercentage}%` }}
+            />
+            <div 
+              className="bg-amber-500 h-full transition-all duration-300"
+              style={{ width: `${mediumPercentage}%` }}
+            />
+            <div 
+              className="bg-red-500 h-full transition-all duration-300"
+              style={{ width: `${lowPercentage}%` }}
+            />
+          </div>
+          {/* Legend */}
+          <div className="flex justify-between text-xs text-[#6B7280]">
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span>High ({high})</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+              <span>Medium ({medium})</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+              <span>Low ({low})</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MiniChart({ icon: Icon, label, value, iconColor, iconBgColor, segments, total }: MiniChartProps) {
+  return (
+    <div className="p-4 bg-white rounded-lg border border-gray-200">
+      {/* Top Section: Icon + Label + Value */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-3">
+          <div className={`p-2 ${iconBgColor} rounded-lg flex-shrink-0`}>
+            <Icon className={`w-4 h-4 ${iconColor}`} />
+          </div>
+          <p className="text-xs text-[#6B7280]">{label}</p>
+        </div>
+        <p className="text-[#1A1A1A] font-bold text-sm">{value}</p>
+      </div>
+      
+      {/* Bottom Section: Visual Bar + Legend */}
+      <div className="space-y-2">
+        {/* Visual Bar */}
+        <div className="flex h-2 bg-gray-200 rounded-full overflow-hidden">
+          {segments.map((segment, index) => {
+            const percentage = (segment.count / total) * 100;
+            return (
+              <div 
+                key={index}
+                className={`${segment.bgColor} h-full transition-all duration-300`}
+                style={{ width: `${percentage}%` }}
+              />
+            );
+          })}
+        </div>
+        
+        {/* Legend */}
+        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[8px] text-[#6B7280]">
+          {segments.map((segment, index) => (
+            <div key={index} className="flex items-center gap-1">
+              <div className={`w-1.5 h-1.5 ${segment.bgColor} rounded-full`}></div>
+              <span>{segment.label} ({segment.count})</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -82,44 +197,80 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
           </div>
         </div>
 
-        {/* 5-Column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
-          <InfoCard
-            icon={Building2}
-            label="Total Buildings"
-            value="12"
-            iconColor="text-blue-600"
-            iconBgColor="bg-blue-100"
-          />
-          <InfoCard
-            icon={MapPin}
-            label="Total GIA"
-            value="245,670 m²"
-            iconColor="text-green-600"
-            iconBgColor="bg-green-100"
-          />
-          <InfoCard
-            icon={PoundSterling}
-            label="Total Rent Roll"
-            value="£8.2M"
-            iconColor="text-purple-600"
-            iconBgColor="bg-purple-100"
-          />
-          <InfoCard
-            icon={Zap}
-            label="Avg EPC Rating"
-            value="C (65)"
-            iconColor="text-amber-600"
-            iconBgColor="bg-amber-100"
-          />
-          <InfoCard
-            icon={CheckCircle}
-            label="Data Confidence"
-            value="89%"
-            iconColor="text-green-600"
-            iconBgColor="bg-green-100"
-          />
+        {/* Grid layout — 3 columns wide, 2 rows tall */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+        {/* Left 2 columns: stacked KPI + analytic cards */}
+        <div className="lg:col-span-2 flex flex-col gap-3">
+            {/* Row 1: Top KPIs (3 cards) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <InfoCard
+                icon={Building2}
+                label="Total Buildings"
+                value="12"
+                iconColor="text-blue-600"
+                iconBgColor="bg-blue-100"
+            />
+            <InfoCard
+                icon={MapPin}
+                label="Total GIA"
+                value="245,670 m²"
+                iconColor="text-green-600"
+                iconBgColor="bg-green-100"
+            />
+            <InfoCard
+                icon={PoundSterling}
+                label="Total Rent Roll"
+                value="£8.2M"
+                iconColor="text-purple-600"
+                iconBgColor="bg-purple-100"
+            />
+            </div>
+
+            {/* Row 2: EPC + Data Confidence — together span full width of 3 cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <MiniChart
+                icon={Zap}
+                label="Avg EPC Rating"
+                value="C (65)"
+                iconColor="text-amber-600"
+                iconBgColor="bg-amber-100"
+                segments={[
+                { label: "A", count: 1, color: "text-green-700", bgColor: "bg-green-500" },
+                { label: "B", count: 3, color: "text-emerald-700", bgColor: "bg-emerald-500" },
+                { label: "C", count: 5, color: "text-yellow-700", bgColor: "bg-yellow-500" },
+                { label: "D", count: 2, color: "text-orange-700", bgColor: "bg-orange-500" },
+                { label: "E", count: 1, color: "text-red-700", bgColor: "bg-red-500" },
+                ]}
+                total={12}
+            />
+
+            <MiniChart
+                icon={CheckCircle}
+                label="Data Confidence"
+                value="89%"
+                iconColor="text-green-600"
+                iconBgColor="bg-green-100"
+                segments={[
+                { label: "High", count: 8, color: "text-green-700", bgColor: "bg-green-500" },
+                { label: "Medium", count: 3, color: "text-amber-700", bgColor: "bg-amber-500" },
+                { label: "Low", count: 1, color: "text-red-700", bgColor: "bg-red-500" },
+                ]}
+                total={12}
+            />
+            </div>
         </div>
+
+        {/* Right column: Map placeholder (spans both rows) */}
+        <div className="lg:row-span-2">
+            <div className="bg-white border border-gray-200 rounded-lg p-4 h-full flex flex-col">
+            <h4 className="text-sm font-medium text-[#1A1A1A] mb-3">Portfolio Locations</h4>
+            <div className="flex-1 bg-black rounded-md flex items-center justify-center min-h-[120px]">
+                <span className="text-white text-lg font-medium">map</span>
+            </div>
+            </div>
+        </div>
+        </div>
+
 
         {/* Notes and Confidence Score */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-3 border-t border-gray-200">
