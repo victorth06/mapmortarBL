@@ -317,137 +317,113 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
           <h2 className="text-2xl font-semibold text-[#1A1A1A] mb-2">Portfolio Retrofit Opportunities</h2>
           <p className="text-sm text-[#6B7280]">The potential impact of upgrading underperforming assets.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Card 1 - Investment & Payback */}
-          <div className="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg transition-all flex flex-col h-full hover:border-[#F97316] border-2 border-transparent">
-            <div className="flex items-start justify-between mb-3">
-              <p className="text-[#6B7280]">Investment & Payback</p>
-              <div className="p-2 bg-orange-50 rounded-lg">
-                <PoundSterling className="w-5 h-5 text-[#F97316]" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+          {/* Left Column - Stacked Cards */}
+          <div className="flex flex-col gap-4">
+            {/* Card 1 - Investment & Impact (Compact) */}
+            <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all flex flex-col hover:border-[#F97316] border-2 border-transparent">
+              <div className="flex items-start justify-between mb-3">
+                <p className="text-[#6B7280]">Investment & Impact</p>
+                <div className="p-2 bg-orange-50 rounded-lg">
+                  <PoundSterling className="w-5 h-5 text-[#F97316]" />
+                </div>
+              </div>
+              <div className="space-y-3 flex-1">
+                <div>
+                  <p className="text-3xl font-bold text-[#1A1A1A]">£12.4M</p>
+                  <p className="text-sm text-[#6B7280]">Total Investment Budget</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-semibold text-[#1A1A1A]">£1.9M/year</p>
+                  <p className="text-sm text-[#6B7280]">Estimated Cost Savings</p>
+                </div>
+                <div className="pt-2 border-t border-gray-200">
+                  <p className="text-sm text-[#6B7280]">
+                    Average payback: <span className="font-medium text-[#1A1A1A]">4.2 years</span>
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-gray-200 mt-auto">
+                  <p className="text-xs text-[#6B7280]">
+                    Invest £12.4M to bring portfolio to 100% EPC C+ and extend CRREM alignment by 13 years.
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="space-y-4 flex-1">
-              <div>
-                <p className="text-3xl font-bold text-[#1A1A1A]">£12.4M</p>
-                <p className="text-sm text-[#6B7280]">Total Investment Budget</p>
-              </div>
-              <div>
-                <p className="text-2xl font-semibold text-[#1A1A1A]">£1.9M/year</p>
-                <p className="text-sm text-[#6B7280]">Estimated Cost Savings</p>
-              </div>
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-[#6B7280]">Payback distribution</span>
-                </div>
-                <div className="flex h-4 bg-gray-200 rounded-full overflow-hidden mb-2">
-                  <div className="bg-green-500 h-full" style={{ width: '41.7%' }} title="5 buildings: 3-4 years"></div>
-                  <div className="bg-amber-500 h-full" style={{ width: '33.3%' }} title="4 buildings: 4-6 years"></div>
-                  <div className="bg-red-500 h-full" style={{ width: '25%' }} title="3 buildings: 6+ years"></div>
-                </div>
-                <div className="flex justify-between text-xs text-[#6B7280]">
-                  <span>3-4y: 5</span>
-                  <span>4-6y: 4</span>
-                  <span>6+y: 3</span>
+
+            {/* Card 2 - Energy & Carbon Reduction (Compact + Side-by-side) */}
+            <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all flex flex-col hover:border-[#F97316] border-2 border-transparent">
+              <div className="flex items-start justify-between mb-3">
+                <p className="text-[#6B7280]">Energy & Carbon Reduction</p>
+                <div className="p-2 bg-orange-50 rounded-lg">
+                  <Zap className="w-5 h-5 text-[#F97316]" />
                 </div>
               </div>
-              <div className="pt-2 border-t border-gray-200 mt-auto">
-                <p className="text-xs text-[#6B7280]">
-                  Average payback: <span className="font-medium text-[#1A1A1A]">4.2 years</span> based on all modelled retrofit opportunities.
-                </p>
+              <div className="space-y-3 flex-1">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <p className="text-2xl font-bold text-[#1A1A1A]">2,870 tCO₂e</p>
+                    <p className="text-sm text-[#6B7280]">carbon savings per year</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-semibold text-[#1A1A1A]">~£850k/year</p>
+                    <p className="text-sm text-[#6B7280]">energy cost reduction</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gradient-to-r from-blue-50 to-white p-3 rounded-lg border border-blue-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Zap className="w-4 h-4 text-blue-600" />
+                      <span className="text-sm text-[#6B7280]">Energy Use Reduction</span>
+                    </div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-lg font-bold text-blue-600">34%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded-full transition-all duration-500" 
+                        style={{ width: '34%' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-green-50 to-white p-3 rounded-lg border border-green-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Leaf className="w-4 h-4 text-green-600" />
+                      <span className="text-sm text-[#6B7280]">Carbon Reduction</span>
+                    </div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-lg font-bold text-green-600">42%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-green-600 h-2 rounded-full transition-all duration-500" 
+                        style={{ width: '42%' }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                    🟩 Aligned until 2035 (CRREM)
+                  </Badge>
+                </div>
+                <div className="pt-2 border-t border-gray-200 mt-auto">
+                  <p className="text-xs text-[#6B7280]">
+                    Retrofit extends portfolio compliance by +13 years.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Card 2 - Energy & Carbon Reduction */}
-          <div className="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg transition-all flex flex-col h-full hover:border-[#F97316] border-2 border-transparent">
-            <div className="flex items-start justify-between mb-3">
-              <p className="text-[#6B7280]">Energy & Carbon Reduction</p>
-              <div className="p-2 bg-orange-50 rounded-lg">
-                <Zap className="w-5 h-5 text-[#F97316]" />
+          {/* Right Column - Bubble Chart Placeholder */}
+          <div className="flex items-center justify-center bg-neutral-50 border border-dashed border-gray-300 rounded-xl h-full min-h-[400px] text-gray-400">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-3 bg-gray-200 rounded-full flex items-center justify-center">
+                <BarChart3 className="w-8 h-8 text-gray-400" />
               </div>
-            </div>
-            <div className="space-y-4 flex-1">
-              <div>
-                <p className="text-3xl font-bold text-[#1A1A1A]">2,870 tCO₂e</p>
-                <p className="text-sm text-[#6B7280]">carbon savings per year</p>
-              </div>
-              <div>
-                <p className="text-2xl font-semibold text-[#1A1A1A]">~£850k/year</p>
-                <p className="text-sm text-[#6B7280]">energy cost reduction</p>
-              </div>
-              <div className="space-y-4">
-                <div className="bg-gradient-to-r from-blue-50 to-white p-4 rounded-lg border border-blue-200">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Zap className="w-5 h-5 text-blue-600" />
-                    <span className="text-sm text-[#6B7280]">Energy Use Reduction</span>
-                    <span className="ml-auto text-blue-600" style={{ fontWeight: 700 }}>34%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
-                    <div 
-                      className="bg-blue-600 h-3 rounded-full transition-all duration-500" 
-                      style={{ width: '34%' }}
-                    />
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-green-50 to-white p-4 rounded-lg border border-green-200">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Leaf className="w-5 h-5 text-green-600" />
-                    <span className="text-sm text-[#6B7280]">Carbon Reduction</span>
-                    <span className="ml-auto text-green-600" style={{ fontWeight: 700 }}>42%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
-                    <div 
-                      className="bg-green-600 h-3 rounded-full transition-all duration-500" 
-                      style={{ width: '42%' }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                  🟩 Aligned until 2035 (CRREM)
-                </Badge>
-              </div>
-              <div className="pt-2 border-t border-gray-200 mt-auto">
-                <p className="text-xs text-[#6B7280]">
-                  Retrofit extends portfolio compliance by +13 years.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Portfolio Upgrade Outcome - Full-width Banner */}
-        <div className="mt-6 bg-gradient-to-r from-orange-50 to-white rounded-xl border-l-4 border-[#FF6B00] p-6">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-[#1A1A1A] mb-3">Portfolio Upgrade Outcome</h3>
-              <div className="space-y-2 mb-4">
-                <p className="text-sm text-[#6B7280]">
-                  Invest <span className="font-semibold text-[#1A1A1A]">£12.4M</span> to bring all 12 buildings to EPC C or better.
-                </p>
-                <p className="text-sm text-[#6B7280]">
-                  Protects <span className="font-semibold text-[#1A1A1A]">£6.2M rent</span> and unlocks <span className="font-semibold text-[#1A1A1A]">+£360k annual uplift</span> through ESG-aligned premiums.
-                </p>
-                <p className="text-sm text-[#6B7280]">
-                  Portfolio alignment improves from <span className="font-semibold text-[#1A1A1A]">58% → 100% EPC C+</span>.
-                </p>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                <div className="bg-gradient-to-r from-orange-400 to-orange-600 h-2 rounded-full transition-all duration-1000" style={{ width: '58%' }}></div>
-              </div>
-              <div className="flex justify-between text-xs text-[#6B7280]">
-                <span>Current: 58%</span>
-                <span>Target: 100%</span>
-              </div>
-            </div>
-            <div className="ml-6">
-              <Button
-                className="bg-[#FF6B00] hover:bg-orange-600 text-white transition-colors"
-              >
-                🟠 Explore Retrofit Plan →
-              </Button>
+              <p className="text-lg font-medium">Bubble Chart Placeholder</p>
+              <p className="text-sm mt-1">Portfolio retrofit opportunities visualization</p>
             </div>
           </div>
         </div>
