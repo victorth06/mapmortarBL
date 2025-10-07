@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Building2, Users, Calendar, Clock, Edit2, FileText, Sparkles } from 'lucide-react';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from './ui/sheet';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../ui/sheet';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Textarea } from '../ui/textarea';
 
 interface InfoCardProps {
   icon: React.ElementType;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BarChart3, Zap, AlertTriangle, TrendingUp, Shield, Sun } from 'lucide-react';
-import EnergyBenchmarkChart from '../EnergyBenchmarkChart';
-import CRREMAlignmentChart from '../CRREMAlignmentChart';
+import EnergyBenchmarkChart from '../building/EnergyBenchmarkChart';
+import CRREMAlignmentChart from '../building/CRREMAlignmentChart';
 
 export default function PortfolioPerformanceSection() {
   return (

@@ -1,6 +1,6 @@
+import React, { useState } from 'react';
 import { Check, ChevronDown, ChevronUp, Zap, Leaf } from 'lucide-react';
-import { Button } from './ui/button';
-import { useState } from 'react';
+import { Button } from '../ui/button';
 
 interface ScenarioCardProps {
   title: string;

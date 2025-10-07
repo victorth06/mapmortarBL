@@ -1,4 +1,5 @@
-import { Button } from './ui/button';
+import React from 'react';
+import { Button } from '../ui/button';
 import { Calendar } from 'lucide-react';
 import { TrafficLight } from './TrafficLight';
 

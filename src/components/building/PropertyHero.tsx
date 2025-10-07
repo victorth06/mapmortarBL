@@ -1,7 +1,7 @@
 import React from 'react';
 import { MapPin, Download, ArrowLeft } from 'lucide-react';
-import { Button } from './ui/button';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { Button } from '../ui/button';
+import { ImageWithFallback } from '../figma/ImageWithFallback';
 
 interface PropertyHeroProps {
   buildingName: string;

@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { KPICard } from './KPICard';
-import { TransitionRiskCard } from './TransitionRiskCard';
-import { StrandedYearCard } from './StrandedYearCard';
+import { TransitionRiskCard } from '../scenario/TransitionRiskCard';
+import { StrandedYearCard } from '../scenario/StrandedYearCard';
 import { AssetInformation } from './AssetInformation';
-import { DetailPanel } from './panels/DetailPanel';
-import { EnergyPanelContent } from './panels/EnergyPanel';
-import { CarbonPanelContent } from './panels/CarbonPanel';
-import { SpendPanelContent } from './panels/SpendPanel';
-import { MEESPanelContent } from './panels/MEESPanel';
-import { CRREMPanelContent } from './panels/CRREMPanel';
+import { DetailPanel } from '../panels/DetailPanel';
+import { EnergyPanelContent } from '../panels/EnergyPanel';
+import { CarbonPanelContent } from '../panels/CarbonPanel';
+import { SpendPanelContent } from '../panels/SpendPanel';
+import { MEESPanelContent } from '../panels/MEESPanel';
+import { CRREMPanelContent } from '../panels/CRREMPanel';
 import { Zap, Leaf, DollarSign, Droplets, Thermometer, AlertTriangle, Shield } from 'lucide-react';
 
 type PanelType = 'energy' | 'carbon' | 'spend' | 'mees' | 'crrem' | null;

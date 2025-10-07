@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { CompactScenarioCard } from './CompactScenarioCard';
-import { AddScenarioCard } from './AddScenarioCard';
+import { CompactScenarioCard } from '../scenario/CompactScenarioCard';
+import { AddScenarioCard } from '../scenario/AddScenarioCard';
 import { RentCalculationConfig } from './RentCalculationConfig';
 import { TrendingUp, Lightbulb } from 'lucide-react';
-import { supabase } from '../utils/supabase/queries';
-import { useBuildingData } from '../hooks/useBuildingData';
-import { formatRent, getDefaultRentParams } from '../utils/rentCalculations';
+import { supabase } from '../../utils/supabase/queries';
+import { useBuildingData } from '../../hooks/useBuildingData';
+import { formatRent, getDefaultRentParams } from '../../utils/rentCalculations';
 
 interface OpportunitiesSectionProps {
   onScenarioClick?: (scenarioName: string) => void;

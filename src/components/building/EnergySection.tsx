@@ -1,6 +1,7 @@
+import React from 'react';
 import { KPICard } from './KPICard';
 import { Zap, Fuel, TrendingDown } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import {
   BarChart,
   Bar,

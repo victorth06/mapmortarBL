@@ -1,4 +1,5 @@
-import { Button } from './ui/button';
+import React from 'react';
+import { Button } from '../ui/button';
 import { Download, Share2, ArrowRight } from 'lucide-react';
 
 export function StickyActionBar() {

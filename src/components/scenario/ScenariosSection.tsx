@@ -1,3 +1,4 @@
+import React from 'react';
 import { CompactScenarioCard } from './CompactScenarioCard';
 import { AddScenarioCard } from './AddScenarioCard';
 import { AlertTriangle } from 'lucide-react';

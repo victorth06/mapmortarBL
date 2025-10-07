@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Download, Share2, Filter, Plus, TrendingUp, DollarSign, HelpCircle } from 'lucide-react';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, Legend, ResponsiveContainer, AreaChart, Area, ScatterChart, Scatter, ZAxis, ComposedChart, Bar } from 'recharts';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { Slider } from './ui/slider';
-import { Tooltip, TooltipTrigger, TooltipContent } from './ui/tooltip';
-import { supabase } from '../utils/supabase/queries';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import { Slider } from '../ui/slider';
+import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
+import { supabase } from '../../utils/supabase/queries';
 
 interface ScenarioDetailPageProps {
   scenarioName: string;

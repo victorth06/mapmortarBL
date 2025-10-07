@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { AlertTriangle } from 'lucide-react';
 import { TrafficLight } from './TrafficLight';
-import { useBuildingData } from '../hooks/useBuildingData';
+import { useBuildingData } from '../../hooks/useBuildingData';
 
 interface TransitionRiskCardProps {
   onViewDetails?: () => void;

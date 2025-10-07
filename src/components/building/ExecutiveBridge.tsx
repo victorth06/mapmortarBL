@@ -1,7 +1,7 @@
 import React from 'react';
 import { AlertTriangle, TrendingUp, ArrowRight, Download, Share2 } from 'lucide-react';
-import { Button } from './ui/button';
-import { useBuildingData } from '../hooks/useBuildingData';
+import { Button } from '../ui/button';
+import { useBuildingData } from '../../hooks/useBuildingData';
 
 export function ExecutiveBridge() {
   const { meesSummary, rentCalculations, loading, error } = useBuildingData();

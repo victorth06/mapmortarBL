@@ -1,5 +1,6 @@
+import React from 'react';
 import { Check, ChevronRight, Zap, Leaf } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 
 interface CompactScenarioCardProps {
   title: string;
