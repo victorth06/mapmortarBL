@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { VerticalNav } from './components/VerticalNav';
-import { StickyNav } from './components/StickyNav';
-import { StickyActionBar } from './components/StickyActionBar';
-import { PropertyHero } from './components/PropertyHero';
-import { ExecutiveOverview } from './components/ExecutiveOverview';
-import { ExecutiveBridge } from './components/ExecutiveBridge';
-import { OpportunitiesSection } from './components/OpportunitiesSection';
-import { ScenarioDetailPage } from './components/ScenarioDetailPage';
+import { VerticalNav, StickyNav, StickyActionBar, PropertyHero, ExecutiveOverview, ExecutiveBridge, OpportunitiesSection } from './components/building';
+import { ScenarioDetailPage } from './components/scenario';
 import PortfolioDashboard from './components/PortfolioDashboard';
 
 export default function App() {
