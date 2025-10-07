@@ -1,9 +1,11 @@
 import React from 'react';
-import { Building2, MapPin, PoundSterling, Zap, CheckCircle, Plus, Sparkles, ArrowRight, TrendingUp, AlertTriangle, Shield, Target, Clock, Users, BarChart3, Building, Leaf } from 'lucide-react';
+import { Building2, MapPin, PoundSterling, Zap, CheckCircle, Plus, Sparkles, ArrowRight, TrendingUp, AlertTriangle, Shield, Target, Clock, Users, BarChart3, Building, Leaf, Sun } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
 import PortfolioPerformanceChart from './PortfolioPerformanceChart';
+import EnergyBenchmarkChart from './EnergyBenchmarkChart';
+import CRREMAlignmentChart from './CRREMAlignmentChart';
 
 interface PortfolioDashboardProps {
   onViewBuilding: (id: string) => void;
@@ -478,9 +480,7 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                   <BarChart3 className="w-5 h-5 text-blue-600" />
                 </div>
               </div>
-              <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg border border-gray-100">
-                <p className="text-sm text-[#6B7280]">📊 Scatter Chart Placeholder</p>
-              </div>
+              <EnergyBenchmarkChart />
             </div>
 
             {/* Existing KPI Card - Right */}
@@ -560,6 +560,9 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                   </div>
                 </div>
                 
+                {/* Separator for MEES vs CRREM */}
+                <div className="my-3 border-t border-gray-200"></div>
+                
                 {/* Stranded risk */}
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                   <div className="flex items-center justify-between mb-2">
@@ -587,17 +590,15 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
               </div>
             </div>
 
-            {/* Chart Card Placeholder */}
+            {/* CRREM Alignment Chart */}
             <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all hover:border-[#F97316] border-2 border-transparent">
               <div className="flex items-start justify-between mb-4">
-                <p className="text-[#6B7280] font-medium">EPC Compliance Distribution</p>
+                <p className="text-[#6B7280] font-medium">CRREM Alignment & Transition Risk</p>
                 <div className="p-2 bg-amber-50 rounded-lg">
-                  <BarChart3 className="w-5 h-5 text-amber-600" />
+                  <TrendingUp className="w-5 h-5 text-amber-600" />
                 </div>
               </div>
-              <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg border border-gray-100">
-                <p className="text-sm text-[#6B7280]">📊 EPC Distribution Chart Placeholder</p>
-              </div>
+              <CRREMAlignmentChart />
             </div>
           </div>
         </div>
@@ -605,78 +606,85 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
         {/* 3️⃣ Physical Risk Section */}
         <div className="mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Flood Risk Card - Full Width */}
+            {/* Flood Risk Card */}
             <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all flex flex-col hover:border-[#F97316] border-2 border-transparent">
+              {/* Header */}
               <div className="flex items-start justify-between mb-4">
-                <p className="text-[#6B7280] font-medium">Flood Risk</p>
+                <p className="text-[#374151] font-medium">Flood Risk</p>
                 <div className="p-2 bg-teal-50 rounded-lg">
                   <Shield className="w-5 h-5 text-teal-600" />
                 </div>
               </div>
-              <div className="space-y-3 flex-1">
+
+              {/* KPI + subtitle */}
+              <div className="mb-3">
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-[#6B7280]">Buildings at risk</span>
-                    <span className="text-sm font-medium text-teal-600">5 buildings</span>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between text-xs">
-                      <span>Low</span>
-                      <span className="text-[#1A1A1A]">7 buildings</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span>Medium</span>
-                      <span className="text-[#1A1A1A]">3 buildings</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span>High</span>
-                      <span className="text-[#1A1A1A]">2 buildings</span>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-[#6B7280]">Buildings at High risk</span>
+                    <span className="text-lg font-semibold text-red-600">2 / 12</span>
                     </div>
                   </div>
-                </div>
-                <div className="pt-2 border-t border-gray-200 mt-auto">
-                  <p className="text-xs text-[#6B7280] italic">
-                    Integrate climate resilience into next retrofit plan.
-                  </p>
-                </div>
               </div>
+
+              {/* Stacked bar showing risk distribution */}
+              <div className="w-full bg-gray-200 rounded-full h-3 mb-2 flex">
+                <div className="bg-green-600 h-3 rounded-l-full" style={{ width: '60%' }}></div>
+                <div className="bg-orange-500 h-3" style={{ width: '25%' }}></div>
+                <div className="bg-red-500 h-3 rounded-r-full" style={{ width: '15%' }}></div>
+              </div>
+
+              {/* Labels below bar */}
+              <div className="flex justify-between text-[10px] text-gray-500 mb-2">
+                <span>Low (7)</span>
+                <span>Medium (3)</span>
+                <span>High (2)</span>
+              </div>
+
+              <p className="text-xs text-[#6B7280] italic mt-auto">
+                See how to integrate flood resilience into next retrofit plan.
+              </p>
             </div>
 
-            {/* Overheating Risk Card - Full Width */}
+            {/* Overheating Risk Card */}
             <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all flex flex-col hover:border-[#F97316] border-2 border-transparent">
+              {/* Header */}
               <div className="flex items-start justify-between mb-4">
-                <p className="text-[#6B7280] font-medium">Overheating Risk</p>
+                <p className="text-[#374151] font-medium">Overheating Risk</p>
                 <div className="p-2 bg-orange-50 rounded-lg">
-                  <Shield className="w-5 h-5 text-orange-600" />
+                  <Sun className="w-5 h-5 text-orange-600" />
                 </div>
               </div>
-              <div className="space-y-3 flex-1">
+
+              {/* KPI + subtitle */}
+              <div className="mb-3">
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-[#6B7280]">Buildings at risk</span>
-                    <span className="text-sm font-medium text-orange-600">4 buildings</span>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between text-xs">
-                      <span>Low</span>
-                      <span className="text-[#1A1A1A]">8 buildings</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span>Medium</span>
-                      <span className="text-[#1A1A1A]">2 buildings</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span>High</span>
-                      <span className="text-[#1A1A1A]">2 buildings</span>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-[#6B7280]">Buildings at High risk:</span>
+                    <span className="text-lg font-semibold text-red-600">4 / 12</span>
                     </div>
                   </div>
-                </div>
-                <div className="pt-2 border-t border-gray-200 mt-auto">
-                  <p className="text-xs text-[#6B7280] italic">
-                    Integrate climate resilience into next retrofit plan.
-                  </p>
-                </div>
               </div>
+
+              
+
+
+              {/* Stacked bar */}
+              <div className="w-full bg-gray-200 rounded-full h-3 mb-2 flex">
+                <div className="bg-green-600 h-3 rounded-l-full" style={{ width: '45%' }}></div>
+                <div className="bg-orange-500 h-3" style={{ width: '20%' }}></div>
+                <div className="bg-red-500 h-3 rounded-r-full" style={{ width: '35%' }}></div>
+              </div>
+
+              {/* Labels */}
+              <div className="flex justify-between text-[10px] text-gray-500 mb-2">
+                <span>Low (5)</span>
+                <span>Medium (2)</span>
+                <span>High (4)</span>
+              </div>
+
+              <p className="text-xs text-[#6B7280] italic mt-auto">
+                See how to integrate overheating resilience into next retrofit plan.
+              </p>
             </div>
           </div>
         </div>
