@@ -1,6 +1,6 @@
 import React from 'react';
 import { PoundSterling, Zap, Leaf } from 'lucide-react';
-import PortfolioPerformanceChart from '../PortfolioPerformanceChart';
+import PortfolioPerformanceChart from './PortfolioPerformanceChart';
 
 export default function PortfolioRetrofitOpportunities() {
   return (
