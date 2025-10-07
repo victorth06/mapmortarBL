@@ -105,6 +105,27 @@ function ConfidenceBar({ high, medium, low, total }: ConfidenceBarProps) {
 }
 
 function MiniChart({ icon: Icon, label, value, iconColor, iconBgColor, segments, total }: MiniChartProps) {
+  // Determine badge color based on label
+  const getBadgeColor = (label: string, value: string) => {
+    if (label.includes("EPC")) {
+      const epcGrade = value.charAt(0);
+      switch (epcGrade) {
+        case 'A': return { backgroundColor: '#dcfce7', color: '#166534' }; // green-100, green-800
+        case 'B': return { backgroundColor: '#d1fae5', color: '#065f46' }; // emerald-100, emerald-800
+        case 'C': return { backgroundColor: '#fef3c7', color: '#92400e' }; // yellow-100, yellow-800
+        case 'D': return { backgroundColor: '#fed7aa', color: '#9a3412' }; // orange-100, orange-800
+        case 'E': return { backgroundColor: '#fee2e2', color: '#991b1b' }; // red-100, red-800
+        case 'F': return { backgroundColor: '#fee2e2', color: '#991b1b' }; // red-100, red-800
+        case 'G': return { backgroundColor: '#fee2e2', color: '#991b1b' }; // red-100, red-800
+        default: return { backgroundColor: '#f3f4f6', color: '#374151' }; // gray-100, gray-800
+      }
+    }
+    if (label.includes("Confidence")) {
+      return { backgroundColor: '#dcfce7', color: '#166534' }; // green-100, green-800
+    }
+    return { backgroundColor: '#f3f4f6', color: '#374151' }; // gray-100, gray-800
+  };
+
   return (
     <div className="p-4 bg-white rounded-lg border border-gray-200">
       {/* Top Section: Icon + Label + Value */}
@@ -115,33 +136,74 @@ function MiniChart({ icon: Icon, label, value, iconColor, iconBgColor, segments,
           </div>
           <p className="text-xs text-[#6B7280]">{label}</p>
         </div>
-        <p className="text-[#1A1A1A] font-bold text-sm">{value}</p>
+        <Badge 
+          variant="secondary" 
+          className="px-2 py-1 rounded-full text-xs font-medium"
+          style={getBadgeColor(label, value)}
+        >
+          {value}
+        </Badge>
       </div>
       
       {/* Bottom Section: Visual Bar + Legend */}
       <div className="space-y-2">
         {/* Visual Bar */}
         <div className="flex h-2 bg-gray-200 rounded-full overflow-hidden">
-          {segments.map((segment, index) => {
+          {segments.filter(segment => segment.count > 0).map((segment, index) => {
             const percentage = (segment.count / total) * 100;
+            // Define colors explicitly
+            const getSegmentColor = (label: string) => {
+              switch (label) {
+                case 'A': return '#10b981'; // green-500
+                case 'B': return '#059669'; // emerald-600
+                case 'C': return '#eab308'; // yellow-500
+                case 'D': return '#f97316'; // orange-500
+                case 'E': return '#ef4444'; // red-500
+                case 'High': return '#10b981'; // green-500
+                case 'Medium': return '#f59e0b'; // amber-500
+                case 'Low': return '#ef4444'; // red-500
+                default: return '#6b7280'; // gray-500
+              }
+            };
             return (
               <div 
                 key={index}
-                className={`${segment.bgColor} h-full transition-all duration-300`}
-                style={{ width: `${percentage}%` }}
+                className="h-full transition-all duration-300"
+                style={{ 
+                  width: `${percentage}%`,
+                  backgroundColor: getSegmentColor(segment.label)
+                }}
               />
             );
           })}
         </div>
         
         {/* Legend */}
-        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[8px] text-[#6B7280]">
-          {segments.map((segment, index) => (
-            <div key={index} className="flex items-center gap-1">
-              <div className={`w-1.5 h-1.5 ${segment.bgColor} rounded-full`}></div>
-              <span>{segment.label} ({segment.count})</span>
-            </div>
-          ))}
+        <div className="flex flex-wrap gap-x-1 gap-y-0.5 text-[10px] text-[#6B7280]">
+          {segments.map((segment, index) => {
+            const getSegmentColor = (label: string) => {
+              switch (label) {
+                case 'A': return '#10b981'; // green-500
+                case 'B': return '#059669'; // emerald-600
+                case 'C': return '#eab308'; // yellow-500
+                case 'D': return '#f97316'; // orange-500
+                case 'E': return '#ef4444'; // red-500
+                case 'High': return '#10b981'; // green-500
+                case 'Medium': return '#f59e0b'; // amber-500
+                case 'Low': return '#ef4444'; // red-500
+                default: return '#6b7280'; // gray-500
+              }
+            };
+            return (
+              <div key={index} className="flex items-center gap-0.5">
+                <div 
+                  className="w-0.5 h-0.5 rounded-full"
+                  style={{ backgroundColor: getSegmentColor(segment.label) }}
+                ></div>
+                <span>{segment.label} ({segment.count})</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -174,6 +236,25 @@ function KPICard({ title, icon: Icon, iconColor, iconBgColor, children }: KPICar
 export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboardProps) {
   return (
     <main className="max-w-7xl mx-auto px-6 py-8 bg-[#FAFAFA]">
+      {/* Global Portfolio Filters */}
+      <div className="mb-6 pb-4 border-b border-gray-200">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm text-[#6B7280] mr-2">Filter by:</span>
+          <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer">
+            All Locations
+          </Badge>
+          <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer">
+            Office
+          </Badge>
+          <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer">
+            Active
+          </Badge>
+          <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer">
+            EPC C+
+          </Badge>
+        </div>
+      </div>
+
       {/* 1️⃣ Portfolio Status Overview */}
       <div className="mb-8 bg-gray-50 rounded-lg border border-gray-200 p-6">
         {/* Header with Actions */}
@@ -200,10 +281,10 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
           </div>
         </div>
 
-        {/* Grid layout — 3 columns wide, 2 rows tall */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+        {/* Grid layout — 3 columns wide, 3 rows tall */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6 items-stretch">
         {/* Left 2 columns: stacked KPI + analytic cards */}
-        <div className="lg:col-span-2 flex flex-col gap-3">
+        <div className="lg:col-span-2 flex flex-col gap-2 h-full">
             {/* Row 1: Top KPIs (3 cards) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
             <InfoCard
@@ -233,10 +314,10 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <MiniChart
                 icon={Zap}
-                label="Avg EPC Rating"
+                label="EPC Distribution"
                 value="C (65)"
-                iconColor="text-amber-600"
-                iconBgColor="bg-amber-100"
+                iconColor="text-green-600"
+                iconBgColor="bg-green-100"
                 segments={[
                 { label: "A", count: 1, color: "text-green-700", bgColor: "bg-green-500" },
                 { label: "B", count: 3, color: "text-emerald-700", bgColor: "bg-emerald-500" },
@@ -250,7 +331,7 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
             <MiniChart
                 icon={CheckCircle}
                 label="Data Confidence"
-                value="89%"
+                value="79%"
                 iconColor="text-green-600"
                 iconBgColor="bg-green-100"
                 segments={[
@@ -261,56 +342,36 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                 total={12}
             />
             </div>
+
+            {/* Row 3: Portfolio Metadata and CTA */}
+            <div className="bg-white border border-gray-200 rounded-lg p-5 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 h-full">
+              <div className="flex flex-col gap-1">
+                <p className="text-xs text-[#6B7280]">
+                  Multi-let office portfolio · Mixed EPC ratings (B to E) · Built 1992-2015, various refurbishments
+                </p>
+                <p className="text-xs text-[#6B7280]">
+                  Portfolio created: 12 Jul 2024 · Last updated: 03 Oct 2025
+                </p>
+              </div>
+              <Button variant="outline" className="border-orange-200 bg-orange-50 hover:bg-orange-100 text-[#F97316] hover:text-orange-700 self-end sm:self-auto">
+                <Plus className="w-4 h-4 mr-2" />
+                Add Property
+              </Button>
+            </div>
         </div>
 
-        {/* Right column: Map placeholder (spans both rows) */}
-        <div className="lg:row-span-2">
+        {/* Right column: Map (spans all 3 rows) */}
+        <div className="lg:row-span-3">
             <div className="bg-white border border-gray-200 rounded-lg p-4 h-full flex flex-col">
-            <h4 className="text-sm font-medium text-[#1A1A1A] mb-3">Portfolio Locations</h4>
-            <div className="flex-1 bg-black rounded-md flex items-center justify-center min-h-[120px]">
-                <span className="text-white text-lg font-medium">map</span>
+            <div className="rounded-md overflow-hidden" style={{ height: '280px' }}>
+                <img 
+                    src="/img/Frame 1000003340.png" 
+                    alt="Portfolio Locations Map" 
+                    className="w-full h-full object-cover rounded-md"
+                />
             </div>
             </div>
         </div>
-        </div>
-
-
-        {/* Notes and Confidence Score */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-3 border-t border-gray-200">
-          <p className="text-xs text-[#6B7280]">
-            Multi-let office portfolio · Mixed EPC ratings (B to E) · Built 1992-2015, various refurbishments
-          </p>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-[#6B7280]">Confidence:</span>
-            <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100">
-              89%
-            </Badge>
-          </div>
-        </div>
-
-        {/* Full Width CTA Button */}
-        <div className="mt-6">
-          <Button className="w-full bg-[#F97316] hover:bg-orange-600 text-white rounded-full px-6">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Property
-          </Button>
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-200">
-          <span className="text-sm text-[#6B7280] mr-2">Filter by:</span>
-          <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer">
-            All Locations
-          </Badge>
-          <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer">
-            Office
-          </Badge>
-          <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer">
-            Active
-          </Badge>
-          <Badge variant="secondary" className="bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer">
-            EPC C+
-          </Badge>
         </div>
       </div>
 
