@@ -13,18 +13,10 @@ import {
 
 // --- Mock data for energy performance ---
 const energyData = [
-  { building: '135 Bishopsgate', energyIntensity: 145, carbonIntensity: 16, epc: 'D', area: 82000 },
-  { building: '25 Old Broad St', energyIntensity: 128, carbonIntensity: 13, epc: 'C', area: 76000 },
-  { building: '40 Leadenhall', energyIntensity: 95, carbonIntensity: 9, epc: 'B', area: 90000 },
-  { building: '99 Fenchurch', energyIntensity: 118, carbonIntensity: 11, epc: 'B', area: 70000 },
-  { building: '10 Fenchurch Ave', energyIntensity: 165, carbonIntensity: 18, epc: 'E', area: 85000 },
-  { building: '70 Gracechurch St', energyIntensity: 142, carbonIntensity: 15, epc: 'D', area: 78000 },
-  { building: '1 Broadgate', energyIntensity: 108, carbonIntensity: 10, epc: 'C', area: 92000 },
-  { building: 'Broadgate Tower', energyIntensity: 155, carbonIntensity: 17, epc: 'E', area: 88000 },
-  { building: 'Canary Wharf 3', energyIntensity: 178, carbonIntensity: 20, epc: 'F', area: 95000 },
-  { building: 'Victoria House', energyIntensity: 132, carbonIntensity: 14, epc: 'D', area: 72000 },
-  { building: 'Paddington Central', energyIntensity: 88, carbonIntensity: 8, epc: 'A', area: 86000 },
-  { building: 'London Wall Place', energyIntensity: 125, carbonIntensity: 12, epc: 'C', area: 74000 },
+  { building: '135 Bishopsgate', energyIntensity: 145, carbonIntensity: 16, epc: 'D', area: 43390 },
+  { building: '184-192 Drummond Street', energyIntensity: 128, carbonIntensity: 13, epc: 'C', area: 8500 },
+  { building: 'Broadwalk House', energyIntensity: 118, carbonIntensity: 11, epc: 'C', area: 15200 },
+  { building: 'BAE Systems Digital Intelligence', energyIntensity: 142, carbonIntensity: 15, epc: 'D', area: 12800 },
 ];
 
 // --- EPC colour mapping ---
@@ -115,7 +107,7 @@ export default function EnergyBenchmarkChart({
             name="Energy Intensity"
             unit="kWh/m²"
             stroke="#6B7280"
-            domain={[0, 200]}
+            domain={[100, 150]}
             tick={{ fontSize: 10 }}
             tickLine={{ stroke: '#D1D5DB' }}
             axisLine={{ stroke: '#D1D5DB' }}
@@ -127,7 +119,7 @@ export default function EnergyBenchmarkChart({
             name="Carbon Intensity"
             unit="kgCO₂/m²"
             stroke="#6B7280"
-            domain={[0, 25]}
+            domain={[5, 20]}
             tick={{ fontSize: 10 }}
             tickLine={{ stroke: '#D1D5DB' }}
             axisLine={{ stroke: '#D1D5DB' }}

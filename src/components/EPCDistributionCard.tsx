@@ -1,11 +1,11 @@
+import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { BarChart3 } from 'lucide-react';
 
 export function EPCDistributionCard() {
   const epcData = [
-    { name: 'A-B (2030+)', value: 15, units: 6, color: '#22C55E' },
-    { name: 'C (2027+)', value: 35, units: 14, color: '#F59E0B' },
-    { name: 'D-G (<E)', value: 50, units: 20, color: '#EF4444' },
+    { name: 'C (2027+)', value: 50, units: 2, color: '#F59E0B' },
+    { name: 'D (2025+)', value: 50, units: 2, color: '#F97316' },
   ];
 
   const totalUnits = epcData.reduce((sum, item) => sum + item.units, 0);

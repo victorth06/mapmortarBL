@@ -14,16 +14,10 @@ import {
 
 // --- Mock data ---
 const performanceData = [
-  { building: "135 Bishopsgate", payback: 4.2, co2Saving: 310000, investment: 2100000, epc: "C" },
-  { building: "25 Old Broad St", payback: 6.5, co2Saving: 240000, investment: 1800000, epc: "D" },
-  { building: "40 Leadenhall", payback: 8.3, co2Saving: 190000, investment: 1500000, epc: "E" },
-  { building: "10 Fenchurch Ave", payback: 3.8, co2Saving: 400000, investment: 2600000, epc: "B" },
-  { building: "70 Gracechurch St", payback: 10.2, co2Saving: 280000, investment: 3200000, epc: "D" },
-  { building: "1 Broadgate", payback: 5.0, co2Saving: 350000, investment: 2300000, epc: "C" },
-  { building: "Broadgate Tower", payback: 11.0, co2Saving: 220000, investment: 2800000, epc: "D" },
-  { building: "Canary Wharf 3", payback: 13.0, co2Saving: 180000, investment: 2000000, epc: "E" },
-  { building: "Victoria House", payback: 7.0, co2Saving: 260000, investment: 1900000, epc: "D" },
-  { building: "Paddington Central", payback: 2.5, co2Saving: 450000, investment: 3000000, epc: "B" },
+  { building: "135 Bishopsgate", payback: 8.0, co2Saving: 280000, investment: 2400000, epc: "D" },
+  { building: "184-192 Drummond Street", payback: 12.0, co2Saving: 180000, investment: 2200000, epc: "C" },
+  { building: "Broadwalk House", payback: 10.0, co2Saving: 220000, investment: 2200000, epc: "C" },
+  { building: "BAE Systems Digital Intelligence", payback: 9.0, co2Saving: 200000, investment: 1800000, epc: "D" },
 ];
 
 // --- EPC colour mapping ---
@@ -120,7 +114,7 @@ export default function PortfolioPerformanceChart() {
             dataKey="co2Saving"
             name="CO₂ Saving"
             stroke="#6B7280"
-            domain={[0, 500000]}
+            domain={[0, 300000]}
             label={{ value: "CO₂ Saving (tCO₂e)", angle: -90, position: "insideLeft", offset: -10 }}
             tick={{ fontSize: 12 }}
           />

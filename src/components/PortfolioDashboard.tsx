@@ -290,21 +290,21 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
             <InfoCard
                 icon={Building2}
                 label="Total Buildings"
-                value="12"
+                value="4"
                 iconColor="text-blue-600"
                 iconBgColor="bg-blue-100"
             />
             <InfoCard
                 icon={MapPin}
                 label="Total GIA"
-                value="245,670 m²"
+                value="79,890 m²"
                 iconColor="text-green-600"
                 iconBgColor="bg-green-100"
             />
             <InfoCard
                 icon={PoundSterling}
                 label="Total Rent Roll"
-                value="£8.2M"
+                value="£2.9M"
                 iconColor="text-purple-600"
                 iconBgColor="bg-purple-100"
             />
@@ -315,31 +315,28 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
             <MiniChart
                 icon={Zap}
                 label="EPC Distribution"
-                value="C (65)"
+                value="C (50)"
                 iconColor="text-green-600"
                 iconBgColor="bg-green-100"
                 segments={[
-                { label: "A", count: 1, color: "text-green-700", bgColor: "bg-green-500" },
-                { label: "B", count: 3, color: "text-emerald-700", bgColor: "bg-emerald-500" },
-                { label: "C", count: 5, color: "text-yellow-700", bgColor: "bg-yellow-500" },
+                { label: "C", count: 2, color: "text-yellow-700", bgColor: "bg-yellow-500" },
                 { label: "D", count: 2, color: "text-orange-700", bgColor: "bg-orange-500" },
-                { label: "E", count: 1, color: "text-red-700", bgColor: "bg-red-500" },
                 ]}
-                total={12}
+                total={4}
             />
 
             <MiniChart
                 icon={CheckCircle}
                 label="Data Confidence"
-                value="79%"
+                value="75%"
                 iconColor="text-green-600"
                 iconBgColor="bg-green-100"
                 segments={[
-                { label: "High", count: 8, color: "text-green-700", bgColor: "bg-green-500" },
-                { label: "Medium", count: 3, color: "text-amber-700", bgColor: "bg-amber-500" },
-                { label: "Low", count: 1, color: "text-red-700", bgColor: "bg-red-500" },
+                { label: "High", count: 3, color: "text-green-700", bgColor: "bg-green-500" },
+                { label: "Medium", count: 1, color: "text-amber-700", bgColor: "bg-amber-500" },
+                { label: "Low", count: 0, color: "text-red-700", bgColor: "bg-red-500" },
                 ]}
-                total={12}
+                total={4}
             />
             </div>
 
@@ -428,7 +425,7 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                       <span className="text-sm text-red-700">Buildings to upgrade</span>
                       <span className="text-sm">🏢</span>
                     </div>
-                    <p className="text-xl font-semibold" style={{ color: '#dc2626' }}>12 / 25</p>
+                    <p className="text-xl font-semibold" style={{ color: '#dc2626' }}>2 / 4</p>
                   </div>
                 </div>
                 
@@ -603,10 +600,10 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-[#6B7280]">Above EPC C (MEES 2027)</span>
-                    <span className="text-sm font-medium text-amber-600">58%</span>
+                    <span className="text-sm font-medium text-amber-600">50%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-amber-500 h-2 rounded-full transition-all duration-500" style={{ width: '58%' }}></div>
+                    <div className="bg-amber-500 h-2 rounded-full transition-all duration-500" style={{ width: '50%' }}></div>
                   </div>
                 </div>
                 
@@ -614,10 +611,10 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-[#6B7280]">Above EPC B (MEES 2030)</span>
-                    <span className="text-sm font-medium text-orange-600">42%</span>
+                    <span className="text-sm font-medium text-orange-600">50%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-orange-500 h-2 rounded-full transition-all duration-500" style={{ width: '42%' }}></div>
+                    <div className="bg-orange-500 h-2 rounded-full transition-all duration-500" style={{ width: '50%' }}></div>
                   </div>
                 </div>
                 
@@ -628,10 +625,10 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-[#6B7280]">Stranded before 2050</span>
-                    <span className="text-sm font-medium text-red-600">18%</span>
+                    <span className="text-sm font-medium text-red-600">25%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-red-500 h-2 rounded-full transition-all duration-500" style={{ width: '18%' }}></div>
+                    <div className="bg-red-500 h-2 rounded-full transition-all duration-500" style={{ width: '25%' }}></div>
                   </div>
                 </div>
                 
@@ -682,23 +679,23 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs text-[#6B7280]">Buildings at High risk</span>
-                    <span className="text-lg font-semibold text-red-600">2 / 12</span>
+                    <span className="text-lg font-semibold text-red-600">1 / 4</span>
                     </div>
                   </div>
               </div>
 
               {/* Stacked bar showing risk distribution */}
               <div className="w-full bg-gray-200 rounded-full h-3 mb-2 flex">
-                <div className="bg-green-600 h-3 rounded-l-full" style={{ width: '60%' }}></div>
+                <div className="bg-green-600 h-3 rounded-l-full" style={{ width: '50%' }}></div>
                 <div className="bg-orange-500 h-3" style={{ width: '25%' }}></div>
-                <div className="bg-red-500 h-3 rounded-r-full" style={{ width: '15%' }}></div>
+                <div className="bg-red-500 h-3 rounded-r-full" style={{ width: '25%' }}></div>
               </div>
 
               {/* Labels below bar */}
               <div className="flex justify-between text-[10px] text-gray-500 mb-2">
-                <span>Low (7)</span>
-                <span>Medium (3)</span>
-                <span>High (2)</span>
+                <span>Low (2)</span>
+                <span>Medium (1)</span>
+                <span>High (1)</span>
               </div>
 
               <p className="text-xs text-[#6B7280] italic mt-auto">
@@ -721,26 +718,23 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs text-[#6B7280]">Buildings at High risk:</span>
-                    <span className="text-lg font-semibold text-red-600">4 / 12</span>
+                    <span className="text-lg font-semibold text-red-600">1 / 4</span>
                     </div>
                   </div>
               </div>
 
-              
-
-
               {/* Stacked bar */}
               <div className="w-full bg-gray-200 rounded-full h-3 mb-2 flex">
-                <div className="bg-green-600 h-3 rounded-l-full" style={{ width: '45%' }}></div>
-                <div className="bg-orange-500 h-3" style={{ width: '20%' }}></div>
-                <div className="bg-red-500 h-3 rounded-r-full" style={{ width: '35%' }}></div>
+                <div className="bg-green-600 h-3 rounded-l-full" style={{ width: '50%' }}></div>
+                <div className="bg-orange-500 h-3" style={{ width: '25%' }}></div>
+                <div className="bg-red-500 h-3 rounded-r-full" style={{ width: '25%' }}></div>
               </div>
 
               {/* Labels */}
               <div className="flex justify-between text-[10px] text-gray-500 mb-2">
-                <span>Low (5)</span>
-                <span>Medium (2)</span>
-                <span>High (4)</span>
+                <span>Low (2)</span>
+                <span>Medium (1)</span>
+                <span>High (1)</span>
               </div>
 
               <p className="text-xs text-[#6B7280] italic mt-auto">
@@ -801,48 +795,37 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                   priority: "high",
                 },
                 {
-                  name: "Broadgate Tower",
-                  location: "London EC2A 2EW",
+                  name: "184-192 Drummond Street",
+                  location: "London NW1 3HP",
                   epc: "C",
-                  gia: "52,000 sqm",
+                  gia: "8,500 sqm",
                   pathway: "Net Zero 2050",
-                  payback: "11y",
-                  rentAtRisk: "£950k",
-                  carbon: "-58%",
+                  payback: "12y",
+                  rentAtRisk: "£420k",
+                  carbon: "-45%",
                   priority: "medium",
                 },
                 {
-                  name: "Canary Wharf 3",
-                  location: "London E14 5AB",
+                  name: "Broadwalk House",
+                  location: "London EC2A 2DA",
                   epc: "C",
-                  gia: "25,000 sqm",
+                  gia: "15,200 sqm",
                   pathway: "Net Zero 2050",
-                  payback: "13y",
-                  rentAtRisk: "£500k",
-                  carbon: "-62%",
+                  payback: "10y",
+                  rentAtRisk: "£680k",
+                  carbon: "-52%",
                   priority: "medium",
                 },
                 {
-                  name: "Victoria House",
-                  location: "London SW1E 5NA",
+                  name: "BAE Systems Digital Intelligence",
+                  location: "Guildford GU2 7YJ",
                   epc: "D",
-                  gia: "8,000 sqm",
+                  gia: "12,800 sqm",
                   pathway: "EPC C 2027",
-                  payback: "7y",
-                  rentAtRisk: "£720k",
-                  carbon: "-40%",
+                  payback: "9y",
+                  rentAtRisk: "£580k",
+                  carbon: "-38%",
                   priority: "high",
-                },
-                {
-                  name: "Paddington Central",
-                  location: "London W2 1AS",
-                  epc: "B",
-                  gia: "12,000 sqm",
-                  pathway: "BAU",
-                  payback: "N/A",
-                  rentAtRisk: "£0",
-                  carbon: "-5%",
-                  priority: "low",
                 },
               ].map((b) => (
                 <tr
