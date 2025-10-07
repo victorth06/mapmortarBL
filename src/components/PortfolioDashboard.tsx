@@ -405,12 +405,12 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                   </div>
                   
                   {/* Top-Right: Annual Savings */}
-                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                  <div className="bg-green-50 rounded-lg p-3 border border-green-100">
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs text-gray-500">Annual Savings</span>
                       <span className="text-sm">💸</span>
                     </div>
-                    <p className="text-lg font-semibold text-[#1A1A1A]">£1.9M/yr</p>
+                    <p className="text-xl font-semibold" style={{ color: '#15803d' }}>£1.9M/yr</p>
                   </div>
                   
                   {/* Bottom-Left: Average Payback */}
@@ -425,16 +425,16 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                   {/* Bottom-Right: Buildings Upgraded */}
                   <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs text-gray-500">Buildings to upgrade</span>
+                      <span className="text-sm text-red-700">Buildings to upgrade</span>
                       <span className="text-sm">🏢</span>
                     </div>
-                    <p className="text-lg font-semibold text-[#1A1A1A]">12 / 25</p>
+                    <p className="text-xl font-semibold" style={{ color: '#dc2626' }}>12 / 25</p>
                   </div>
                 </div>
                 
                 <div className="pt-3 border-t border-gray-200 mt-auto">
-                  <p className="text-xs text-[#6B7280]">
-                    Invest £12.4M to bring portfolio to 100% EPC C+ and extend compliance by 13 years.
+                  <p className="text-sm text-[#6B7280]">
+                    Invest <strong>£12.4M</strong> to bring portfolio to <strong>100% EPC C+</strong> and extend compliance by <strong>13 years</strong>.
                   </p>
                 </div>
               </div>
@@ -457,7 +457,7 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                       <span className="text-xs text-[#6B7280]">Energy Cost Reduction</span>
                       <span className="text-lg">💡</span>
                     </div>
-                    <p className="text-lg font-semibold text-[#1A1A1A">~£850k/year</p>
+                    <p className="text-xl font-semibold" style={{ color: '#15803d' }}>~£850k/year</p>
                   </div>
                   
                   {/* CO₂ Reduction (Right) */}
@@ -466,7 +466,7 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                       <span className="text-xs text-[#6B7280]">CO₂ Reduction</span>
                       <span className="text-lg">🌱</span>
                     </div>
-                    <p className="text-lg font-semibold text-[#1A1A1A">2,870 tCO₂e/year</p>
+                    <p className="text-xl font-semibold" style={{ color: '#15803d' }}>2,870 tCO₂e/year</p>
                   </div>
                 </div>
                 
@@ -506,8 +506,8 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
                 </div>
                 
                 <div className="pt-2 border-t border-gray-200 mt-auto">
-                  <p className="text-xs text-[#6B7280]">
-                    Retrofit extends portfolio compliance by +13 years.
+                  <p className="text-sm text-[#6B7280]">
+                    Retrofit extends portfolio compliance by <strong>+13 years</strong>.
                   </p>
                 </div>
               </div>

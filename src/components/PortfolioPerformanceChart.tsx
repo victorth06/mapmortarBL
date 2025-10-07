@@ -78,9 +78,9 @@ const EPCLegend = () => {
     { label: "EPC E–F", color: "#F87171" },
   ];
   return (
-    <div className="flex flex-wrap justify-center gap-3 mt-3">
+    <div className="flex flex-wrap justify-center gap-4 mt-4 pt-2">
       {items.map((i) => (
-        <div key={i.label} className="flex items-center gap-1 text-xs text-[#6B7280]">
+        <div key={i.label} className="flex items-center gap-2 text-sm text-[#6B7280]">
           <span className="w-3 h-3 rounded-full" style={{ backgroundColor: i.color }}></span>
           {i.label}
         </div>
@@ -92,16 +92,18 @@ const EPCLegend = () => {
 // --- Main Chart ---
 export default function PortfolioPerformanceChart() {
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6 h-full">
-      <h3 className="text-lg font-semibold text-[#1A1A1A] mb-1">Portfolio Performance</h3>
-      <p className="text-sm text-gray-500 mb-4">
-        This chart shows potential CO₂ savings vs payback period.
-        <br />
-        Bubbles in the top-left are quick wins (high savings, low payback).
-      </p>
+    <div className="bg-white rounded-xl shadow-sm p-6 h-full flex flex-col">
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold text-[#1A1A1A] mb-2">Portfolio Performance</h3>
+        <p className="text-sm text-gray-500">
+          This chart shows potential CO₂ savings vs payback period.
+          <br />
+          Bubbles in the top-left are quick wins (high savings, low payback).
+        </p>
+      </div>
 
       <ResponsiveContainer width="100%" height={400}>
-        <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 50 }}>
+        <ScatterChart margin={{ top: 40, right: 40, bottom: 80, left: 80 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
           <XAxis
             type="number"
@@ -110,7 +112,8 @@ export default function PortfolioPerformanceChart() {
             unit="yrs"
             stroke="#6B7280"
             domain={[0, 15]}
-            label={{ value: "Payback (years)", position: "insideBottom", offset: -10 }}
+            label={{ value: "Payback (years)", position: "insideBottom", offset: -15 }}
+            tick={{ fontSize: 12 }}
           />
           <YAxis
             type="number"
@@ -118,13 +121,13 @@ export default function PortfolioPerformanceChart() {
             name="CO₂ Saving"
             stroke="#6B7280"
             domain={[0, 500000]}
-            label={{ value: "CO₂ Saving (tCO₂e)", angle: -90, position: "insideLeft" }}
+            label={{ value: "CO₂ Saving (tCO₂e)", angle: -90, position: "insideLeft", offset: -10 }}
+            tick={{ fontSize: 12 }}
           />
           <ZAxis dataKey="investment" range={[100, 1200]} name="Investment" unit="£" />
           <ChartTooltip cursor={{ strokeDasharray: "3 3" }} content={<CustomTooltip />} />
-          <Legend />
 
-          <Scatter name="Buildings" data={performanceData}>
+          <Scatter name="Buildings" data={performanceData} fillOpacity={0.85}>
             {performanceData.map((b, i) => (
               <Cell
                 key={`cell-${i}`}
