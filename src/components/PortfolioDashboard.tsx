@@ -155,18 +155,18 @@ interface KPICardProps {
 }
 
 function KPICard({ title, icon: Icon, iconColor, iconBgColor, children }: KPICardProps) {
-  return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col h-full">
-      <div className="flex items-center gap-3 mb-4">
-        <div className={`p-2 ${iconBgColor} rounded-lg`}>
-          <Icon className={`w-5 h-5 ${iconColor}`} />
+    return (
+      <div className="bg-white rounded-lg shadow-sm p-6 flex flex-col h-full border-2 border-transparent hover:border-[#F97316] hover:shadow-lg transition-all">
+        <div className="flex items-center gap-3 mb-4">
+          <div className={`p-2 ${iconBgColor} rounded-lg`}>
+            <Icon className={`w-5 h-5 ${iconColor}`} />
+          </div>
+          <h3 className="font-semibold text-[#1A1A1A]">{title}</h3>
         </div>
-        <h3 className="font-semibold text-[#1A1A1A]">{title}</h3>
+        {children}
       </div>
-      {children}
-    </div>
-  );
-}
+    );
+  }
 
 
 export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboardProps) {
@@ -466,111 +466,219 @@ export default function PortfolioDashboard({ onViewBuilding }: PortfolioDashboar
       {/* 3️⃣ Performance & Risk Overview */}
       <div className="mb-8">
         <h2 className="text-2xl font-semibold text-[#1A1A1A] mb-6">Performance & Risk Analysis</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <KPICard
-            title="Energy & Carbon Performance"
-            icon={Zap}
-            iconColor="text-blue-600"
-            iconBgColor="bg-blue-100"
-          >
-            <div className="space-y-4">
-              <div>
-                <p className="text-3xl font-bold text-[#1A1A1A]">67%</p>
-                <p className="text-sm text-[#6B7280]">below benchmark</p>
-              </div>
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-[#6B7280]">Progress to 100%</span>
-                  <span className="text-sm font-medium text-[#1A1A1A]">67%</span>
+        
+        {/* 1️⃣ Energy & Carbon Performance Section */}
+        <div className="mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Chart Card - Left */}
+            <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all hover:border-[#F97316] border-2 border-transparent">
+              <div className="flex items-start justify-between mb-4">
+                <p className="text-[#6B7280] font-medium">Building Energy Intensity vs Benchmark</p>
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <BarChart3 className="w-5 h-5 text-blue-600" />
                 </div>
-                <Progress value={67} className="h-2" />
               </div>
-              <div>
-                <p className="text-lg font-semibold text-[#1A1A1A]">121 kWh/m²</p>
-                <p className="text-sm text-[#6B7280]">Average intensity</p>
-              </div>
-              <div className="pt-2 border-t border-gray-200">
-                <p className="text-xs text-[#6B7280]">Top 3 highest intensity buildings</p>
-                <p className="text-sm text-[#1A1A1A]">135 Bishopsgate, 25 Old Broad St, 40 Leadenhall</p>
+              <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg border border-gray-100">
+                <p className="text-sm text-[#6B7280]">📊 Scatter Chart Placeholder</p>
               </div>
             </div>
-          </KPICard>
 
-          <KPICard
-            title="Transition Risk"
-            icon={AlertTriangle}
-            iconColor="text-amber-600"
-            iconBgColor="bg-amber-100"
-          >
-            <div className="space-y-4">
-              <div>
-                <p className="text-3xl font-bold text-[#1A1A1A]">42%</p>
-                <p className="text-sm text-[#6B7280]">below EPC C (MEES 2027)</p>
+            {/* Existing KPI Card - Right */}
+            <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all flex flex-col hover:border-[#F97316] border-2 border-transparent">
+              <div className="flex items-start justify-between mb-4">
+                <p className="text-[#6B7280] font-medium">Energy & Carbon Performance</p>
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <Zap className="w-5 h-5 text-blue-600" />
+                </div>
               </div>
-              <div>
-                <p className="text-2xl font-semibold text-[#1A1A1A]">33%</p>
-                <p className="text-sm text-[#6B7280]">stranded before 2030</p>
+              <div className="space-y-3 flex-1">
+                {/* Average intensity metrics */}
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-[#6B7280]">Average Energy Intensity</span>
+                    <span className="text-lg font-semibold text-blue-600">121 kWh/m²</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-[#6B7280]">Average Carbon Intensity</span>
+                    <span className="text-lg font-semibold text-green-600">11.0 kgCO₂/m²</span>
+                  </div>
+                </div>
+                
+                {/* Buildings above benchmark */}
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-[#6B7280]">Buildings above benchmark (REEB Good Practice)</span>
+                    <span className="text-sm font-medium text-red-600">68%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-red-500 h-2 rounded-full transition-all duration-500" style={{ width: '68%' }}></div>
+                  </div>
+                  <p className="text-xs text-[#6B7280] mt-1">Target: 0% above benchmark (100% compliant)</p>
+                </div>
+                
+                <div className="pt-2 border-t border-gray-200 mt-auto">
+                  <p className="text-xs text-[#6B7280] italic">
+                    Retrofit could cut intensity by up to 30%.
+                  </p>
+                </div>
               </div>
-              <div>
-                <div className="flex items-center justify-between text-xs text-[#6B7280] mb-2">
+            </div>
+          </div>
+        </div>
+
+        {/* 2️⃣ Transition Risk Section */}
+        <div className="mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Existing KPI Card */}
+            <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all flex flex-col hover:border-[#F97316] border-2 border-transparent">
+              <div className="flex items-start justify-between mb-4">
+                <p className="text-[#6B7280] font-medium">Transition Risk</p>
+                <div className="p-2 bg-amber-50 rounded-lg">
+                  <AlertTriangle className="w-5 h-5 text-amber-600" />
+                </div>
+              </div>
+              <div className="space-y-3 flex-1">
+                {/* EPC C compliance */}
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-[#6B7280]">Above EPC C (MEES 2027)</span>
+                    <span className="text-sm font-medium text-amber-600">58%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-amber-500 h-2 rounded-full transition-all duration-500" style={{ width: '58%' }}></div>
+                  </div>
+                </div>
+                
+                {/* EPC B compliance */}
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-[#6B7280]">Above EPC B (MEES 2030)</span>
+                    <span className="text-sm font-medium text-orange-600">42%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-orange-500 h-2 rounded-full transition-all duration-500" style={{ width: '42%' }}></div>
+                  </div>
+                </div>
+                
+                {/* Stranded risk */}
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-[#6B7280]">Stranded before 2050</span>
+                    <span className="text-sm font-medium text-red-600">18%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-red-500 h-2 rounded-full transition-all duration-500" style={{ width: '18%' }}></div>
+                  </div>
+                </div>
+                
+                {/* Timeline indicator */}
+                <div className="flex items-center justify-between text-xs text-[#6B7280] px-1">
                   <span>Today</span>
                   <span>2027</span>
                   <span>2030</span>
+                  <span>2050</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-amber-500 h-2 rounded-full" style={{ width: '33%' }}></div>
+                
+                <div className="pt-2 border-t border-gray-200 mt-auto">
+                  <p className="text-xs text-[#6B7280] italic">
+                    Retrofit of 2027–2030 stranding assets could extend portfolio compliance to 2036.
+                  </p>
                 </div>
-              </div>
-              <div className="pt-2 border-t border-gray-200">
-                <p className="text-xs text-[#6B7280]">Top 3 at risk</p>
-                <p className="text-sm text-[#1A1A1A]">135 Bishopsgate, 25 Old Broad St, 40 Leadenhall</p>
               </div>
             </div>
-          </KPICard>
 
-          <KPICard
-            title="Physical Risk"
-            icon={Shield}
-            iconColor="text-teal-600"
-            iconBgColor="bg-teal-100"
-          >
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-2xl font-bold text-[#1A1A1A]">3</p>
-                  <p className="text-sm text-[#6B7280]">Flood risk</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-[#1A1A1A]">2</p>
-                  <p className="text-sm text-[#6B7280]">Overheating risk</p>
+            {/* Chart Card Placeholder */}
+            <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all hover:border-[#F97316] border-2 border-transparent">
+              <div className="flex items-start justify-between mb-4">
+                <p className="text-[#6B7280] font-medium">EPC Compliance Distribution</p>
+                <div className="p-2 bg-amber-50 rounded-lg">
+                  <BarChart3 className="w-5 h-5 text-amber-600" />
                 </div>
               </div>
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-[#6B7280]">Risk distribution</span>
-                </div>
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <span>Low</span>
-                    <span className="text-[#1A1A1A]">7 buildings</span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span>Medium</span>
-                    <span className="text-[#1A1A1A]">3 buildings</span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span>High</span>
-                    <span className="text-[#1A1A1A]">2 buildings</span>
-                  </div>
-                </div>
-              </div>
-              <div className="pt-2 border-t border-gray-200">
-                <Button variant="ghost" size="sm" className="text-teal-600 hover:text-teal-700 hover:bg-teal-50 p-0 h-auto">
-                  View assumptions →
-                </Button>
+              <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg border border-gray-100">
+                <p className="text-sm text-[#6B7280]">📊 EPC Distribution Chart Placeholder</p>
               </div>
             </div>
-          </KPICard>
+          </div>
+        </div>
+
+        {/* 3️⃣ Physical Risk Section */}
+        <div className="mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Flood Risk Card - Full Width */}
+            <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all flex flex-col hover:border-[#F97316] border-2 border-transparent">
+              <div className="flex items-start justify-between mb-4">
+                <p className="text-[#6B7280] font-medium">Flood Risk</p>
+                <div className="p-2 bg-teal-50 rounded-lg">
+                  <Shield className="w-5 h-5 text-teal-600" />
+                </div>
+              </div>
+              <div className="space-y-3 flex-1">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-[#6B7280]">Buildings at risk</span>
+                    <span className="text-sm font-medium text-teal-600">5 buildings</span>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span>Low</span>
+                      <span className="text-[#1A1A1A]">7 buildings</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span>Medium</span>
+                      <span className="text-[#1A1A1A]">3 buildings</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span>High</span>
+                      <span className="text-[#1A1A1A]">2 buildings</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="pt-2 border-t border-gray-200 mt-auto">
+                  <p className="text-xs text-[#6B7280] italic">
+                    Integrate climate resilience into next retrofit plan.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Overheating Risk Card - Full Width */}
+            <div className="bg-white rounded-lg shadow-sm p-4 hover:shadow-lg transition-all flex flex-col hover:border-[#F97316] border-2 border-transparent">
+              <div className="flex items-start justify-between mb-4">
+                <p className="text-[#6B7280] font-medium">Overheating Risk</p>
+                <div className="p-2 bg-orange-50 rounded-lg">
+                  <Shield className="w-5 h-5 text-orange-600" />
+                </div>
+              </div>
+              <div className="space-y-3 flex-1">
+                <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-[#6B7280]">Buildings at risk</span>
+                    <span className="text-sm font-medium text-orange-600">4 buildings</span>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span>Low</span>
+                      <span className="text-[#1A1A1A]">8 buildings</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span>Medium</span>
+                      <span className="text-[#1A1A1A]">2 buildings</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span>High</span>
+                      <span className="text-[#1A1A1A]">2 buildings</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="pt-2 border-t border-gray-200 mt-auto">
+                  <p className="text-xs text-[#6B7280] italic">
+                    Integrate climate resilience into next retrofit plan.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
