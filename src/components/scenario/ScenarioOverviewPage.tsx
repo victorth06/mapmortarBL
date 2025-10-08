@@ -77,6 +77,19 @@ function ScenarioHeader({ scenarioName, onBack, onOpenPanel }: ScenarioOverviewP
   );
 }
 
+// Scenario Summary Banner
+function ScenarioSummaryBanner() {
+  return (
+    <section className="bg-orange-50 border-l-4 border-[#F97316] rounded-r-xl p-4 mb-6">
+      <p className="text-sm text-gray-800">
+        <span className="font-semibold">Net Zero 2050:</span> 
+        This deep retrofit pathway aligns the building with CRREM 1.5°C targets, 
+        eliminating 95% of operational carbon and protecting £1.3M of rental value by 2027.
+      </p>
+    </section>
+  );
+}
+
 // Summary KPIs Section
 function SummaryKPIsSection({ onOpenPanel }: { onOpenPanel?: (panelType: string) => void }) {
   return (
@@ -119,7 +132,15 @@ function SummaryKPIsSection({ onOpenPanel }: { onOpenPanel?: (panelType: string)
           </div>
           <p className="text-2xl font-bold text-[#1A1A1A]">11 years</p>
           <p className="text-xs text-gray-500 mt-1">Break-even point</p>
+          <p className="text-xs text-gray-500 mt-1">Equivalent to £42 per tCO₂ saved</p>
         </div>
+      </div>
+      
+      {/* Financial Insight Commentary */}
+      <div className="mt-3 p-3 bg-blue-50 rounded-lg text-sm text-gray-700 border border-blue-100">
+        <span className="font-medium">Financial Insight:</span> 
+        Estimated £6.2M CAPEX achieves £142k annual OPEX savings with an 11-year payback, 
+        primarily through plant upgrades and building fabric improvements.
       </div>
       </section>
     </div>
@@ -142,12 +163,56 @@ function RetrofitCompositionSection({ onOpenPanel }: { onOpenPanel?: (panelType:
         onClick={() => onOpenPanel?.('measures')}
       >
       
-      {/* Horizontal segmented bar */}
-      <div className="flex w-full h-6 rounded overflow-hidden mb-3">
-        <div className="bg-blue-500 w-[10%]" title="Optimisation"></div>
-        <div className="bg-amber-500 w-[35%]" title="Light Retrofit"></div>
-        <div className="bg-purple-600 w-[45%]" title="Deep Retrofit"></div>
-        <div className="bg-green-500 w-[10%]" title="Renewables"></div>
+      {/* Narrative Summary */}
+      <p className="text-sm text-gray-700 mb-3">
+        This scenario delivers a balanced mix of quick wins, targeted retrofits, and renewable integration 
+        to achieve 95% carbon reduction by 2050.
+      </p>
+      
+      {/* Enhanced Composition Chart */}
+      <div className="mb-4">
+        <div className="flex w-full h-8 rounded-lg overflow-hidden shadow-sm border border-gray-200 mb-2">
+          <div className="bg-blue-500 flex-shrink-0 flex items-center justify-center" style={{width: '10%'}} title="Optimisation">
+            <span className="text-white text-xs font-medium">10%</span>
+          </div>
+          <div className="bg-amber-500 flex-shrink-0 flex items-center justify-center" style={{width: '35%'}} title="Light Retrofit">
+            <span className="text-white text-xs font-medium">35%</span>
+          </div>
+          <div className="bg-purple-600 flex-shrink-0 flex items-center justify-center" style={{width: '45%'}} title="Deep Retrofit">
+            <span className="text-white text-xs font-medium">45%</span>
+          </div>
+          <div className="flex-shrink-0 flex items-center justify-center" style={{width: '10%', backgroundColor: '#10b981'}} title="Renewables">
+            <span className="text-white text-xs font-medium">10%</span>
+          </div>
+        </div>
+        
+        {/* Chart Labels */}
+        <div className="flex justify-between text-xs text-gray-500 mb-3">
+          <span>Optimisation</span>
+          <span>Light Retrofit</span>
+          <span>Deep Retrofit</span>
+          <span>Renewables</span>
+        </div>
+      </div>
+      
+      {/* Category Breakdown Summary */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-600 mb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-blue-500 rounded-sm"></div> 
+          <span>Optimisation (10%) — BMS & controls</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-amber-500 rounded-sm"></div> 
+          <span>Light Retrofit (35%) — lighting & glazing</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-purple-600 rounded-sm"></div> 
+          <span>Deep Retrofit (45%) — heat pumps, envelope</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-sm" style={{backgroundColor: '#10b981'}}></div> 
+          <span>Renewables (10%) — rooftop PV</span>
+        </div>
       </div>
       
       <p className="text-xs text-gray-500">
@@ -345,6 +410,7 @@ export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: Scen
         <ScenarioHeader scenarioName={scenarioName} onBack={onBack} onOpenPanel={openPanel} />
         
         <main className="max-w-7xl mx-auto px-8 py-16 bg-[#FAFAFA] overflow-y-auto pb-40">
+          <ScenarioSummaryBanner />
           <SummaryKPIsSection onOpenPanel={() => openPanel('finance')} />
           <RetrofitCompositionSection onOpenPanel={() => openPanel('measures')} />
           <ImpactSnapshotSection onOpenPanel={() => openPanel('performance')} />
