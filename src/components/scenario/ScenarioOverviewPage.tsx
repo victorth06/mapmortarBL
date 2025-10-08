@@ -4,8 +4,8 @@ import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { DetailPanel } from '../panels/DetailPanel';
-import { CrremTrajectoryChart, EnergyWaterfallChart, OpexBreakdownChart, CashflowChart, CapexVsRoiChart } from '../charts';
-import { crremTrajectoryData, energyWaterfallData } from '../../data/mockChartData';
+import { CrremTrajectoryChart, EnergyWaterfallChart, OpexBreakdownChart, CashflowChart, CapexVsRoiChart, MonthlyEnergyPatternChart, CarbonIntensityByFuelChart, MEESComplianceChart } from '../charts';
+import { crremTrajectoryData, energyWaterfallData, monthlyEnergyPatternData, carbonIntensityByFuelData, meesComplianceData } from '../../data/mockChartData';
 
 // Panel Content Components
 function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
@@ -305,31 +305,75 @@ function MeasuresPanelContent() {
   );
 }
 
-function PerformancePanelContent() {
+function PerformancePanelContent({ scenarioName }: { scenarioName: string }) {
+  const handleUnitClick = (unit: string) => {
+    // Future: Open intervention details panel for specific unit
+    console.log('Selected unit:', unit);
+  };
+
   return (
     <div className="space-y-6">
+      {/* Header Banner */}
       <div className="bg-blue-50 border-l-4 border-blue-400 rounded-lg p-4">
         <h3 className="text-sm font-medium text-blue-800 mb-2">Performance & Benchmark Details</h3>
         <p className="text-sm text-blue-700">
-          Environmental and performance metrics with detailed charts and analysis.
+          Environmental and performance metrics for {scenarioName}, including CRREM alignment,
+          energy reduction breakdowns, monthly fuel usage, and MEES compliance trends.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="h-[300px] bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-sm">
-          <div className="text-center">
-            <BarChart3 className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-            CRREM Trajectory Chart
-            <p className="text-xs mt-1">Coming Soon</p>
-          </div>
-        </div>
-        <div className="h-[300px] bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-sm">
-          <div className="text-center">
-            <TrendingUp className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-            Energy Waterfall Chart
-            <p className="text-xs mt-1">Coming Soon</p>
-          </div>
-        </div>
+      {/* CRREM Trajectory Section */}
+      <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <h4 className="text-sm font-medium text-gray-700 mb-3">CRREM Trajectory</h4>
+        <p className="text-xs text-gray-500 mb-3">
+          Show decarbonisation path vs the 1.5°C CRREM target.
+        </p>
+        <CrremTrajectoryChart data={crremTrajectoryData} />
+      </div>
+
+      {/* Energy Reduction Waterfall Section */}
+      <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <h4 className="text-sm font-medium text-gray-700 mb-3">Energy Reduction Waterfall</h4>
+        <p className="text-xs text-gray-500 mb-3">
+          Explain contribution of each retrofit category to total energy reduction.
+        </p>
+        <EnergyWaterfallChart data={energyWaterfallData} />
+      </div>
+
+      {/* Monthly Energy Consumption Pattern */}
+      <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <h4 className="text-sm font-medium text-gray-700 mb-3">Monthly Energy Consumption Pattern</h4>
+        <p className="text-xs text-gray-500 mb-3">
+          Show seasonal variation and before/after retrofit performance split by fuel.
+        </p>
+        <MonthlyEnergyPatternChart data={monthlyEnergyPatternData} />
+      </div>
+
+      {/* Carbon Intensity by Fuel Type */}
+      <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <h4 className="text-sm font-medium text-gray-700 mb-3">Carbon Intensity by Fuel Type</h4>
+        <p className="text-xs text-gray-500 mb-3">
+          Visualise the shift from gas to electricity and resulting carbon intensity decline.
+        </p>
+        <CarbonIntensityByFuelChart data={carbonIntensityByFuelData} />
+      </div>
+
+      {/* MEES Compliance Breakdown */}
+      <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <h4 className="text-sm font-medium text-gray-700 mb-3">MEES Compliance Breakdown</h4>
+        <p className="text-xs text-gray-500 mb-3">
+          Show compliance status per unit and how it ties to rent protection.
+        </p>
+        <MEESComplianceChart 
+          data={meesComplianceData} 
+          onUnitClick={handleUnitClick}
+        />
+      </div>
+
+      {/* Footer Actions */}
+      <div className="flex justify-end gap-2 pt-4 border-t border-gray-200">
+        <Button variant="outline" size="sm" className="rounded-full">Export to Excel</Button>
+        <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-full">Close</Button>
       </div>
     </div>
   );
@@ -601,7 +645,7 @@ function ImpactSnapshotSection({ onOpenPanel }: { onOpenPanel?: (panelType: stri
       >
 
       {/* Metrics Cards Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
         <div className="bg-gray-50 rounded-lg p-3">
           <p className="text-xs text-gray-500 mb-1">⚡ Energy Reduction</p>
           <p className="text-lg font-semibold text-green-600">58%</p>
@@ -611,14 +655,31 @@ function ImpactSnapshotSection({ onOpenPanel }: { onOpenPanel?: (panelType: stri
           <p className="text-lg font-semibold text-green-600">95%</p>
         </div>
         <div className="bg-gray-50 rounded-lg p-3">
-          <p className="text-xs text-gray-500 mb-1">🏢 Rent Protected</p>
-          <p className="text-lg font-semibold text-green-600">£1.3M</p>
-        </div>
-        <div className="bg-gray-50 rounded-lg p-3">
           <p className="text-xs text-gray-500 mb-1">🎯 CRREM Aligned Until</p>
           <p className="text-lg font-semibold text-green-600">2050+</p>
         </div>
       </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+        <div className="bg-gray-50 rounded-lg p-3">
+          <p className="text-xs text-gray-500 mb-1">🏢 Rent Protected*</p>
+          <p className="text-lg font-semibold text-green-600">£1.3M</p>
+        </div>
+        <div className="bg-gray-50 rounded-lg p-3">
+          <p className="text-xs text-gray-500 mb-1">🧱 MEES EPC C (2027)</p>
+          <p className="text-lg font-semibold text-green-600">100%</p>
+        </div>
+        <div className="bg-gray-50 rounded-lg p-3">
+          <p className="text-xs text-gray-500 mb-1">🧱 MEES EPC B (2030)</p>
+          <p className="text-lg font-semibold text-green-600">80%</p>
+        </div>
+      </div>
+
+
+      {/* Footnote under cards */}
+      <p className="text-xs text-gray-400 italic mb-4">
+        *Includes both rent protected from MEES compliance and estimated green premium uplift.
+      </p>
 
       {/* Two Side-by-Side Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -742,7 +803,7 @@ export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: Scen
           isOpen={activePanel === 'performance'}
           onClose={closePanel}
           title="Performance & Benchmark Details"
-          children={<PerformancePanelContent />}
+          children={<PerformancePanelContent scenarioName={scenarioName} />}
         />
 
         <DetailPanel
@@ -754,3 +815,4 @@ export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: Scen
       </div>
     );
 }
+
