@@ -420,23 +420,20 @@ function ScenarioHeader({ scenarioName, onBack, onOpenPanel }: ScenarioOverviewP
             </Button>
           </div>
         </div>
+
+        {/* Row 3: Orange Banner Summary */}
+        <div className="bg-orange-50 border-l-4 border-[#F97316] rounded-r-xl p-4">
+          <p className="text-sm text-gray-800">
+            <span className="font-semibold">Net Zero 2050:</span> 
+            This deep retrofit pathway aligns the building with CRREM 1.5°C targets, 
+            eliminating 95% of operational carbon and protecting £1.3M of rental value by 2027.
+          </p>
+        </div>
       </div>
     </header>
   );
 }
 
-// Scenario Summary Banner
-function ScenarioSummaryBanner() {
-  return (
-    <section className="bg-orange-50 border-l-4 border-[#F97316] rounded-r-xl p-4 mb-6">
-      <p className="text-sm text-gray-800">
-        <span className="font-semibold">Net Zero 2050:</span> 
-        This deep retrofit pathway aligns the building with CRREM 1.5°C targets, 
-        eliminating 95% of operational carbon and protecting £1.3M of rental value by 2027.
-      </p>
-    </section>
-  );
-}
 
 // Summary KPIs Section
 function SummaryKPIsSection({ onOpenPanel }: { onOpenPanel?: (panelType: string) => void }) {
@@ -489,6 +486,22 @@ function SummaryKPIsSection({ onOpenPanel }: { onOpenPanel?: (panelType: string)
         <span className="font-medium">Financial Insight:</span> 
         Estimated £6.2M CAPEX achieves £142k annual OPEX savings with an 11-year payback, 
         primarily through plant upgrades and building fabric improvements.
+      </div>
+      
+      {/* Financial Highlights Cards */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-gray-50 rounded-lg p-3">
+          <p className="text-xs text-gray-500 mb-1">ROI (25y)</p>
+          <p className="text-lg font-semibold text-green-600">+12.3%</p>
+        </div>
+        <div className="bg-gray-50 rounded-lg p-3">
+          <p className="text-xs text-gray-500 mb-1">NPV @6%</p>
+          <p className="text-lg font-semibold text-red-600">-£0.3M</p>
+        </div>
+        <div className="bg-gray-50 rounded-lg p-3">
+          <p className="text-xs text-gray-500 mb-1">Carbon Payback</p>
+          <p className="text-lg font-semibold text-gray-700">12 years</p>
+        </div>
       </div>
       </section>
     </div>
@@ -631,40 +644,6 @@ function ImpactSnapshotSection({ onOpenPanel }: { onOpenPanel?: (panelType: stri
   );
 }
 
-// Financial Highlights Section
-function FinancialHighlightsSection({ onOpenPanel }: { onOpenPanel?: (panelType: string) => void }) {
-  return (
-    <div className="mb-8">
-      <div className="flex justify-between items-center mb-4">
-        <div>
-          <h3 className="text-sm font-medium text-gray-700">Financial Highlights</h3>
-          <p className="text-xs text-gray-500">Secondary financial metrics</p>
-        </div>
-        <div className="text-sm text-[#F97316] font-medium">See more →</div>
-      </div>
-      <section 
-        className="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg hover:border-[#F97316] border-2 border-transparent transition-all cursor-pointer"
-        onClick={() => onOpenPanel?.('finance')}
-      >
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-gray-50 rounded-lg p-3">
-          <p className="text-xs text-gray-500 mb-1">ROI (25y)</p>
-          <p className="text-lg font-semibold text-green-600">+12.3%</p>
-        </div>
-        <div className="bg-gray-50 rounded-lg p-3">
-          <p className="text-xs text-gray-500 mb-1">NPV @6%</p>
-          <p className="text-lg font-semibold text-red-600">-£0.3M</p>
-        </div>
-        <div className="bg-gray-50 rounded-lg p-3">
-          <p className="text-xs text-gray-500 mb-1">Carbon Payback</p>
-          <p className="text-lg font-semibold text-gray-700">12 years</p>
-        </div>
-      </div>
-      </section>
-    </div>
-  );
-}
 
 // Timeline Overview Section
 function TimelineOverviewSection({ onOpenPanel }: { onOpenPanel?: (panelType: string) => void }) {
@@ -704,42 +683,7 @@ function TimelineOverviewSection({ onOpenPanel }: { onOpenPanel?: (panelType: st
   );
 }
 
-// Business Case Insight
-function BusinessCaseInsight() {
-  return (
-    <div className="mb-8">
-      <section className="bg-white rounded-lg shadow-sm p-6 hover:shadow-lg hover:border-[#F97316] border-2 border-transparent transition-all">
-      <div className="bg-blue-50 border-l-4 border-[#F97316] rounded-lg p-4">
-        <p className="text-sm text-[#1A1A1A]">
-          <span className="font-semibold">Business Case Summary:</span> 
-          Deep retrofit scenario achieves <span className="font-semibold text-green-600">95% carbon reduction</span> 
-          and safeguards <span className="font-semibold">£1.3M rent at risk by 2027</span>. 
-          Neutral NPV at 6%, positive ROI at 3% discount rate.
-        </p>
-      </div>
-      </section>
-    </div>
-  );
-}
 
-// Footer Actions Bar
-function FooterActionsBar() {
-  return (
-    <div className="fixed bottom-0 w-full bg-white border-t border-gray-200 py-3 flex justify-end px-6 gap-3 z-40">
-      <Button variant="outline" className="rounded-full">
-        Compare Scenarios
-      </Button>
-      <Button variant="outline" className="rounded-full">
-        <Download className="w-4 h-4 mr-2" />
-        Export to Excel
-      </Button>
-      <Button className="bg-[#F97316] text-white hover:bg-orange-600 rounded-full">
-        <Plus className="w-4 h-4 mr-2" />
-        Add to Portfolio Plan
-      </Button>
-    </div>
-  );
-}
 
 // Main Scenario Overview Page Component
 export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: ScenarioOverviewPageProps) {
@@ -754,20 +698,30 @@ export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: Scen
   };
 
   return (
-      <div className="min-h-screen bg-[#FAFAFA] pb-20">
+      <div className="min-h-screen bg-[#FAFAFA]">
         <ScenarioHeader scenarioName={scenarioName} onBack={onBack} onOpenPanel={openPanel} />
         
-        <main className="max-w-7xl mx-auto px-8 py-16 bg-[#FAFAFA] overflow-y-auto pb-40">
-          <ScenarioSummaryBanner />
+        <main className="max-w-7xl mx-auto px-8 py-8 bg-[#FAFAFA]">
           <SummaryKPIsSection onOpenPanel={() => openPanel('finance')} />
           <RetrofitCompositionSection onOpenPanel={() => openPanel('measures')} />
           <ImpactSnapshotSection onOpenPanel={() => openPanel('performance')} />
-          <FinancialHighlightsSection onOpenPanel={() => openPanel('finance')} />
           <TimelineOverviewSection onOpenPanel={() => openPanel('roadmap')} />
-          <BusinessCaseInsight />
+          
+          {/* Footer Actions - Regular Footer */}
+          <div className="mt-12 pt-8 border-t border-gray-200 flex justify-end gap-3">
+            <Button variant="outline" className="rounded-full">
+              Compare Scenarios
+            </Button>
+            <Button variant="outline" className="rounded-full">
+              <Download className="w-4 h-4 mr-2" />
+              Export to Excel
+            </Button>
+            <Button className="bg-[#F97316] text-white hover:bg-orange-600 rounded-full">
+              <Plus className="w-4 h-4 mr-2" />
+              Add to Portfolio Plan
+            </Button>
+          </div>
         </main>
-        
-        <FooterActionsBar />
 
         {/* Detail Panels */}
         <DetailPanel
