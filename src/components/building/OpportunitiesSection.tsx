@@ -100,6 +100,7 @@ export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionPr
           
           return (
             <CompactScenarioCard
+              key={scenario.id}
               title={scenario.name}
               badge={scenario.is_recommended ? 'Recommended' : 'Future-proof'}
               badgeColor={scenario.is_recommended ? 'amber' : 'green'}

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '../ui/sheet';
 import { X } from 'lucide-react';
 import { Button } from '../ui/button';
 
@@ -17,7 +17,12 @@ export function DetailPanel({ isOpen, onClose, title, children }: DetailPanelPro
         <div className="sticky top-0 bg-white border-b border-gray-200 z-10">
           <SheetHeader className="p-6 pb-4">
             <div className="flex items-start justify-between">
-              <SheetTitle className="text-[#1A1A1A]">{title}</SheetTitle>
+              <div>
+                <SheetTitle className="text-[#1A1A1A]">{title}</SheetTitle>
+                <SheetDescription className="text-sm text-gray-500 mt-1">
+                  Detailed information and analysis for this section
+                </SheetDescription>
+              </div>
               <button
                 onClick={onClose}
                 className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"

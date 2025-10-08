@@ -3,10 +3,130 @@ import { ArrowLeft, Download, Share2, ChevronDown, Plus, BarChart3, TrendingUp, 
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { FinancePanel, PerformancePanel, MeasuresPanel, RoadmapPanel } from '../scenario-panels';
+import { DetailPanel } from '../panels/DetailPanel';
 import { CrremTrajectoryChart, EnergyWaterfallChart } from '../charts';
 import { crremTrajectoryData, energyWaterfallData } from '../../data/mockChartData';
 
+// Panel Content Components
+function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
+  return (
+    <div className="space-y-6">
+      <div className="bg-blue-50 border-l-4 border-blue-400 rounded-lg p-4">
+        <h3 className="text-sm font-medium text-blue-800 mb-2">Financial Analysis — {scenarioName}</h3>
+        <p className="text-sm text-blue-700">
+          Detailed financial metrics, cashflow analysis, and scenario comparison tools.
+        </p>
+      </div>
+      
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="bg-gray-50 rounded-lg p-4">
+          <p className="text-sm text-gray-500 mb-1">Total CAPEX</p>
+          <p className="text-xl font-bold text-gray-700">£6.2M</p>
+        </div>
+        <div className="bg-gray-50 rounded-lg p-4">
+          <p className="text-sm text-gray-500 mb-1">Annual Savings</p>
+          <p className="text-xl font-bold text-green-600">£142k/year</p>
+        </div>
+        <div className="bg-gray-50 rounded-lg p-4">
+          <p className="text-sm text-gray-500 mb-1">Simple Payback</p>
+          <p className="text-xl font-bold text-gray-700">11 years</p>
+        </div>
+        <div className="bg-gray-50 rounded-lg p-4">
+          <p className="text-sm text-gray-500 mb-1">ROI (25y)</p>
+          <p className="text-xl font-bold text-green-600">+12.3%</p>
+        </div>
+        <div className="bg-gray-50 rounded-lg p-4">
+          <p className="text-sm text-gray-500 mb-1">NPV @6%</p>
+          <p className="text-xl font-bold text-red-600">–£0.3M</p>
+        </div>
+        <div className="bg-gray-50 rounded-lg p-4">
+          <p className="text-sm text-gray-500 mb-1">Carbon Payback</p>
+          <p className="text-xl font-bold text-gray-700">12 years</p>
+        </div>
+      </div>
+
+      <div className="h-[300px] bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+        <div className="text-center">
+          <BarChart3 className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+          Cashflow Analysis Chart
+          <p className="text-xs mt-1">Coming Soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MeasuresPanelContent() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-blue-50 border-l-4 border-blue-400 rounded-lg p-4">
+        <h3 className="text-sm font-medium text-blue-800 mb-2">Intervention Measures</h3>
+        <p className="text-sm text-blue-700">
+          Detailed breakdown of retrofit measures, costs, and implementation timeline.
+        </p>
+      </div>
+
+      <div className="h-[300px] bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+        <div className="text-center">
+          <Building2 className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+          Measures Details
+          <p className="text-xs mt-1">Coming Soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PerformancePanelContent() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-blue-50 border-l-4 border-blue-400 rounded-lg p-4">
+        <h3 className="text-sm font-medium text-blue-800 mb-2">Performance & Benchmark Details</h3>
+        <p className="text-sm text-blue-700">
+          Environmental and performance metrics with detailed charts and analysis.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="h-[300px] bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+          <div className="text-center">
+            <BarChart3 className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+            CRREM Trajectory Chart
+            <p className="text-xs mt-1">Coming Soon</p>
+          </div>
+        </div>
+        <div className="h-[300px] bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+          <div className="text-center">
+            <TrendingUp className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+            Energy Waterfall Chart
+            <p className="text-xs mt-1">Coming Soon</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RoadmapPanelContent() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-blue-50 border-l-4 border-blue-400 rounded-lg p-4">
+        <h3 className="text-sm font-medium text-blue-800 mb-2">Implementation Roadmap</h3>
+        <p className="text-sm text-blue-700">
+          Detailed timeline, milestones, and implementation schedule for the retrofit plan.
+        </p>
+      </div>
+
+      <div className="h-[300px] bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+        <div className="text-center">
+          <Clock className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+          Implementation Timeline
+          <p className="text-xs mt-1">Coming Soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 interface ScenarioOverviewPageProps {
   scenarioName: string;
@@ -421,11 +541,34 @@ export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: Scen
         
         <FooterActionsBar />
 
-        {/* Side Panels */}
-        <FinancePanel open={activePanel === 'finance'} onClose={closePanel} />
-        <PerformancePanel open={activePanel === 'performance'} onClose={closePanel} />
-        <MeasuresPanel open={activePanel === 'measures'} onClose={closePanel} />
-        <RoadmapPanel open={activePanel === 'roadmap'} onClose={closePanel} />
+        {/* Detail Panels */}
+        <DetailPanel
+          isOpen={activePanel === 'finance'}
+          onClose={closePanel}
+          title="Financial Analysis"
+          children={<FinancePanelContent scenarioName={scenarioName} />}
+        />
+
+        <DetailPanel
+          isOpen={activePanel === 'measures'}
+          onClose={closePanel}
+          title="Intervention Measures"
+          children={<MeasuresPanelContent />}
+        />
+
+        <DetailPanel
+          isOpen={activePanel === 'performance'}
+          onClose={closePanel}
+          title="Performance & Benchmark Details"
+          children={<PerformancePanelContent />}
+        />
+
+        <DetailPanel
+          isOpen={activePanel === 'roadmap'}
+          onClose={closePanel}
+          title="Implementation Roadmap"
+          children={<RoadmapPanelContent />}
+        />
       </div>
     );
 }
