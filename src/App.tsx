@@ -72,6 +72,16 @@ export default function App() {
     <div className="min-h-screen bg-[#FAFAFA] pb-24">
       <VerticalNav currentView={mainView} onNavigate={handleMainNavigation} />
       <div className="ml-16">
+        {/* Test button to view charts */}
+        <div className="fixed top-4 right-4 z-50">
+          <button 
+            onClick={() => handleScenarioClick('Net Zero 2050')}
+            className="bg-[#F97316] text-white px-4 py-2 rounded-lg shadow-lg hover:bg-orange-600 transition-colors"
+          >
+            🧪 Test Charts
+          </button>
+        </div>
+        
         {mainView === 'portfolio' ? (
           <PortfolioDashboard onViewBuilding={handleViewBuilding} />
         ) : (

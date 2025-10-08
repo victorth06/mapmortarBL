@@ -4,6 +4,9 @@ import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { FinancePanel, PerformancePanel, MeasuresPanel, RoadmapPanel } from '../scenario-panels';
+import { CrremTrajectoryChart, EnergyWaterfallChart } from '../charts';
+import { crremTrajectoryData, energyWaterfallData } from '../../data/mockChartData';
+
 
 interface ScenarioOverviewPageProps {
   scenarioName: string;
@@ -191,14 +194,24 @@ function ImpactSnapshotSection({ onOpenPanel }: { onOpenPanel?: (panelType: stri
         </div>
       </div>
 
-      {/* Two Side-by-Side Chart Placeholders */}
+      {/* Two Side-by-Side Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="h-[220px] bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-sm">
-          CRREM Trajectory Chart <br /> (coming in detailed view)
+        <div>
+          <CrremTrajectoryChart data={crremTrajectoryData} />
         </div>
-        <div className="h-[220px] bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-sm">
-          Energy Waterfall Chart <br /> (Baseline → Post Retrofit)
+        <div>
+          <EnergyWaterfallChart data={energyWaterfallData} />
         </div>
+      </div>
+      
+      {/* CTA under charts */}
+      <div className="mt-4 text-center">
+        <button 
+          onClick={() => onOpenPanel?.('performance')}
+          className="text-xs text-[#F97316] hover:text-orange-600 font-medium transition-colors"
+        >
+          Explore detailed performance analysis →
+        </button>
       </div>
       </section>
     </div>
@@ -328,25 +341,25 @@ export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: Scen
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] pb-20">
-      <ScenarioHeader scenarioName={scenarioName} onBack={onBack} onOpenPanel={openPanel} />
-      
-      <main className="max-w-7xl mx-auto px-8 py-16 bg-[#FAFAFA] overflow-y-auto pb-40">
-        <SummaryKPIsSection onOpenPanel={() => openPanel('finance')} />
-        <RetrofitCompositionSection onOpenPanel={() => openPanel('measures')} />
-        <ImpactSnapshotSection onOpenPanel={() => openPanel('performance')} />
-        <FinancialHighlightsSection onOpenPanel={() => openPanel('finance')} />
-        <TimelineOverviewSection onOpenPanel={() => openPanel('roadmap')} />
-        <BusinessCaseInsight />
-      </main>
-      
-      <FooterActionsBar />
+      <div className="min-h-screen bg-[#FAFAFA] pb-20">
+        <ScenarioHeader scenarioName={scenarioName} onBack={onBack} onOpenPanel={openPanel} />
+        
+        <main className="max-w-7xl mx-auto px-8 py-16 bg-[#FAFAFA] overflow-y-auto pb-40">
+          <SummaryKPIsSection onOpenPanel={() => openPanel('finance')} />
+          <RetrofitCompositionSection onOpenPanel={() => openPanel('measures')} />
+          <ImpactSnapshotSection onOpenPanel={() => openPanel('performance')} />
+          <FinancialHighlightsSection onOpenPanel={() => openPanel('finance')} />
+          <TimelineOverviewSection onOpenPanel={() => openPanel('roadmap')} />
+          <BusinessCaseInsight />
+        </main>
+        
+        <FooterActionsBar />
 
-      {/* Side Panels */}
-      <FinancePanel open={activePanel === 'finance'} onClose={closePanel} />
-      <PerformancePanel open={activePanel === 'performance'} onClose={closePanel} />
-      <MeasuresPanel open={activePanel === 'measures'} onClose={closePanel} />
-      <RoadmapPanel open={activePanel === 'roadmap'} onClose={closePanel} />
-    </div>
-  );
+        {/* Side Panels */}
+        <FinancePanel open={activePanel === 'finance'} onClose={closePanel} />
+        <PerformancePanel open={activePanel === 'performance'} onClose={closePanel} />
+        <MeasuresPanel open={activePanel === 'measures'} onClose={closePanel} />
+        <RoadmapPanel open={activePanel === 'roadmap'} onClose={closePanel} />
+      </div>
+    );
 }
