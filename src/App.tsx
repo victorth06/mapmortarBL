@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { VerticalNav, StickyNav, StickyActionBar, PropertyHero, ExecutiveOverview, ExecutiveBridge, OpportunitiesSection } from './components/building';
-import { ScenarioDetailPage } from './components/scenario';
+import { ScenarioOverviewPage } from './components/scenario';
 import PortfolioDashboard from './components/PortfolioDashboard';
 
 export default function App() {
@@ -59,7 +59,7 @@ export default function App() {
       <div className="min-h-screen bg-[#FAFAFA]">
         <VerticalNav currentView={mainView} onNavigate={handleMainNavigation} />
         <div className="ml-16">
-          <ScenarioDetailPage 
+          <ScenarioOverviewPage 
             scenarioName={selectedScenario}
             onBack={handleBackToReport}
           />

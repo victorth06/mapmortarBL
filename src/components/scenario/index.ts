@@ -1,5 +1,6 @@
 export { ScenarioCard } from './ScenarioCard';
 export { ScenarioDetailPage } from './ScenarioDetailPage';
+export { ScenarioOverviewPage } from './ScenarioOverviewPage';
 export { ScenariosSection } from './ScenariosSection';
 export { CompactScenarioCard } from './CompactScenarioCard';
 export { AddScenarioCard } from './AddScenarioCard';
