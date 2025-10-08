@@ -27,14 +27,14 @@ export const crremTrajectoryData: CrremTrajectoryDatum[] = [
   { year: 2050, baseline: 45, scenario: 15, crrem: 12 },
 ];
 
-// Energy Waterfall Chart Data - True Waterfall Format
+// Energy Waterfall Chart Data - True Waterfall Format (Updated for 2050 scenario)
 export const energyWaterfallData: EnergyWaterfallDatum[] = [
   { stage: 'Baseline', eui: 260, reduction: 0 },
-  { stage: 'Optimisation', eui: -20, reduction: 8 },
-  { stage: 'Light Retrofit', eui: -40, reduction: 23 },
-  { stage: 'Deep Retrofit', eui: -40, reduction: 38 },
-  { stage: 'Renewables', eui: -20, reduction: 46 },
-  { stage: 'Final', eui: 140, reduction: 46 },
+  { stage: 'Optimisation', eui: -20, reduction: 8 }, // Based on 388,738 kgCO₂e saving
+  { stage: 'Light Retrofit', eui: -40, reduction: 23 }, // Based on 949,952 kgCO₂e saving
+  { stage: 'Deep Retrofit', eui: -40, reduction: 38 }, // Based on 201,550 kgCO₂e saving
+  { stage: 'Renewables', eui: -20, reduction: 46 }, // Based on 120,066 kgCO₂e saving
+  { stage: 'Final', eui: 140, reduction: 46 }, // Total 1,323,290 kgCO₂e saving (95% reduction)
 ];
 
 // Monthly Energy Pattern Data
@@ -134,6 +134,355 @@ export const meesComplianceData: MEESComplianceData = {
     { unit: 'D2', current: 'E', target: 'D', compliant2027: false, compliant2030: false },
     { unit: 'E1', current: 'E', target: 'D', compliant2027: false, compliant2030: false },
   ],
+};
+
+// Intervention Measures Data Interfaces
+export interface InterventionMeasure {
+  id: string;
+  category: 'Optimise' | 'Light Retrofit' | 'Deep Retrofit' | 'Renewable';
+  initiative: string;
+  cost: number; // £
+  electricitySaving: number; // kWh
+  gasSaving: number; // kWh
+  costSaving: number; // £
+  co2eSaving: number; // kgCO₂e
+  paybackYears: number | null; // null for N/A
+}
+
+export interface InterventionCategory {
+  name: string;
+  measures: InterventionMeasure[];
+  totalCost: number;
+  totalElectricitySaving: number;
+  totalGasSaving: number;
+  totalCostSaving: number;
+  totalCo2eSaving: number;
+  averagePaybackYears: number;
+}
+
+// 2050 Scenario Intervention Measures Data
+export const interventionMeasuresData: InterventionCategory[] = [
+  {
+    name: 'Optimise',
+    measures: [
+      {
+        id: 'opt-1',
+        category: 'Optimise',
+        initiative: 'Adjust thermostat setpoints by degrees to optimise heating and cooling in line with occupancy patterns',
+        cost: 0,
+        electricitySaving: 618491,
+        gasSaving: 549600,
+        costSaving: 193784,
+        co2eSaving: 228609,
+        paybackYears: 0 // Immediate
+      },
+      {
+        id: 'opt-2',
+        category: 'Optimise',
+        initiative: 'Reduce electricity consumption through operational tuning and energy management',
+        cost: 140450,
+        electricitySaving: 835158,
+        gasSaving: 0,
+        costSaving: 217141,
+        co2eSaving: 172936,
+        paybackYears: 0.6
+      }
+    ],
+    totalCost: 140450,
+    totalElectricitySaving: 1391799,
+    totalGasSaving: 549600,
+    totalCostSaving: 394844,
+    totalCo2eSaving: 388738,
+    averagePaybackYears: 0.4
+  },
+  {
+    name: 'Light Retrofit',
+    measures: [
+      {
+        id: 'light-1',
+        category: 'Light Retrofit',
+        initiative: 'Add demand control ventilation to regulate airflow rates based on occupancy',
+        cost: 421350,
+        electricitySaving: -396385,
+        gasSaving: 1001767,
+        costSaving: 42954,
+        co2eSaving: 101174,
+        paybackYears: null // N/A
+      },
+      {
+        id: 'light-2',
+        category: 'Light Retrofit',
+        initiative: 'Add daylighting control to reduce artificial lighting when natural light is sufficient',
+        cost: 210670,
+        electricitySaving: 316468,
+        gasSaving: -49403,
+        costSaving: 79317,
+        co2eSaving: 56494,
+        paybackYears: 2.7
+      },
+      {
+        id: 'light-3',
+        category: 'Light Retrofit',
+        initiative: 'Install lighting controls such as occupancy sensors and timers',
+        cost: 210670,
+        electricitySaving: 681290,
+        gasSaving: -130246,
+        costSaving: 169321,
+        co2eSaving: 117249,
+        paybackYears: 1.2
+      },
+      {
+        id: 'light-4',
+        category: 'Light Retrofit',
+        initiative: 'Upgrade to low energy lighting to reduce electricity demand',
+        cost: 1264000,
+        electricitySaving: 1352902,
+        gasSaving: -272581,
+        costSaving: 335400,
+        co2eSaving: 230282,
+        paybackYears: 3.8
+      },
+      {
+        id: 'light-5',
+        category: 'Light Retrofit',
+        initiative: 'Reduce electric equipment loads through efficiency measures and operational adjustments',
+        cost: 140450,
+        electricitySaving: 1345911,
+        gasSaving: -325218,
+        costSaving: 330424,
+        co2eSaving: 219206,
+        paybackYears: 0.4
+      },
+      {
+        id: 'light-6',
+        category: 'Light Retrofit',
+        initiative: 'Replace DHW boiler with a simple air source heat pump for water heating (efficiency rating 2.5)',
+        cost: 506040,
+        electricitySaving: -410265,
+        gasSaving: 1276032,
+        costSaving: -30107,
+        co2eSaving: 148471,
+        paybackYears: null // N/A
+      }
+    ],
+    totalCost: 2753180,
+    totalElectricitySaving: 2723036,
+    totalGasSaving: 2110603,
+    totalCostSaving: 834626,
+    totalCo2eSaving: 949952,
+    averagePaybackYears: 3.3
+  },
+  {
+    name: 'Deep Retrofit',
+    measures: [
+      {
+        id: 'deep-1',
+        category: 'Deep Retrofit',
+        initiative: 'Install mechanical ventilation with heat recovery to improve heat retention and reduce energy demand',
+        cost: 4915700,
+        electricitySaving: 47525,
+        gasSaving: 776412,
+        costSaving: 58941,
+        co2eSaving: 151870,
+        paybackYears: 83.4
+      },
+      {
+        id: 'deep-2',
+        category: 'Deep Retrofit',
+        initiative: 'Replace boiler with an air source heat pump for space heating (efficiency rating 3.5)',
+        cost: 386130,
+        electricitySaving: -173252,
+        gasSaving: 1078697,
+        costSaving: 19676,
+        co2eSaving: 161451,
+        paybackYears: 19.6
+      }
+    ],
+    totalCost: 5301830,
+    totalElectricitySaving: 20399,
+    totalGasSaving: 1078697,
+    totalCostSaving: 70026,
+    totalCo2eSaving: 201550,
+    averagePaybackYears: 75.7
+  },
+  {
+    name: 'Renewable',
+    measures: [
+      {
+        id: 'renew-1',
+        category: 'Renewable',
+        initiative: 'Add rooftop PV (74%) to generate on-site renewable electricity',
+        cost: 1147900,
+        electricitySaving: 592551,
+        gasSaving: -14398,
+        costSaving: 153199,
+        co2eSaving: 120066,
+        paybackYears: 7.5
+      }
+    ],
+    totalCost: 1147900,
+    totalElectricitySaving: 592551,
+    totalGasSaving: -14398,
+    totalCostSaving: 153199,
+    totalCo2eSaving: 120066,
+    averagePaybackYears: 7.5
+  }
+];
+
+// Overall totals from the 2050 scenario
+export const scenario2050Totals = {
+  totalCost: 9343360,
+  totalElectricitySaving: 4310326,
+  totalGasSaving: 2354729,
+  totalCostSaving: 1261968,
+  totalCo2eSaving: 1323290,
+  averagePaybackYears: 7.4
+};
+
+// EPC C Scenario (Pathway Refresh) Intervention Measures Data
+export const epcCInterventionMeasuresData: InterventionCategory[] = [
+  {
+    name: 'Optimise',
+    measures: [
+      {
+        id: 'epc-opt-1',
+        category: 'Optimise',
+        initiative: 'Adjust thermostat setpoints - Optimise heating (+2 °C) and cooling (-2 °C) setpoints to match occupancy patterns while maintaining comfort',
+        cost: 0,
+        electricitySaving: 618491,
+        gasSaving: 549600,
+        costSaving: 193784,
+        co2eSaving: 228609,
+        paybackYears: 0 // Immediate
+      },
+      {
+        id: 'epc-opt-2',
+        category: 'Optimise',
+        initiative: 'Reduce electricity consumption - Use BMS analytics to identify and remove avoidable electricity use across all building systems',
+        cost: 140450,
+        electricitySaving: 835158,
+        gasSaving: 0,
+        costSaving: 217141,
+        co2eSaving: 172936,
+        paybackYears: 0.6
+      }
+    ],
+    totalCost: 140450,
+    totalElectricitySaving: 1391799,
+    totalGasSaving: 549600,
+    totalCostSaving: 394844,
+    totalCo2eSaving: 388738,
+    averagePaybackYears: 0.4
+  },
+  {
+    name: 'Light Retrofit',
+    measures: [
+      {
+        id: 'epc-light-1',
+        category: 'Light Retrofit',
+        initiative: 'Add demand control ventilation - Regulate ventilation rates using occupancy (CO₂) sensors to minimise fan energy and associated heating/cooling loads',
+        cost: 421350,
+        electricitySaving: -396385,
+        gasSaving: 1001767,
+        costSaving: 42954,
+        co2eSaving: 101174,
+        paybackYears: null // N/A
+      },
+      {
+        id: 'epc-light-2',
+        category: 'Light Retrofit',
+        initiative: 'Install lighting controls - Fit occupancy and daylight sensors (targeting ~25% lighting energy reduction) to minimise operational hours and energy waste',
+        cost: 210670,
+        electricitySaving: 681290,
+        gasSaving: -130246,
+        costSaving: 169321,
+        co2eSaving: 117249,
+        paybackYears: 1.2
+      },
+      {
+        id: 'epc-light-3',
+        category: 'Light Retrofit',
+        initiative: 'Replace DHW boiler with ASHP - Electrify domestic hot water generation with an air source heat pump (efficiency rating 2.5)',
+        cost: 386130,
+        electricitySaving: -410265,
+        gasSaving: 1276032,
+        costSaving: -30107,
+        co2eSaving: 148471,
+        paybackYears: null // N/A
+      }
+    ],
+    totalCost: 1018150,
+    totalElectricitySaving: -35993,
+    totalGasSaving: 2258893,
+    totalCostSaving: 126175,
+    totalCo2eSaving: 405766,
+    averagePaybackYears: 8.1
+  },
+  {
+    name: 'Deep Retrofit',
+    measures: [
+      {
+        id: 'epc-deep-1',
+        category: 'Deep Retrofit',
+        initiative: 'Increase chiller COP - Upgrade chiller components and controls to improve performance and reduce cooling energy use',
+        cost: 118560,
+        electricitySaving: 274666,
+        gasSaving: 0,
+        costSaving: 71413,
+        co2eSaving: 56875,
+        paybackYears: 1.7
+      },
+      {
+        id: 'epc-deep-2',
+        category: 'Deep Retrofit',
+        initiative: 'Replace gas boiler with ASHP - Electrify space heating with a high-efficiency air source heat pump (efficiency rating 3.5)',
+        cost: 386130,
+        electricitySaving: -173252,
+        gasSaving: 1078697,
+        costSaving: 19676,
+        co2eSaving: 161451,
+        paybackYears: 19.6
+      }
+    ],
+    totalCost: 504690,
+    totalElectricitySaving: 101414,
+    totalGasSaving: 1078697,
+    totalCostSaving: 91090,
+    totalCo2eSaving: 218326,
+    averagePaybackYears: 5.5
+  },
+  {
+    name: 'Renewable',
+    measures: [
+      {
+        id: 'epc-renew-1',
+        category: 'Renewable',
+        initiative: 'Add rooftop PV (74%) - Install photovoltaic panels to generate on-site renewable electricity and offset grid consumption',
+        cost: 1147900,
+        electricitySaving: 592551,
+        gasSaving: -14398,
+        costSaving: 153199,
+        co2eSaving: 120066,
+        paybackYears: 7.5
+      }
+    ],
+    totalCost: 1147900,
+    totalElectricitySaving: 592551,
+    totalGasSaving: -14398,
+    totalCostSaving: 153199,
+    totalCo2eSaving: 120066,
+    averagePaybackYears: 7.5
+  }
+];
+
+// Overall totals from the EPC C scenario (Pathway Refresh)
+export const epcCScenarioTotals = {
+  totalCost: 2811190,
+  totalElectricitySaving: 2242148,
+  totalGasSaving: 2354729,
+  totalCostSaving: 724242,
+  totalCo2eSaving: 895032,
+  averagePaybackYears: 3.9
 };
 
 // Chart color schemes
