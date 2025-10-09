@@ -5,7 +5,8 @@ import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { DetailPanel } from '../panels/DetailPanel';
 import { CrremTrajectoryChart, EnergyWaterfallChart, OpexBreakdownChart, CashflowChart, CapexVsRoiChart, MonthlyEnergyPatternChart, CarbonIntensityByFuelChart, MEESComplianceChart } from '../charts';
-import { crremTrajectoryData, energyWaterfallData, monthlyEnergyPatternData, carbonIntensityByFuelData, meesComplianceData, scenario2050Totals, epcCScenarioTotals } from '../../data/mockChartData';
+import { crremTrajectoryData, energyWaterfallData, monthlyEnergyPatternData, carbonIntensityByFuelData, meesComplianceData } from '../../data/mockChartData';
+import { buildingConfig, getScenarioConfigByName, buildingConstants } from '../../config/buildingConfig';
 
 // Panel Content Components
 function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
@@ -14,10 +15,7 @@ function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
   
   // Get scenario data based on scenario name
   const getScenarioData = () => {
-    if (scenarioName?.includes('EPC C')) {
-      return epcCScenarioTotals;
-    }
-    return scenario2050Totals; // Default to 2050 scenario
+    return getScenarioConfigByName(scenarioName);
   };
   
   const scenarioData = getScenarioData();
@@ -36,14 +34,14 @@ function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
 
       {/* KPI Summary */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {[
-          { label: "Total CAPEX", value: `£${(scenarioData.totalCost / 1000000).toFixed(1)}M` },
-          { label: "Annual Savings", value: `£${(scenarioData.totalCostSaving / 1000).toFixed(0)}k/year`, color: "text-green-600" },
-          { label: "Simple Payback", value: `${scenarioData.averagePaybackYears.toFixed(1)} years` },
-          { label: "ROI (25y)", value: "+12.3%", color: "text-green-600" },
-          { label: "NPV @6%", value: "–£0.3M", color: "text-red-600" },
-          { label: "Carbon Payback", value: "12 years" },
-        ].map((item) => (
+        {(scenarioData ? [
+          { label: "Total CAPEX", value: `£${(scenarioData.capex / 1000000).toFixed(1)}M` },
+          { label: "Annual Savings", value: `£${(scenarioData.annualSavings / 1000).toFixed(0)}k/year`, color: "text-green-600" },
+          { label: "Simple Payback", value: `${scenarioData.paybackYears.toFixed(1)} years` },
+          { label: "ROI (25y)", value: `+${scenarioData.roi25y.toFixed(1)}%`, color: "text-green-600" },
+          { label: "NPV @6%", value: `£${(scenarioData.npv6percent / 1000000).toFixed(1)}M`, color: scenarioData.npv6percent < 0 ? "text-red-600" : "text-green-600" },
+          { label: "Carbon Payback", value: `${scenarioData.carbonPaybackYears} years` },
+        ] : []).map((item) => (
           <div key={item.label} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
             <p className="text-sm text-gray-500 mb-1">{item.label}</p>
             <p className={`text-xl font-bold ${item.color || "text-gray-700"}`}>{item.value}</p>
@@ -52,7 +50,7 @@ function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
       </div>
 
       <p className="text-xs text-gray-500 italic">
-        Breakeven reached in 2031 under current assumptions (6% discount rate, £{(scenarioData.totalCostSaving / 1000).toFixed(0)}k annual savings).
+        Breakeven reached in {buildingConstants.breakevenYear} under current assumptions ({buildingConstants.discountRate}% discount rate, £{scenarioData ? (scenarioData.annualSavings / 1000).toFixed(0) : '0'}k annual savings).
       </p>
 
       {/* Financial Parameters */}
@@ -74,9 +72,9 @@ function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
         <div className="mb-4 p-3 bg-gray-50 rounded-lg">
           <h5 className="text-xs font-medium text-gray-700 mb-2">Sensitivity Insights</h5>
           <ul className="text-xs text-gray-600 space-y-1">
-            <li>• Lower discount rate (6 → 5%) improves NPV by <span className="font-semibold text-green-600">+£0.4M</span></li>
-            <li>• +2% energy inflation raises annual savings by <span className="font-semibold text-green-600">£0.3M</span></li>
-            <li>• 2-year CAPEX delay reduces ROI by <span className="font-semibold text-red-600">–£0.2M</span></li>
+            <li>• Lower discount rate ({buildingConstants.discountRate} → 5%) improves NPV by <span className="font-semibold text-green-600">+£{(buildingConstants.sensitivityAnalysis.discountRateImprovement / 1000000).toFixed(1)}M</span></li>
+            <li>• +2% energy inflation raises annual savings by <span className="font-semibold text-green-600">£{(buildingConstants.sensitivityAnalysis.energyInflationBenefit / 1000000).toFixed(1)}M</span></li>
+            <li>• 2-year CAPEX delay reduces ROI by <span className="font-semibold text-red-600">–£{(buildingConstants.sensitivityAnalysis.capexDelayCost / 1000000).toFixed(1)}M</span></li>
           </ul>
         </div>
 
@@ -125,7 +123,7 @@ function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
         <OpexBreakdownChart />
         <p className="text-xs text-gray-500 mt-3">
           Energy savings reduce total OPEX by <span className="font-semibold text-green-600">22%</span>,
-          improving NOI by <span className="font-semibold">£{(scenarioData.totalCostSaving / 1000).toFixed(0)}k/year</span>.
+          improving NOI by <span className="font-semibold">£{scenarioData ? (scenarioData.annualSavings / 1000).toFixed(0) : '0'}k/year</span>.
         </p>
       </div>
 
@@ -134,7 +132,7 @@ function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
         <h4 className="text-sm font-medium text-gray-700 mb-3">Cashflow Analysis Over Time</h4>
         <CashflowChart />
         <p className="text-xs text-gray-500 mt-3">
-          Breakeven achieved in <span className="font-semibold">2031</span>. Cumulative cashflow turns positive from that year onward.
+          Breakeven achieved in <span className="font-semibold">{buildingConstants.breakevenYear}</span>. Cumulative cashflow turns positive from that year onward.
         </p>
       </div>
 
@@ -191,82 +189,82 @@ function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
             <tbody className="bg-white divide-y divide-gray-200">
               <tr>
                 <td className="px-4 py-2 font-medium text-gray-700">Total CAPEX</td>
-                <td className="px-4 py-2">£{(scenarioData.totalCost / 1000000).toFixed(1)}M</td>
+                <td className="px-4 py-2">£{scenarioData ? (scenarioData.capex / 1000000).toFixed(1) : '0'}M</td>
                 <td className="px-4 py-2">
-                  {comparisonScenario === 'EPC C' ? `£${(epcCScenarioTotals.totalCost / 1000000).toFixed(1)}M` : 
-                   comparisonScenario === 'Do Nothing' ? '£0M' : `£${(scenarioData.totalCost / 1000000).toFixed(1)}M`}
+                  {comparisonScenario === 'EPC C' ? `£${(getScenarioConfigByName('EPC C by 2027')?.capex || 0) / 1000000}M` : 
+                   comparisonScenario === 'Do Nothing' ? '£0M' : `£{scenarioData ? (scenarioData.capex / 1000000).toFixed(1) : '0'}M`}
                 </td>
                 <td className="px-4 py-2">
                   {comparisonScenario === 'EPC C' ? 
-                    <span className="text-red-600">-£{((scenarioData.totalCost - epcCScenarioTotals.totalCost) / 1000000).toFixed(1)}M</span> :
+                    <span className="text-red-600">-£{scenarioData ? ((scenarioData.capex - (getScenarioConfigByName('EPC C by 2027')?.capex || 0)) / 1000000).toFixed(1) : '0'}M</span> :
                    comparisonScenario === 'Do Nothing' ? 
-                    <span className="text-red-600">-£{(scenarioData.totalCost / 1000000).toFixed(1)}M</span> :
+                    <span className="text-red-600">-£{scenarioData ? (scenarioData.capex / 1000000).toFixed(1) : '0'}M</span> :
                     <span className="text-gray-500">£0M</span>}
                 </td>
               </tr>
               <tr>
                 <td className="px-4 py-2 font-medium text-gray-700">Annual Savings</td>
-                <td className="px-4 py-2">£{(scenarioData.totalCostSaving / 1000).toFixed(0)}k</td>
+                <td className="px-4 py-2">£{scenarioData ? (scenarioData.annualSavings / 1000).toFixed(0) : '0'}k</td>
                 <td className="px-4 py-2">
-                  {comparisonScenario === 'EPC C' ? `£${(epcCScenarioTotals.totalCostSaving / 1000).toFixed(0)}k` : 
-                   comparisonScenario === 'Do Nothing' ? '£0k' : `£${(scenarioData.totalCostSaving / 1000).toFixed(0)}k`}
+                  {comparisonScenario === 'EPC C' ? `£${(getScenarioConfigByName('EPC C by 2027')?.annualSavings || 0) / 1000}k` : 
+                   comparisonScenario === 'Do Nothing' ? '£0k' : `£{scenarioData ? (scenarioData.annualSavings / 1000).toFixed(0) : '0'}k`}
                 </td>
                 <td className="px-4 py-2">
                   {comparisonScenario === 'EPC C' ? 
-                    <span className="text-green-600">+£{((scenarioData.totalCostSaving - epcCScenarioTotals.totalCostSaving) / 1000).toFixed(0)}k</span> :
+                    <span className="text-green-600">+£{scenarioData ? ((scenarioData.annualSavings - (getScenarioConfigByName('EPC C by 2027')?.annualSavings || 0)) / 1000).toFixed(0) : '0'}k</span> :
                    comparisonScenario === 'Do Nothing' ? 
-                    <span className="text-green-600">+£{(scenarioData.totalCostSaving / 1000).toFixed(0)}k</span> :
+                    <span className="text-green-600">+£{scenarioData ? (scenarioData.annualSavings / 1000).toFixed(0) : '0'}k</span> :
                     <span className="text-gray-500">£0k</span>}
                 </td>
               </tr>
               <tr>
                 <td className="px-4 py-2 font-medium text-gray-700">ROI (25y)</td>
-                <td className="px-4 py-2 text-green-600">+12.3%</td>
+                <td className="px-4 py-2 text-green-600">+{scenarioData ? scenarioData.roi25y.toFixed(1) : '0'}%</td>
                 <td className="px-4 py-2">
                   {comparisonScenario === 'EPC C' ? 
-                    <span className="text-green-600">+8.4%</span> :
+                    <span className="text-green-600">+{getScenarioConfigByName('EPC C by 2027')?.roi25y.toFixed(1) || '0'}%</span> :
                    comparisonScenario === 'Do Nothing' ? 
                     <span className="text-gray-500">0%</span> :
-                    <span className="text-green-600">+12.3%</span>}
+                    <span className="text-green-600">+{scenarioData ? scenarioData.roi25y.toFixed(1) : '0'}%</span>}
                 </td>
                 <td className="px-4 py-2">
                   {comparisonScenario === 'EPC C' ? 
-                    <span className="text-green-600">+3.9%</span> :
+                    <span className="text-green-600">+{(scenarioData ? scenarioData.roi25y - (getScenarioConfigByName('EPC C by 2027')?.roi25y || 0) : 0).toFixed(1)}%</span> :
                    comparisonScenario === 'Do Nothing' ? 
-                    <span className="text-green-600">+12.3%</span> :
+                    <span className="text-green-600">+{scenarioData ? scenarioData.roi25y.toFixed(1) : '0'}%</span> :
                     <span className="text-gray-500">0%</span>}
                 </td>
               </tr>
               <tr>
                 <td className="px-4 py-2 font-medium text-gray-700">NPV @6%</td>
-                <td className="px-4 py-2 text-red-600">-£0.3M</td>
+                <td className="px-4 py-2" style={{ color: scenarioData && scenarioData.npv6percent < 0 ? '#dc2626' : '#16a34a' }}>£{(scenarioData ? scenarioData.npv6percent / 1000000 : 0).toFixed(1)}M</td>
                 <td className="px-4 py-2">
                   {comparisonScenario === 'EPC C' ? 
-                    <span className="text-red-600">-£0.5M</span> :
+                    <span style={{ color: (getScenarioConfigByName('EPC C by 2027')?.npv6percent || 0) < 0 ? '#dc2626' : '#16a34a' }}>£{((getScenarioConfigByName('EPC C by 2027')?.npv6percent || 0) / 1000000).toFixed(1)}M</span> :
                    comparisonScenario === 'Do Nothing' ? 
                     <span className="text-gray-500">£0M</span> :
-                    <span className="text-red-600">-£0.3M</span>}
+                    <span style={{ color: scenarioData && scenarioData.npv6percent < 0 ? '#dc2626' : '#16a34a' }}>£{(scenarioData ? scenarioData.npv6percent / 1000000 : 0).toFixed(1)}M</span>}
                 </td>
                 <td className="px-4 py-2">
                   {comparisonScenario === 'EPC C' ? 
-                    <span className="text-green-600">+£0.2M</span> :
+                    <span style={{ color: (scenarioData ? scenarioData.npv6percent - (getScenarioConfigByName('EPC C by 2027')?.npv6percent || 0) : 0) > 0 ? '#16a34a' : '#dc2626' }}>£{((scenarioData ? scenarioData.npv6percent - (getScenarioConfigByName('EPC C by 2027')?.npv6percent || 0) : 0) / 1000000).toFixed(1)}M</span> :
                    comparisonScenario === 'Do Nothing' ? 
-                    <span className="text-red-600">-£0.3M</span> :
+                    <span style={{ color: scenarioData && scenarioData.npv6percent < 0 ? '#dc2626' : '#16a34a' }}>£{(scenarioData ? scenarioData.npv6percent / 1000000 : 0).toFixed(1)}M</span> :
                     <span className="text-gray-500">£0M</span>}
                 </td>
               </tr>
               <tr>
                 <td className="px-4 py-2 font-medium text-gray-700">CRREM Aligned Until</td>
-                <td className="px-4 py-2">2050+</td>
+                <td className="px-4 py-2">{scenarioData ? scenarioData.crremAlignedUntil : '2029'}</td>
                 <td className="px-4 py-2">
-                  {comparisonScenario === 'EPC C' ? '2033' : 
-                   comparisonScenario === 'Do Nothing' ? '2029' : '2050+'}
+                  {comparisonScenario === 'EPC C' ? (getScenarioConfigByName('EPC C by 2027')?.crremAlignedUntil || 2036) : 
+                   comparisonScenario === 'Do Nothing' ? '2029' : (scenarioData ? scenarioData.crremAlignedUntil : '2029')}
                 </td>
                 <td className="px-4 py-2">
                   {comparisonScenario === 'EPC C' ? 
-                    <span className="text-green-600">+17 years</span> :
+                    <span className="text-green-600">+{(scenarioData ? scenarioData.crremAlignedUntil - (getScenarioConfigByName('EPC C by 2027')?.crremAlignedUntil || 0) : 0)} years</span> :
                    comparisonScenario === 'Do Nothing' ? 
-                    <span className="text-green-600">+21 years</span> :
+                    <span className="text-green-600">+{(scenarioData ? scenarioData.crremAlignedUntil - 2029 : 0)} years</span> :
                     <span className="text-gray-500">0 years</span>}
                 </td>
               </tr>
@@ -493,10 +491,7 @@ function ScenarioHeader({ scenarioName, onBack, onOpenPanel }: ScenarioOverviewP
 function SummaryKPIsSection({ onOpenPanel, scenarioName }: { onOpenPanel?: (panelType: string) => void; scenarioName?: string }) {
   // Get scenario data based on scenario name
   const getScenarioData = () => {
-    if (scenarioName?.includes('EPC C')) {
-      return epcCScenarioTotals;
-    }
-    return scenario2050Totals; // Default to 2050 scenario
+    return getScenarioConfigByName(scenarioName || '');
   };
   
   const scenarioData = getScenarioData();
@@ -520,7 +515,7 @@ function SummaryKPIsSection({ onOpenPanel, scenarioName }: { onOpenPanel?: (pane
             <PoundSterling className="w-5 h-5 text-[#F97316]" />
             <p className="text-sm text-gray-500">Total Investment</p>
           </div>
-          <p className="text-2xl font-bold text-[#1A1A1A]">£{(scenarioData.totalCost / 1000000).toFixed(1)}M</p>
+          <p className="text-2xl font-bold text-[#1A1A1A]">£{scenarioData ? (scenarioData.capex / 1000000).toFixed(1) : '0'}M</p>
           <p className="text-xs text-gray-500 mt-1">Upfront CAPEX</p>
         </div>
         
@@ -529,7 +524,7 @@ function SummaryKPIsSection({ onOpenPanel, scenarioName }: { onOpenPanel?: (pane
             <TrendingUp className="w-5 h-5 text-green-600" />
             <p className="text-sm text-gray-500">Annual Savings</p>
           </div>
-          <p className="text-2xl font-bold text-green-600">£{(scenarioData.totalCostSaving / 1000).toFixed(0)}k</p>
+          <p className="text-2xl font-bold text-green-600">£{scenarioData ? (scenarioData.annualSavings / 1000).toFixed(0) : '0'}k</p>
           <p className="text-xs text-gray-500 mt-1">Per year</p>
         </div>
         
@@ -538,16 +533,16 @@ function SummaryKPIsSection({ onOpenPanel, scenarioName }: { onOpenPanel?: (pane
             <Clock className="w-5 h-5 text-[#1A1A1A]" />
             <p className="text-sm text-gray-500">Simple Payback</p>
           </div>
-          <p className="text-2xl font-bold text-[#1A1A1A]">{scenarioData.averagePaybackYears.toFixed(1)} years</p>
+          <p className="text-2xl font-bold text-[#1A1A1A]">{scenarioData ? scenarioData.paybackYears.toFixed(1) : '0'} years</p>
           <p className="text-xs text-gray-500 mt-1">Break-even point</p>
-          <p className="text-xs text-gray-500 mt-1">Equivalent to £{(scenarioData.totalCost / scenarioData.totalCo2eSaving).toFixed(2)} per tCO₂ saved</p>
+          <p className="text-xs text-gray-500 mt-1">Equivalent to £{scenarioData ? (scenarioData.capex / (buildingConfig.baseline.totalCarbon * scenarioData.carbonReduction / 100)).toFixed(2) : '0'} per tCO₂ saved</p>
         </div>
       </div>
       
       {/* Financial Insight Commentary */}
       <div className="mt-3 p-3 bg-blue-50 rounded-lg text-sm text-gray-700 border border-blue-100">
         <span className="font-medium">Financial Insight:</span> 
-        Estimated £{(scenarioData.totalCost / 1000000).toFixed(1)}M CAPEX achieves £{(scenarioData.totalCostSaving / 1000).toFixed(0)}k annual OPEX savings with a {scenarioData.averagePaybackYears.toFixed(1)}-year payback, 
+        Estimated £{scenarioData ? (scenarioData.capex / 1000000).toFixed(1) : '0'}M CAPEX achieves £{scenarioData ? (scenarioData.annualSavings / 1000).toFixed(0) : '0'}k annual OPEX savings with a {scenarioData ? scenarioData.paybackYears.toFixed(1) : '0'}-year payback, 
         primarily through plant upgrades, building fabric improvements, and renewable energy integration.
       </div>
       
@@ -555,15 +550,15 @@ function SummaryKPIsSection({ onOpenPanel, scenarioName }: { onOpenPanel?: (pane
       <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-gray-50 rounded-lg p-3">
           <p className="text-xs text-gray-500 mb-1">ROI (25y)</p>
-          <p className="text-lg font-semibold text-green-600">+12.3%</p>
+          <p className="text-lg font-semibold text-green-600">+{scenarioData ? scenarioData.roi25y.toFixed(1) : '0'}%</p>
         </div>
         <div className="bg-gray-50 rounded-lg p-3">
           <p className="text-xs text-gray-500 mb-1">NPV @6%</p>
-          <p className="text-lg font-semibold text-red-600">-£0.3M</p>
+          <p className="text-lg font-semibold" style={{ color: scenarioData && scenarioData.npv6percent < 0 ? '#dc2626' : '#16a34a' }}>£{(scenarioData ? scenarioData.npv6percent / 1000000 : 0).toFixed(1)}M</p>
         </div>
         <div className="bg-gray-50 rounded-lg p-3">
           <p className="text-xs text-gray-500 mb-1">Carbon Payback</p>
-          <p className="text-lg font-semibold text-gray-700">12 years</p>
+          <p className="text-lg font-semibold text-gray-700">{scenarioData ? scenarioData.carbonPaybackYears : 0} years</p>
         </div>
       </div>
       </section>
@@ -682,7 +677,7 @@ function ImpactSnapshotSection({ onOpenPanel }: { onOpenPanel?: (panelType: stri
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-gray-50 rounded-lg p-3">
           <p className="text-xs text-gray-500 mb-1">🏢 Rent Protected*</p>
-          <p className="text-lg font-semibold text-green-600">£1.3M</p>
+          <p className="text-lg font-semibold text-green-600">£{buildingConstants.rentAtRisk2027 / 1000000}M</p>
         </div>
         <div className="bg-gray-50 rounded-lg p-3">
           <p className="text-xs text-gray-500 mb-1">🧱 MEES EPC C (2027)</p>

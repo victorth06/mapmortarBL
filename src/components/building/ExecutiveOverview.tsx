@@ -10,7 +10,7 @@ import { SpendPanelContent } from '../panels/SpendPanel';
 import { MEESPanelContent } from '../panels/MEESPanel';
 import { CRREMPanelContent } from '../panels/CRREMPanel';
 import { Zap, Leaf, DollarSign, Droplets, Thermometer, AlertTriangle, Shield } from 'lucide-react';
-import { buildingBaselineData, scenarioImpactData } from '../../data/mockChartData';
+import { buildingConfig, getScenarioConfigByName, calculateProjectedValues, buildingConstants } from '../../config/buildingConfig';
 
 type PanelType = 'energy' | 'carbon' | 'spend' | 'mees' | 'crrem' | null;
 
@@ -22,37 +22,31 @@ interface ExecutiveOverviewProps {
 export function ExecutiveOverview({ scenarioName, showScenarioData = false }: ExecutiveOverviewProps) {
   const [activePanel, setActivePanel] = useState<PanelType>(null);
   
-  // Get scenario impact data based on scenario name
-  const getScenarioImpact = () => {
+  // Get scenario config based on scenario name
+  const getScenarioConfig = () => {
     if (!showScenarioData || !scenarioName) {
-      return scenarioImpactData.baseline;
+      return null;
     }
     
-    if (scenarioName.includes('EPC C')) {
-      return scenarioImpactData.epcC;
-    }
-    
-    if (scenarioName.includes('2050') || scenarioName.includes('Net Zero')) {
-      return scenarioImpactData.netZero2050;
-    }
-    
-    return scenarioImpactData.baseline;
+    return getScenarioConfigByName(scenarioName);
   };
   
-  const scenarioImpact = getScenarioImpact();
+  const scenarioConfig = getScenarioConfig();
   
   // Calculate projected values based on scenario
-  const projectedEnergyUse = showScenarioData ? 
-    buildingBaselineData.totalEnergyUse * (1 - scenarioImpact.energyReduction / 100) : 
-    buildingBaselineData.totalEnergyUse;
+  const projectedValues = scenarioConfig ? calculateProjectedValues(scenarioConfig) : null;
+  
+  const projectedEnergyUse = showScenarioData && projectedValues ? 
+    projectedValues.projectedEnergyUse : 
+    buildingConfig.baseline.totalEnergyUse;
     
-  const projectedCarbon = showScenarioData ? 
-    buildingBaselineData.totalCarbon * (1 - scenarioImpact.carbonReduction / 100) : 
-    buildingBaselineData.totalCarbon;
+  const projectedCarbon = showScenarioData && projectedValues ? 
+    projectedValues.projectedCarbon : 
+    buildingConfig.baseline.totalCarbon;
     
-  const projectedSpend = showScenarioData ? 
-    buildingBaselineData.annualSpend - scenarioImpact.costSavings : 
-    buildingBaselineData.annualSpend;
+  const projectedSpend = showScenarioData && projectedValues ? 
+    projectedValues.projectedSpend : 
+    buildingConfig.baseline.annualSpend;
 
   return (
     <section id="overview" className="mb-12">
@@ -92,7 +86,7 @@ export function ExecutiveOverview({ scenarioName, showScenarioData = false }: Ex
           value={projectedEnergyUse.toFixed(0)}
           unit="MWh/year"
           intensity={{
-            value: (projectedEnergyUse * 1000 / buildingBaselineData.buildingArea).toFixed(0),
+            value: (projectedEnergyUse * 1000 / buildingConfig.buildingArea).toFixed(0),
             label: "kWh/m²"
           }}
           fuelSplit={{
@@ -100,20 +94,20 @@ export function ExecutiveOverview({ scenarioName, showScenarioData = false }: Ex
             gas: "40"
           }}
           performanceLabel={{
-            text: showScenarioData ? 
-              `${scenarioImpact.energyReduction}% reduction vs baseline` : 
-              "12% above REEB benchmark",
+            text: showScenarioData && scenarioConfig ? 
+              `${scenarioConfig.energyReduction}% reduction vs baseline` : 
+              `${buildingConstants.reebBenchmark}% above REEB benchmark`,
             color: showScenarioData ? "success" : "risk"
           }}
           icon={Zap}
-          benchmarks={showScenarioData ? [
-            `Energy savings: ${scenarioImpact.energyReduction}%`,
-            `Cost savings: £${(scenarioImpact.costSavings / 1000).toFixed(0)}k/year`
+          benchmarks={showScenarioData && scenarioConfig ? [
+            `Energy savings: ${scenarioConfig.energyReduction}%`,
+            `Cost savings: £${(scenarioConfig.annualSavings / 1000).toFixed(0)}k/year`
           ] : [
-            "18% above CIBSE TM46 Good Practice"
+            `${buildingConstants.cibseBenchmark}% above CIBSE TM46 Good Practice`
           ]}
-          opportunity={showScenarioData ? 
-            `Scenario achieves ${scenarioImpact.energyReduction}% energy reduction with ${scenarioImpact.paybackYears}-year payback.` :
+          opportunity={showScenarioData && scenarioConfig ? 
+            `Scenario achieves ${scenarioConfig.energyReduction}% energy reduction with ${scenarioConfig.paybackYears}-year payback.` :
             "Retrofit could reduce by 30–40%, saving ~£250k/year."
           }
           cta={{
@@ -126,25 +120,25 @@ export function ExecutiveOverview({ scenarioName, showScenarioData = false }: Ex
           value={projectedCarbon.toFixed(0)}
           unit="tCO₂e/year"
           intensity={{
-            value: (projectedCarbon * 1000 / buildingBaselineData.buildingArea).toFixed(1),
+            value: (projectedCarbon * 1000 / buildingConfig.buildingArea).toFixed(1),
             label: "kgCO₂/m²"
           }}
           performanceLabel={{
-            text: showScenarioData ? 
-              `${scenarioImpact.carbonReduction}% reduction vs baseline` : 
+            text: showScenarioData && scenarioConfig ? 
+              `${scenarioConfig.carbonReduction}% reduction vs baseline` : 
               "Above CRREM 1.5°C pathway",
             color: showScenarioData ? "success" : "warning"
           }}
           icon={Leaf}
-          benchmarks={showScenarioData ? [
-            `Carbon reduction: ${scenarioImpact.carbonReduction}%`,
-            `Compliant until ${scenarioImpact.strandedYear}`
+          benchmarks={showScenarioData && scenarioConfig ? [
+            `Carbon reduction: ${scenarioConfig.carbonReduction}%`,
+            `Compliant until ${scenarioConfig.crremAlignedUntil}`
           ] : [
             "Above CRREM 2025 limit (422 tCO₂e)",
             "Stranded from 2029 if no action"
           ]}
-          opportunity={showScenarioData ? 
-            `Scenario achieves ${scenarioImpact.carbonReduction}% carbon reduction, extending compliance to ${scenarioImpact.strandedYear}.` :
+          opportunity={showScenarioData && scenarioConfig ? 
+            `Scenario achieves ${scenarioConfig.carbonReduction}% carbon reduction, extending compliance to ${scenarioConfig.crremAlignedUntil}.` :
             "Retrofit extends compliance to 2036 → protects asset value."
           }
           cta={{
@@ -156,25 +150,25 @@ export function ExecutiveOverview({ scenarioName, showScenarioData = false }: Ex
           title={showScenarioData ? "Projected Spend" : "Annual Spend"}
           value={`£${(projectedSpend / 1000).toFixed(0)}k`}
           intensity={{
-            value: `£${(projectedSpend / buildingBaselineData.buildingArea).toFixed(2)}`,
+            value: `£${(projectedSpend / buildingConfig.buildingArea).toFixed(2)}`,
             label: "per m²"
           }}
           performanceLabel={{
-            text: showScenarioData ? 
-              `£${(scenarioImpact.costSavings / 1000).toFixed(0)}k annual savings` : 
-              "8% above benchmark",
+            text: showScenarioData && scenarioConfig ? 
+              `£${(scenarioConfig.annualSavings / 1000).toFixed(0)}k annual savings` : 
+              `${buildingConstants.costBenchmark}% above benchmark`,
             color: showScenarioData ? "success" : "warning"
           }}
           icon={DollarSign}
-          benchmarks={showScenarioData ? [
-            `Annual savings: £${(scenarioImpact.costSavings / 1000).toFixed(0)}k`,
-            `Payback period: ${scenarioImpact.paybackYears} years`
+          benchmarks={showScenarioData && scenarioConfig ? [
+            `Annual savings: £${(scenarioConfig.annualSavings / 1000).toFixed(0)}k`,
+            `Payback period: ${scenarioConfig.paybackYears} years`
           ] : [
             "Based on current tariffs",
             "Exposed to rising energy prices (4% annual)"
           ]}
-          opportunity={showScenarioData ? 
-            `Scenario delivers £${(scenarioImpact.costSavings / 1000).toFixed(0)}k annual savings with ${scenarioImpact.paybackYears}-year payback.` :
+          opportunity={showScenarioData && scenarioConfig ? 
+            `Scenario delivers £${(scenarioConfig.annualSavings / 1000).toFixed(0)}k annual savings with ${scenarioConfig.paybackYears}-year payback.` :
             "Retrofit cuts exposure by up to 25% → £85k/year savings."
           }
           cta={{
