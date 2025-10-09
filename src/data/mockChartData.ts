@@ -559,94 +559,94 @@ export interface UnitData {
 export const bishopsgateUnits: UnitData[] = [
   {
     id: 'unit-1',
-    unitName: 'Eataly',
-    address: 'Eataly 135 Bishopsgate London EC2M 3YD',
-    grossInternalArea: 4223,
-    grossInternalAreaM2: 392.3,
-    occupancyClass: 'Retail',
-    annualRent: 422300, // £100/sq ft
-    energyUse: 47000, // proportional to area
-    electricityUse: 28200,
-    gasUse: 18800,
-    energyCost: 7800 // £/year
+    unitName: 'The Maple Spoon',
+    address: 'Ground-1st Floor 135 Bishopsgate London EC2M 3YD',
+    grossInternalArea: 4012,
+    grossInternalAreaM2: 372.7,
+    occupancyClass: 'Food & Beverage',
+    annualRent: 401200, // £100/sq ft
+    energyUse: 45000, // proportional to area
+    electricityUse: 27000,
+    gasUse: 18000,
+    energyCost: 7500 // £/year
   },
   {
     id: 'unit-2',
-    unitName: 'TP ICAP',
-    address: '2nd, 3rd and 4th floors 135 Bishopsgate LONDON EC2M 3YD',
-    grossInternalArea: 13451,
-    grossInternalAreaM2: 1249.6,
+    unitName: 'FKT',
+    address: '10th Floor 135 Bishopsgate London EC2M 3YD',
+    grossInternalArea: 4039,
+    grossInternalAreaM2: 375.2,
     occupancyClass: 'Office',
-    annualRent: 1345100,
-    energyUse: 150000,
-    electricityUse: 90000,
-    gasUse: 60000,
-    energyCost: 24900
+    annualRent: 403900, // £100/sq ft
+    energyUse: 45000, // proportional to area
+    electricityUse: 27000,
+    gasUse: 18000,
+    energyCost: 7500 // £/year
   },
   {
     id: 'unit-3',
-    unitName: 'McCann',
-    address: '5th, 6th, 7th and 8th floors 135 Bishopsgate LONDON EC2M 3YD',
-    grossInternalArea: 17005.6,
-    grossInternalAreaM2: 1579.9,
-    occupancyClass: 'Office',
-    annualRent: 1700560,
-    energyUse: 190000,
-    electricityUse: 114000,
-    gasUse: 76000,
-    energyCost: 31500
+    unitName: 'VACANT',
+    address: '12th Floor 135 Bishopsgate London EC2M 3YD',
+    grossInternalArea: 695,
+    grossInternalAreaM2: 64.6,
+    occupancyClass: 'Vacant',
+    annualRent: 0, // Vacant unit
+    energyUse: 8000, // proportional to area
+    electricityUse: 4800,
+    gasUse: 3200,
+    energyCost: 1350 // £/year
   },
   {
     id: 'unit-4',
-    unitName: 'TP ICAP (9th Floor)',
-    address: 'Ninth floor 135 Bishopsgate LONDON EC2M 3YD',
-    grossInternalArea: 2572,
-    grossInternalAreaM2: 238.9,
+    unitName: 'TN CAP',
+    address: '2nd-4th Floors 135 Bishopsgate London EC2M 3YD',
+    grossInternalArea: 12778,
+    grossInternalAreaM2: 1187.1,
     occupancyClass: 'Office',
-    annualRent: 257200,
-    energyUse: 29000,
-    electricityUse: 17400,
-    gasUse: 11600,
-    energyCost: 4800
+    annualRent: 1277800, // £100/sq ft
+    energyUse: 142000, // proportional to area
+    electricityUse: 85200,
+    gasUse: 56800,
+    energyCost: 23500 // £/year
   },
   {
     id: 'unit-5',
-    unitName: 'FNZ',
-    address: 'Tenth floor 135 Bishopsgate LONDON EC2M 3YD',
-    grossInternalArea: 4251.4,
-    grossInternalAreaM2: 395.0,
+    unitName: 'TN CAP',
+    address: '9th Floor 135 Bishopsgate London EC2M 3YD',
+    grossInternalArea: 2443,
+    grossInternalAreaM2: 227.0,
     occupancyClass: 'Office',
-    annualRent: 425140,
-    energyUse: 47000,
-    electricityUse: 28200,
-    gasUse: 18800,
-    energyCost: 7800
+    annualRent: 244300, // £100/sq ft
+    energyUse: 27000, // proportional to area
+    electricityUse: 16200,
+    gasUse: 10800,
+    energyCost: 4500 // £/year
   },
   {
     id: 'unit-6',
-    unitName: 'TP ICAP (11th Floor)',
-    address: 'Eleventh floor 135 Bishopsgate LONDON EC2M 3YD',
-    grossInternalArea: 1696,
-    grossInternalAreaM2: 157.6,
+    unitName: 'TN CAP',
+    address: '11th Floor 135 Bishopsgate London EC2M 3YD',
+    grossInternalArea: 1611,
+    grossInternalAreaM2: 149.7,
     occupancyClass: 'Office',
-    annualRent: 169600,
-    energyUse: 19000,
-    electricityUse: 11400,
-    gasUse: 7600,
-    energyCost: 3150
+    annualRent: 161100, // £100/sq ft
+    energyUse: 18000, // proportional to area
+    electricityUse: 10800,
+    gasUse: 7200,
+    energyCost: 3000 // £/year
   },
   {
     id: 'unit-7',
-    unitName: 'Vacant',
-    address: '12TH FLOOR 135 BISHOPSGATE LONDON EC2M 3YD',
-    grossInternalArea: 731,
-    grossInternalAreaM2: 67.9,
-    occupancyClass: 'Vacant',
-    annualRent: 0, // Vacant
-    energyUse: 8000, // Minimal energy use when vacant
-    electricityUse: 4800,
-    gasUse: 3200,
-    energyCost: 1350
+    unitName: 'McKay',
+    address: '5th-8th Floors 135 Bishopsgate London EC2M 3YD',
+    grossInternalArea: 16155,
+    grossInternalAreaM2: 1500.8,
+    occupancyClass: 'Office',
+    annualRent: 1615500, // £100/sq ft
+    energyUse: 180000, // proportional to area
+    electricityUse: 108000,
+    gasUse: 72000,
+    energyCost: 30000 // £/year
   }
 ];
 

@@ -10,7 +10,7 @@ import { SpendPanelContent } from '../panels/SpendPanel';
 import { MEESPanelContent } from '../panels/MEESPanel';
 import { CRREMPanelContent } from '../panels/CRREMPanel';
 import { Zap, Leaf, DollarSign, Droplets, Thermometer, AlertTriangle, Shield } from 'lucide-react';
-import { buildingConfig, getScenarioConfigByName, calculateProjectedValues, buildingConstants } from '../../config/buildingConfig';
+import { buildingConfig, getScenarioConfigByName, calculateProjectedValues, buildingConstants, calculateRentAtRisk } from '../../config/buildingConfig';
 
 type PanelType = 'energy' | 'carbon' | 'spend' | 'mees' | 'crrem' | null;
 

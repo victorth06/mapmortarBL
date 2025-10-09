@@ -1,6 +1,18 @@
 // Centralized building and scenario configuration
 // This file ensures data consistency across all components
 
+export interface UnitData {
+  id: string;
+  name: string;
+  floor: string;
+  nia: number; // m²
+  epcRating: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'Unknown';
+  epcScore: number | null;
+  status: string;
+  annualRent: number; // £/year
+  meesRisk: boolean;
+}
+
 export interface BuildingConfig {
   // Basic Building Information
   id: string;
@@ -38,6 +50,9 @@ export interface BuildingConfig {
     totalAnnualRent: number; // £/year
     occupancyRate: number; // percentage
   };
+  
+  // Unit-level data
+  units: UnitData[];
 }
 
 export interface ScenarioConfig {
@@ -113,6 +128,87 @@ export const buildingConfig: BuildingConfig = {
     totalAnnualRent: 4393000, // £/year (43,930 sq ft × £100)
     occupancyRate: 98.3, // percentage
   },
+  
+  // Unit-level data based on EPC Rating by Unit
+  units: [
+    {
+      id: 'unit-1',
+      name: 'The Maple Spoon',
+      floor: 'G-1',
+      nia: 4012, // m²
+      epcRating: 'C',
+      epcScore: 60,
+      status: 'Compliant',
+      annualRent: 401200, // £100/sq ft × 4,012 m²
+      meesRisk: false,
+    },
+    {
+      id: 'unit-2',
+      name: 'FKT',
+      floor: '10',
+      nia: 4039, // m²
+      epcRating: 'C',
+      epcScore: 67,
+      status: 'Compliant',
+      annualRent: 403900, // £100/sq ft × 4,039 m²
+      meesRisk: false,
+    },
+    {
+      id: 'unit-3',
+      name: 'VACANT',
+      floor: '12',
+      nia: 695, // m²
+      epcRating: 'C',
+      epcScore: 75,
+      status: 'Compliant',
+      annualRent: 0, // Vacant unit
+      meesRisk: false,
+    },
+    {
+      id: 'unit-4',
+      name: 'TN CAP',
+      floor: '2-4',
+      nia: 12778, // m²
+      epcRating: 'D',
+      epcScore: 85,
+      status: 'MEES Risk',
+      annualRent: 1277800, // £100/sq ft × 12,778 m²
+      meesRisk: true,
+    },
+    {
+      id: 'unit-5',
+      name: 'TN CAP',
+      floor: '9',
+      nia: 2443, // m²
+      epcRating: 'D',
+      epcScore: 88,
+      status: 'MEES Risk',
+      annualRent: 244300, // £100/sq ft × 2,443 m²
+      meesRisk: true,
+    },
+    {
+      id: 'unit-6',
+      name: 'TN CAP',
+      floor: '11',
+      nia: 1611, // m²
+      epcRating: 'D',
+      epcScore: 87,
+      status: 'MEES Risk',
+      annualRent: 161100, // £100/sq ft × 1,611 m²
+      meesRisk: true,
+    },
+    {
+      id: 'unit-7',
+      name: 'McKay',
+      floor: '5-8',
+      nia: 16155, // m²
+      epcRating: 'Unknown',
+      epcScore: null,
+      status: 'No EPC Lodged',
+      annualRent: 1615500, // £100/sq ft × 16,155 m²
+      meesRisk: true, // Assume below C since no EPC lodged
+    },
+  ],
 };
 
 // Scenario Configurations
@@ -229,8 +325,9 @@ export const calculateProjectedValues = (scenario: ScenarioConfig) => {
 
 // Building-level constants
 export const buildingConstants = {
-  // Risk values
-  rentAtRisk2027: 1200000, // £1.2M at risk by 2027
+  // Risk values - calculated from unit data
+  rentAtRisk2027: 3293700, // £3.29M at risk by 2027 (units with D rating + no EPC)
+  rentAtRisk2030: 805400, // £0.81M at risk by 2030 (units with C rating that need B)
   
   // Benchmark values
   reebBenchmark: 12, // percentage above REEB benchmark
@@ -247,6 +344,31 @@ export const buildingConstants = {
   // Breakeven assumptions
   breakevenYear: 2031,
   discountRate: 6, // percentage
+};
+
+// Unit-level calculations
+export const calculateRentAtRisk = () => {
+  const units = buildingConfig.units;
+  
+  // Units at immediate risk (D rating or no EPC) - need C by 2027
+  const immediateRiskUnits = units.filter(unit => 
+    unit.epcRating === 'D' || unit.epcRating === 'Unknown' || unit.meesRisk
+  );
+  const immediateRiskRent = immediateRiskUnits.reduce((sum, unit) => sum + unit.annualRent, 0);
+  
+  // Units at future risk (C rating) - need B by 2030
+  const futureRiskUnits = units.filter(unit => 
+    unit.epcRating === 'C' && !unit.meesRisk
+  );
+  const futureRiskRent = futureRiskUnits.reduce((sum, unit) => sum + unit.annualRent, 0);
+  
+  return {
+    immediateRisk2027: immediateRiskRent,
+    futureRisk2030: futureRiskRent,
+    totalAtRisk: immediateRiskRent + futureRiskRent,
+    immediateRiskUnits: immediateRiskUnits.length,
+    futureRiskUnits: futureRiskUnits.length,
+  };
 };
 
 // Risk calculations

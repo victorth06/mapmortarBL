@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { DetailPanel } from '../panels/DetailPanel';
 import { CrremTrajectoryChart, EnergyWaterfallChart, OpexBreakdownChart, CashflowChart, CapexVsRoiChart, MonthlyEnergyPatternChart, CarbonIntensityByFuelChart, MEESComplianceChart } from '../charts';
 import { crremTrajectoryData, energyWaterfallData, monthlyEnergyPatternData, carbonIntensityByFuelData, meesComplianceData } from '../../data/mockChartData';
-import { buildingConfig, getScenarioConfigByName, buildingConstants } from '../../config/buildingConfig';
+import { buildingConfig, getScenarioConfigByName, buildingConstants, calculateRentAtRisk } from '../../config/buildingConfig';
 
 // Panel Content Components
 function FinancePanelContent({ scenarioName }: { scenarioName: string }) {
@@ -677,7 +677,7 @@ function ImpactSnapshotSection({ onOpenPanel }: { onOpenPanel?: (panelType: stri
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-gray-50 rounded-lg p-3">
           <p className="text-xs text-gray-500 mb-1">🏢 Rent Protected*</p>
-          <p className="text-lg font-semibold text-green-600">£{buildingConstants.rentAtRisk2027 / 1000000}M</p>
+          <p className="text-lg font-semibold text-green-600">£{(calculateRentAtRisk().immediateRisk2027 / 1000000).toFixed(1)}M</p>
         </div>
         <div className="bg-gray-50 rounded-lg p-3">
           <p className="text-xs text-gray-500 mb-1">🧱 MEES EPC C (2027)</p>
