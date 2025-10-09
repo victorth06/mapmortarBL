@@ -53,16 +53,16 @@ export function ScenariosSection() {
           badgeColor="amber"
           tagline="Quick compliance with strong ROI and immediate rent protection"
           capex="£2.8M"
-          rentProtected="£1.2M"
-          annualSavings="£68k"
-          payback="8.5 years"
-          energyReduction="35%"
-          carbonReduction="35%"
+          rentProtected="£3.3M"
+          annualSavings="£724k"
+          payback="3.9 years"
+          energyReduction="85.4%"
+          carbonReduction="84.3%"
           strandedYear="2036"
           keyBenefits={[
             'Meets MEES 2027 minimum standard',
-            'Protects £1.2M rental income',
-            'Strong payback period (8.5 years)',
+            'Protects £3.3M rental income',
+            'Strong payback period (3.9 years)',
             'Moderate upfront investment',
           ]}
         />
@@ -73,18 +73,18 @@ export function ScenariosSection() {
           badge="Future-proof"
           badgeColor="green"
           tagline="Maximum carbon reduction with long-term CRREM alignment and rental uplift"
-          capex="£6.2M"
-          rentProtected="£1.3M"
-          annualSavings="£142k"
-          payback="11 years"
-          energyReduction="58%"
-          carbonReduction="95%"
+          capex="£9.3M"
+          rentProtected="£4.3M"
+          annualSavings="£1.26M"
+          payback="7.4 years"
+          energyReduction="123.8%"
+          carbonReduction="124.6%"
           strandedYear="2050+"
           keyBenefits={[
             'CRREM aligned until 2050+',
             '8% rental uplift via ESG premium',
             'Future-proofs asset value',
-            'Maximum carbon impact (95%)',
+            'Maximum carbon impact (124.6%)',
           ]}
         />
 
@@ -109,20 +109,20 @@ export function ScenariosSection() {
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">CAPEX</td>
                 <td className="py-3 px-4">£0</td>
-                <td className="py-3 px-4 bg-amber-50">£2.5M</td>
-                <td className="py-3 px-4 bg-green-50">£6.2M</td>
+                <td className="py-3 px-4 bg-amber-50">£2.8M</td>
+                <td className="py-3 px-4 bg-green-50">£9.3M</td>
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Annual Savings</td>
                 <td className="py-3 px-4 text-red-600">£0</td>
-                <td className="py-3 px-4 bg-amber-50 text-green-600">£68k/year</td>
-                <td className="py-3 px-4 bg-green-50 text-green-600">£142k/year</td>
+                <td className="py-3 px-4 bg-amber-50 text-green-600">£724k/year</td>
+                <td className="py-3 px-4 bg-green-50 text-green-600">£1.26M/year</td>
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Payback Period</td>
                 <td className="py-3 px-4">N/A</td>
-                <td className="py-3 px-4 bg-amber-50">8.5 years</td>
-                <td className="py-3 px-4 bg-green-50">11 years</td>
+                <td className="py-3 px-4 bg-amber-50">3.9 years</td>
+                <td className="py-3 px-4 bg-green-50">7.4 years</td>
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Rent Protected</td>
@@ -133,14 +133,14 @@ export function ScenariosSection() {
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Energy Reduction</td>
                 <td className="py-3 px-4 text-red-600">0%</td>
-                <td className="py-3 px-4 bg-amber-50 text-green-600">35%</td>
-                <td className="py-3 px-4 bg-green-50 text-green-600">58%</td>
+                <td className="py-3 px-4 bg-amber-50 text-green-600">85.4%</td>
+                <td className="py-3 px-4 bg-green-50 text-green-600">123.8%</td>
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Carbon Reduction</td>
                 <td className="py-3 px-4 text-red-600">0%</td>
-                <td className="py-3 px-4 bg-amber-50 text-green-600">35%</td>
-                <td className="py-3 px-4 bg-green-50 text-green-600">95%</td>
+                <td className="py-3 px-4 bg-amber-50 text-green-600">84.3%</td>
+                <td className="py-3 px-4 bg-green-50 text-green-600">124.6%</td>
               </tr>
               <tr>
                 <td className="py-3 px-4 text-[#6B7280]">CRREM Aligned Until</td>

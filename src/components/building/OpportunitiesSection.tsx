@@ -102,27 +102,28 @@ export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionPr
           const totalRentBenefit = formatRent(totalBenefit);
           
           return (
-            <CompactScenarioCard
-              key={scenario.id}
-              title={scenario.name}
+            <div key={scenario.id}>
+              <CompactScenarioCard
+                title={scenario.name}
               badge={scenario.is_recommended ? 'Recommended' : 'Future-proof'}
               badgeColor={scenario.is_recommended ? 'amber' : 'green'}
               tagline={scenario.description || ''}
-              capex={scenario.capex ? `£${(scenario.capex / 1_000_000).toFixed(1)}M` : '—'}
+              capex={configScenario ? `£${(configScenario.capex / 1_000_000).toFixed(1)}M` : '—'}
               rentProtected={totalRentBenefit}
-              annualSavings={scenario.annual_savings ? `£${(scenario.annual_savings / 1000).toFixed(0)}k` : '—'}
-              payback={scenario.simple_payback_years ? `${scenario.simple_payback_years} years` : '—'}
-              energyReduction={scenario.energy_reduction ? `${scenario.energy_reduction}%` : '—'}
-              carbonReduction={scenario.carbon_reduction ? `${scenario.carbon_reduction}%` : '—'}
-              strandedYear={scenario.crrem_aligned_until || '—'}
+              annualSavings={configScenario ? `£${(configScenario.annualSavings / 1000).toFixed(0)}k` : '—'}
+              payback={configScenario ? `${configScenario.paybackYears} years` : '—'}
+              energyReduction={configScenario ? `${configScenario.energyReduction}%` : '—'}
+              carbonReduction={configScenario ? `${configScenario.carbonReduction}%` : '—'}
+              strandedYear={configScenario ? configScenario.crremAlignedUntil.toString() : '—'}
               keyBenefits={[
                 scenario.is_recommended ? 'Meets MEES 2027 minimum standard' : 'CRREM aligned until 2050+',
                 scenario.is_recommended ? `Protects ${calculatedRentProtected} rental income` : `${calculatedRentUplift} rental uplift via ESG premium`,
-                scenario.is_recommended ? `Strong payback period (${scenario.simple_payback_years || '—'} years)` : 'Future-proofs asset value',
-                scenario.is_recommended ? 'Moderate upfront investment' : `Maximum carbon impact (${scenario.carbon_reduction || '—'}%)`,
+                scenario.is_recommended ? `Strong payback period (${configScenario?.paybackYears || '—'} years)` : 'Future-proofs asset value',
+                scenario.is_recommended ? 'Moderate upfront investment' : `Maximum carbon impact (${configScenario?.carbonReduction || '—'}%)`,
               ]}
               onViewDetails={() => onScenarioClick?.(scenario.name)}
             />
+            </div>
           );
         })}
 
@@ -155,44 +156,80 @@ export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionPr
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">CAPEX</td>
                 <td className="py-3 px-4">£0</td>
-                {scenarios.map((scenario) => (
-                  <td
-                    key={scenario.id}
-                    className={`py-3 px-4 ${
-                      scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
-                    }`}
-                  >
-                    {scenario.capex ? `£${(scenario.capex / 1_000_000).toFixed(1)}M` : '—'}
-                  </td>
-                ))}
+                {scenarios.map((scenario) => {
+                  // Map database scenario names to config IDs
+                  let configId = '';
+                  if (scenario.name?.includes('EPC C') || scenario.name?.includes('epc_c')) {
+                    configId = 'epc-c-2027';
+                  } else if (scenario.name?.includes('Net Zero') || scenario.name?.includes('net_zero')) {
+                    configId = 'net-zero-2050';
+                  }
+                  
+                  const configScenario = scenarioConfigs.find(s => s.id === configId);
+                  
+                  return (
+                    <td
+                      key={scenario.id}
+                      className={`py-3 px-4 ${
+                        scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                      }`}
+                    >
+                      {configScenario ? `£${(configScenario.capex / 1_000_000).toFixed(1)}M` : '—'}
+                    </td>
+                  );
+                })}
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Annual Savings</td>
                 <td className="py-3 px-4 text-red-600">£0</td>
-                {scenarios.map((scenario) => (
-                  <td
-                    key={scenario.id}
-                    className={`py-3 px-4 text-green-600 ${
-                      scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
-                    }`}
-                  >
-                    {scenario.annual_savings ? `£${(scenario.annual_savings / 1000).toFixed(0)}k/year` : '—'}
-                  </td>
-                ))}
+                {scenarios.map((scenario) => {
+                  // Map database scenario names to config IDs
+                  let configId = '';
+                  if (scenario.name?.includes('EPC C') || scenario.name?.includes('epc_c')) {
+                    configId = 'epc-c-2027';
+                  } else if (scenario.name?.includes('Net Zero') || scenario.name?.includes('net_zero')) {
+                    configId = 'net-zero-2050';
+                  }
+                  
+                  const configScenario = scenarioConfigs.find(s => s.id === configId);
+                  
+                  return (
+                    <td
+                      key={scenario.id}
+                      className={`py-3 px-4 text-green-600 ${
+                        scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                      }`}
+                    >
+                      {configScenario ? `£${(configScenario.annualSavings / 1000).toFixed(0)}k/year` : '—'}
+                    </td>
+                  );
+                })}
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Payback Period</td>
                 <td className="py-3 px-4">N/A</td>
-                {scenarios.map((scenario) => (
-                  <td
-                    key={scenario.id}
-                    className={`py-3 px-4 ${
-                      scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
-                    }`}
-                  >
-                    {scenario.simple_payback_years ? `${scenario.simple_payback_years} years` : '—'}
-                  </td>
-                ))}
+                {scenarios.map((scenario) => {
+                  // Map database scenario names to config IDs
+                  let configId = '';
+                  if (scenario.name?.includes('EPC C') || scenario.name?.includes('epc_c')) {
+                    configId = 'epc-c-2027';
+                  } else if (scenario.name?.includes('Net Zero') || scenario.name?.includes('net_zero')) {
+                    configId = 'net-zero-2050';
+                  }
+                  
+                  const configScenario = scenarioConfigs.find(s => s.id === configId);
+                  
+                  return (
+                    <td
+                      key={scenario.id}
+                      className={`py-3 px-4 ${
+                        scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                      }`}
+                    >
+                      {configScenario ? `${configScenario.paybackYears} years` : '—'}
+                    </td>
+                  );
+                })}
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Rent Protected</td>
@@ -231,44 +268,80 @@ export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionPr
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Energy Reduction</td>
                 <td className="py-3 px-4 text-red-600">0%</td>
-                {scenarios.map((scenario) => (
-                  <td
-                    key={scenario.id}
-                    className={`py-3 px-4 text-green-600 ${
-                      scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
-                    }`}
-                  >
-                    {scenario.energy_reduction ? `${scenario.energy_reduction}%` : '—'}
-                  </td>
-                ))}
+                {scenarios.map((scenario) => {
+                  // Map database scenario names to config IDs
+                  let configId = '';
+                  if (scenario.name?.includes('EPC C') || scenario.name?.includes('epc_c')) {
+                    configId = 'epc-c-2027';
+                  } else if (scenario.name?.includes('Net Zero') || scenario.name?.includes('net_zero')) {
+                    configId = 'net-zero-2050';
+                  }
+                  
+                  const configScenario = scenarioConfigs.find(s => s.id === configId);
+                  
+                  return (
+                    <td
+                      key={scenario.id}
+                      className={`py-3 px-4 text-green-600 ${
+                        scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                      }`}
+                    >
+                      {configScenario ? `${configScenario.energyReduction}%` : '—'}
+                    </td>
+                  );
+                })}
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Carbon Reduction</td>
                 <td className="py-3 px-4 text-red-600">0%</td>
-                {scenarios.map((scenario) => (
-                  <td
-                    key={scenario.id}
-                    className={`py-3 px-4 text-green-600 ${
-                      scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
-                    }`}
-                  >
-                    {scenario.carbon_reduction ? `${scenario.carbon_reduction}%` : '—'}
-                  </td>
-                ))}
+                {scenarios.map((scenario) => {
+                  // Map database scenario names to config IDs
+                  let configId = '';
+                  if (scenario.name?.includes('EPC C') || scenario.name?.includes('epc_c')) {
+                    configId = 'epc-c-2027';
+                  } else if (scenario.name?.includes('Net Zero') || scenario.name?.includes('net_zero')) {
+                    configId = 'net-zero-2050';
+                  }
+                  
+                  const configScenario = scenarioConfigs.find(s => s.id === configId);
+                  
+                  return (
+                    <td
+                      key={scenario.id}
+                      className={`py-3 px-4 text-green-600 ${
+                        scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
+                      }`}
+                    >
+                      {configScenario ? `${configScenario.carbonReduction}%` : '—'}
+                    </td>
+                  );
+                })}
               </tr>
               <tr>
                 <td className="py-3 px-4 text-[#6B7280]">CRREM Aligned Until</td>
                 <td className="py-3 px-4 text-red-600">2029 (stranded)</td>
-                {scenarios.map((scenario) => (
-                  <td
-                    key={scenario.id}
-                    className={`py-3 px-4 ${
-                      scenario.is_recommended ? 'bg-amber-50 text-amber-600' : 'bg-green-50 text-green-600'
-                    }`}
-                  >
-                    {scenario.crrem_aligned_until || '—'}
-                  </td>
-                ))}
+                {scenarios.map((scenario) => {
+                  // Map database scenario names to config IDs
+                  let configId = '';
+                  if (scenario.name?.includes('EPC C') || scenario.name?.includes('epc_c')) {
+                    configId = 'epc-c-2027';
+                  } else if (scenario.name?.includes('Net Zero') || scenario.name?.includes('net_zero')) {
+                    configId = 'net-zero-2050';
+                  }
+                  
+                  const configScenario = scenarioConfigs.find(s => s.id === configId);
+                  
+                  return (
+                    <td
+                      key={scenario.id}
+                      className={`py-3 px-4 ${
+                        scenario.is_recommended ? 'bg-amber-50 text-amber-600' : 'bg-green-50 text-green-600'
+                      }`}
+                    >
+                      {configScenario ? configScenario.crremAlignedUntil.toString() : '—'}
+                    </td>
+                  );
+                })}
               </tr>
             </tbody>
           </table>
