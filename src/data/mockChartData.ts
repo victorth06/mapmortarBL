@@ -485,6 +485,204 @@ export const epcCScenarioTotals = {
   averagePaybackYears: 3.9
 };
 
+// Baseline Building Data (Current State)
+export interface BuildingBaselineData {
+  // Energy Data
+  totalEnergyUse: number; // MWh/year
+  electricityUse: number; // kWh/year
+  gasUse: number; // kWh/year
+  energyUseIntensity: number; // kWh/m²
+  electricityIntensity: number; // kWh/m²
+  gasIntensity: number; // kWh/m²
+  
+  // Carbon Data
+  totalCarbon: number; // tCO₂e/year
+  carbonIntensity: number; // kgCO₂/m²
+  
+  // Cost Data
+  annualSpend: number; // £/year
+  costPerM2: number; // £/m²
+  
+  // Performance Metrics
+  epcRating: string;
+  cibseBenchmark: string;
+  transitionRisk: string;
+  
+  // Building Details
+  buildingArea: number; // m²
+  buildingName: string;
+}
+
+export const buildingBaselineData: BuildingBaselineData = {
+  // Energy Data (calculated for 135 Bishopsgate - 43,930 sq ft = 4,081 m²)
+  totalEnergyUse: 490.0, // MWh/year (490,000 kWh)
+  electricityUse: 294000, // kWh/year (72 kWh/m²)
+  gasUse: 196000, // kWh/year (48 kWh/m²)
+  energyUseIntensity: 120, // kWh/m²
+  electricityIntensity: 72, // kWh/m²
+  gasIntensity: 48, // kWh/m²
+  
+  // Carbon Data
+  totalCarbon: 98.5, // tCO₂e/year (98,500 kg)
+  carbonIntensity: 10.8, // kgCO₂/m²
+  
+  // Cost Data (using provided rates: 26.35p/kWh electricity, 6.29p/kWh gas)
+  annualSpend: 83400, // £/year (294k * 0.2635 + 196k * 0.0629)
+  costPerM2: 20.4, // £/m²
+  
+  // Performance Metrics
+  epcRating: "D",
+  cibseBenchmark: "Below Average",
+  transitionRisk: "Low",
+  
+  // Building Details
+  buildingArea: 4081, // m² (43,930 sq ft converted)
+  buildingName: "135 Bishopsgate"
+};
+
+// Unit Data Interface
+export interface UnitData {
+  id: string;
+  unitName: string;
+  address: string;
+  grossInternalArea: number; // sq ft
+  grossInternalAreaM2: number; // m²
+  occupancyClass: string;
+  annualRent: number; // £/year (at £100/sq ft)
+  energyUse: number; // kWh/year (proportional to area)
+  electricityUse: number; // kWh/year
+  gasUse: number; // kWh/year
+  energyCost: number; // £/year
+}
+
+// 135 Bishopsgate Unit Data
+export const bishopsgateUnits: UnitData[] = [
+  {
+    id: 'unit-1',
+    unitName: 'Eataly',
+    address: 'Eataly 135 Bishopsgate London EC2M 3YD',
+    grossInternalArea: 4223,
+    grossInternalAreaM2: 392.3,
+    occupancyClass: 'Retail',
+    annualRent: 422300, // £100/sq ft
+    energyUse: 47000, // proportional to area
+    electricityUse: 28200,
+    gasUse: 18800,
+    energyCost: 7800 // £/year
+  },
+  {
+    id: 'unit-2',
+    unitName: 'TP ICAP',
+    address: '2nd, 3rd and 4th floors 135 Bishopsgate LONDON EC2M 3YD',
+    grossInternalArea: 13451,
+    grossInternalAreaM2: 1249.6,
+    occupancyClass: 'Office',
+    annualRent: 1345100,
+    energyUse: 150000,
+    electricityUse: 90000,
+    gasUse: 60000,
+    energyCost: 24900
+  },
+  {
+    id: 'unit-3',
+    unitName: 'McCann',
+    address: '5th, 6th, 7th and 8th floors 135 Bishopsgate LONDON EC2M 3YD',
+    grossInternalArea: 17005.6,
+    grossInternalAreaM2: 1579.9,
+    occupancyClass: 'Office',
+    annualRent: 1700560,
+    energyUse: 190000,
+    electricityUse: 114000,
+    gasUse: 76000,
+    energyCost: 31500
+  },
+  {
+    id: 'unit-4',
+    unitName: 'TP ICAP (9th Floor)',
+    address: 'Ninth floor 135 Bishopsgate LONDON EC2M 3YD',
+    grossInternalArea: 2572,
+    grossInternalAreaM2: 238.9,
+    occupancyClass: 'Office',
+    annualRent: 257200,
+    energyUse: 29000,
+    electricityUse: 17400,
+    gasUse: 11600,
+    energyCost: 4800
+  },
+  {
+    id: 'unit-5',
+    unitName: 'FNZ',
+    address: 'Tenth floor 135 Bishopsgate LONDON EC2M 3YD',
+    grossInternalArea: 4251.4,
+    grossInternalAreaM2: 395.0,
+    occupancyClass: 'Office',
+    annualRent: 425140,
+    energyUse: 47000,
+    electricityUse: 28200,
+    gasUse: 18800,
+    energyCost: 7800
+  },
+  {
+    id: 'unit-6',
+    unitName: 'TP ICAP (11th Floor)',
+    address: 'Eleventh floor 135 Bishopsgate LONDON EC2M 3YD',
+    grossInternalArea: 1696,
+    grossInternalAreaM2: 157.6,
+    occupancyClass: 'Office',
+    annualRent: 169600,
+    energyUse: 19000,
+    electricityUse: 11400,
+    gasUse: 7600,
+    energyCost: 3150
+  },
+  {
+    id: 'unit-7',
+    unitName: 'Vacant',
+    address: '12TH FLOOR 135 BISHOPSGATE LONDON EC2M 3YD',
+    grossInternalArea: 731,
+    grossInternalAreaM2: 67.9,
+    occupancyClass: 'Vacant',
+    annualRent: 0, // Vacant
+    energyUse: 8000, // Minimal energy use when vacant
+    electricityUse: 4800,
+    gasUse: 3200,
+    energyCost: 1350
+  }
+];
+
+// Scenario Impact Data
+export interface ScenarioImpactData {
+  energyReduction: number; // percentage
+  carbonReduction: number; // percentage
+  costSavings: number; // £/year
+  paybackYears: number;
+  strandedYear: number; // when building becomes non-compliant
+}
+
+export const scenarioImpactData = {
+  baseline: {
+    energyReduction: 0,
+    carbonReduction: 0,
+    costSavings: 0,
+    paybackYears: 0,
+    strandedYear: 2029
+  },
+  epcC: {
+    energyReduction: 42, // Based on EPC C savings vs baseline
+    carbonReduction: 84, // Based on EPC C CO₂e savings
+    costSavings: 35000, // £/year scaled for 135 Bishopsgate (42% of £83.4k)
+    paybackYears: 3.9,
+    strandedYear: 2036
+  },
+  netZero2050: {
+    energyReduction: 80, // Based on 2050 scenario savings
+    carbonReduction: 95, // Based on 2050 scenario CO₂e savings
+    costSavings: 66700, // £/year scaled for 135 Bishopsgate (80% of £83.4k)
+    paybackYears: 7.4,
+    strandedYear: 2050
+  }
+};
+
 // Chart color schemes
 export const chartColors = {
   baseline: '#EF4444', // red
