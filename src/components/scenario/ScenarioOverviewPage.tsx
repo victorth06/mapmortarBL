@@ -412,10 +412,23 @@ interface ScenarioOverviewPageProps {
   scenarioName: string;
   onBack: () => void;
   onOpenPanel?: (panelType: string) => void;
+  onScenarioChange?: (scenarioName: string) => void;
 }
 
 // Scenario Header Component
-function ScenarioHeader({ scenarioName, onBack, onOpenPanel }: ScenarioOverviewPageProps) {
+function ScenarioHeader({ scenarioName, onBack, onOpenPanel, onScenarioChange }: ScenarioOverviewPageProps) {
+  const [selectedScenario, setSelectedScenario] = useState(scenarioName);
+
+  const handleScenarioChange = (newScenario: string) => {
+    if (newScenario === 'add-new') {
+      // Handle add new scenario - for now just show an alert
+      alert('Add New Scenario functionality coming soon!');
+      return;
+    }
+    setSelectedScenario(newScenario);
+    onScenarioChange?.(newScenario);
+  };
+
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-8 py-3 space-y-3">
@@ -426,9 +439,14 @@ function ScenarioHeader({ scenarioName, onBack, onOpenPanel }: ScenarioOverviewP
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Building
             </Button>
-            <div className="text-sm text-gray-500">
-              <span className="font-medium text-gray-700">Portfolio:</span> The Galleria
-            </div>
+            {/* Breadcrumb Navigation */}
+            <nav className="flex items-center space-x-2 text-xs text-gray-500">
+              <button className="hover:text-blue-600 transition-colors underline">British Land</button>
+              <span>/</span>
+              <button className="hover:text-blue-600 transition-colors underline">135 Bishopgate</button>
+              <span>/</span>
+              <span className="text-xs text-gray-500">{scenarioName}</span>
+            </nav>
           </div>
 
           <div className="flex items-center gap-2">
@@ -440,27 +458,32 @@ function ScenarioHeader({ scenarioName, onBack, onOpenPanel }: ScenarioOverviewP
         {/* Row 2: Scenario title + filters + actions */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <h1 className="text-lg font-semibold text-gray-800">{scenarioName}</h1>
+            {/* Scenario Dropdown */}
+            <Select value={selectedScenario} onValueChange={handleScenarioChange}>
+              <SelectTrigger className="w-[380px] text-lg font-semibold text-gray-800">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-white border border-gray-200 shadow-lg w-[380px]">
+                <SelectItem value="Net Zero 2050" className="text-sm py-3 px-4">Net Zero 2050</SelectItem>
+                <SelectItem value="EPC C by 2027" className="text-sm py-3 px-4">EPC C by 2027</SelectItem>
+                <div className="border-t border-gray-200 my-2"></div>
+                <SelectItem value="add-new" className="text-sm py-3 px-4 text-blue-600 hover:text-blue-700">
+                  <Plus className="w-4 h-4 mr-2 inline" />
+                  Add New Scenario
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            
             <div className="flex items-center gap-2">
-              <Badge variant="outline">MEES ✓</Badge>
+              <Badge variant="outline">MEES EPC C</Badge>
+              <Badge variant="outline">MEES EPC B</Badge>
               <Badge variant="outline">CRREM ✓</Badge>
+              <Badge variant="outline">CIBSE</Badge>
+              <Badge variant="outline">REEB</Badge>
             </div>
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <Select defaultValue="crrem">
-              <SelectTrigger className="w-[120px] text-sm">
-                <SelectValue placeholder="CRREM" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="crrem">CRREM</SelectItem>
-                <SelectItem value="mees">MEES</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Button variant="outline" size="sm" className="rounded-full">
-              Switch Scenario
-            </Button>
             <Button variant="outline" size="sm" className="rounded-full">
               Compare Scenarios
             </Button>
@@ -480,6 +503,46 @@ function ScenarioHeader({ scenarioName, onBack, onOpenPanel }: ScenarioOverviewP
             This deep retrofit pathway aligns the building with CRREM 1.5°C targets, 
             eliminating 95% of operational carbon and protecting £1.3M of rental value by 2027.
           </p>
+        </div>
+
+        {/* Row 4: Panel Access Buttons */}
+        <div className="flex flex-wrap gap-2 pt-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="rounded-full"
+            onClick={() => onOpenPanel?.('finance')}
+          >
+            <BarChart3 className="w-4 h-4 mr-1" />
+            Finance
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="rounded-full"
+            onClick={() => onOpenPanel?.('measures')}
+          >
+            <Building2 className="w-4 h-4 mr-1" />
+            Measures
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="rounded-full"
+            onClick={() => onOpenPanel?.('performance')}
+          >
+            <TrendingUp className="w-4 h-4 mr-1" />
+            Performance
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="rounded-full"
+            onClick={() => onOpenPanel?.('roadmap')}
+          >
+            <Clock className="w-4 h-4 mr-1" />
+            Roadmap
+          </Button>
         </div>
       </div>
     </header>
@@ -761,8 +824,9 @@ function TimelineOverviewSection({ onOpenPanel }: { onOpenPanel?: (panelType: st
 
 
 // Main Scenario Overview Page Component
-export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: ScenarioOverviewPageProps) {
+export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel, onScenarioChange }: ScenarioOverviewPageProps) {
   const [activePanel, setActivePanel] = useState<string | null>(null);
+  const [currentScenario, setCurrentScenario] = useState(scenarioName);
 
   const openPanel = (panelType: string) => {
     setActivePanel(panelType);
@@ -772,12 +836,22 @@ export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: Scen
     setActivePanel(null);
   };
 
+  const handleScenarioChange = (newScenario: string) => {
+    setCurrentScenario(newScenario);
+    onScenarioChange?.(newScenario);
+  };
+
   return (
       <div className="min-h-screen bg-[#FAFAFA]">
-        <ScenarioHeader scenarioName={scenarioName} onBack={onBack} onOpenPanel={openPanel} />
+        <ScenarioHeader 
+          scenarioName={currentScenario} 
+          onBack={onBack} 
+          onOpenPanel={openPanel} 
+          onScenarioChange={handleScenarioChange}
+        />
         
         <main className="max-w-7xl mx-auto px-8 py-8 bg-[#FAFAFA]">
-          <SummaryKPIsSection onOpenPanel={() => openPanel('finance')} scenarioName={scenarioName} />
+          <SummaryKPIsSection onOpenPanel={() => openPanel('finance')} scenarioName={currentScenario} />
           <RetrofitCompositionSection onOpenPanel={() => openPanel('measures')} />
           <ImpactSnapshotSection onOpenPanel={() => openPanel('performance')} />
           <TimelineOverviewSection onOpenPanel={() => openPanel('roadmap')} />
@@ -803,7 +877,7 @@ export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: Scen
           isOpen={activePanel === 'finance'}
           onClose={closePanel}
           title="Financial Analysis"
-          children={<FinancePanelContent scenarioName={scenarioName} />}
+          children={<FinancePanelContent scenarioName={currentScenario} />}
         />
 
         <DetailPanel
@@ -817,7 +891,7 @@ export function ScenarioOverviewPage({ scenarioName, onBack, onOpenPanel }: Scen
           isOpen={activePanel === 'performance'}
           onClose={closePanel}
           title="Performance & Benchmark Details"
-          children={<PerformancePanelContent scenarioName={scenarioName} />}
+          children={<PerformancePanelContent scenarioName={currentScenario} />}
         />
 
         <DetailPanel
