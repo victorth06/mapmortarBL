@@ -1,4 +1,4 @@
-import type { Unit } from './supabase/types';
+import type { UnitData } from '../config/buildingConfig';
 
 export interface RentCalculationParams {
   epcAUpliftPercent: number; // e.g., 8 for 8% uplift for EPC A
@@ -29,7 +29,7 @@ export interface RentProtectedResult {
  * Calculate rent protected and uplift for a scenario based on EPC improvements
  */
 export function calculateRentProtected(
-  units: Unit[],
+  units: UnitData[],
   scenarioType: 'epc_c_2027' | 'net_zero_2050' | 'bau',
   params: RentCalculationParams
 ): RentProtectedResult {
@@ -42,8 +42,8 @@ export function calculateRentProtected(
   let totalRentAtRisk2030 = 0;
 
   units.forEach(unit => {
-    const currentEpc = unit.epc_rating || '';
-    const currentRent = unit.current_rent || 0;
+    const currentEpc = unit.epcRating;
+    const currentRent = unit.annualRent;
     
     // Determine post-scenario EPC rating
     let postEpc = currentEpc;
@@ -51,7 +51,7 @@ export function calculateRentProtected(
     
     if (scenarioType === 'epc_c_2027') {
       // EPC C by 2027: Bring all units to at least EPC C
-      if (['D', 'E', 'F', 'G'].includes(currentEpc)) {
+      if (['D', 'E', 'F', 'G', 'Unknown'].includes(currentEpc)) {
         postEpc = 'C';
         reason = 'Upgraded to EPC C for 2027 compliance';
       } else if (currentEpc === 'C') {
@@ -61,7 +61,7 @@ export function calculateRentProtected(
       }
     } else if (scenarioType === 'net_zero_2050') {
       // Net Zero 2050: Bring all units to at least EPC B
-      if (['C', 'D', 'E', 'F', 'G'].includes(currentEpc)) {
+      if (['C', 'D', 'E', 'F', 'G', 'Unknown'].includes(currentEpc)) {
         postEpc = 'B';
         reason = 'Upgraded to EPC B for 2030 compliance';
       } else if (currentEpc === 'B') {
@@ -79,8 +79,8 @@ export function calculateRentProtected(
     let rentUplift = 0;
     
     // Check if unit would be at risk without retrofit
-    const wouldBeAtRisk2027 = ['D', 'E', 'F', 'G'].includes(currentEpc);
-    const wouldBeAtRisk2030 = ['C', 'D', 'E', 'F', 'G'].includes(currentEpc);
+    const wouldBeAtRisk2027 = ['D', 'E', 'F', 'G', 'Unknown'].includes(currentEpc);
+    const wouldBeAtRisk2030 = ['C', 'D', 'E', 'F', 'G', 'Unknown'].includes(currentEpc);
     
     if (wouldBeAtRisk2027) {
       unitsAtRisk2027++;

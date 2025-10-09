@@ -109,7 +109,7 @@ export function ScenariosSection() {
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">CAPEX</td>
                 <td className="py-3 px-4">£0</td>
-                <td className="py-3 px-4 bg-amber-50">£2.8M</td>
+                <td className="py-3 px-4 bg-amber-50">£2.5M</td>
                 <td className="py-3 px-4 bg-green-50">£6.2M</td>
               </tr>
               <tr className="border-b border-gray-100">
@@ -126,9 +126,9 @@ export function ScenariosSection() {
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Rent Protected</td>
-                <td className="py-3 px-4 text-red-600">-£1.2M at risk</td>
-                <td className="py-3 px-4 bg-amber-50 text-green-600">£1.2M protected</td>
-                <td className="py-3 px-4 bg-green-50 text-green-600">£1.3M (inc. uplift)</td>
+                <td className="py-3 px-4 text-red-600">-£4.1M at risk</td>
+                <td className="py-3 px-4 bg-amber-50 text-green-600">£3.3M protected</td>
+                <td className="py-3 px-4 bg-green-50 text-green-600">£4.3M (inc. uplift)</td>
               </tr>
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Energy Reduction</td>

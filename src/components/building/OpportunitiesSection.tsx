@@ -6,6 +6,7 @@ import { TrendingUp, Lightbulb } from 'lucide-react';
 import { supabase } from '../../utils/supabase/queries';
 import { useBuildingData } from '../../hooks/useBuildingData';
 import { formatRent, getDefaultRentParams } from '../../utils/rentCalculations';
+import { scenarioConfigs } from '../../config/buildingConfig';
 
 interface OpportunitiesSectionProps {
   onScenarioClick?: (scenarioName: string) => void;
@@ -83,20 +84,22 @@ export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionPr
       {/* Scenario Cards - 3 Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         {scenarios.map((scenario) => {
-          // Get calculated rent protected value based on scenario type
-          let calculatedRentProtected = '—';
-          let calculatedRentUplift = '—';
-          let totalRentBenefit = '—';
-          
-          if (rentCalculations) {
-            const rentCalc = scenario.type === 'epc_c_2027' ? rentCalculations.epcC2027 : 
-                           scenario.type === 'net_zero_2050' ? rentCalculations.netZero2050 : 
-                           rentCalculations.bau;
-            
-            calculatedRentProtected = formatRent(rentCalc.rentProtected);
-            calculatedRentUplift = formatRent(rentCalc.rentUplift);
-            totalRentBenefit = formatRent(rentCalc.rentProtected + rentCalc.rentUplift);
+          // Map database scenario names to config IDs and use config values
+          let configId = '';
+          if (scenario.name?.includes('EPC C') || scenario.name?.includes('epc_c')) {
+            configId = 'epc-c-2027';
+          } else if (scenario.name?.includes('Net Zero') || scenario.name?.includes('net_zero')) {
+            configId = 'net-zero-2050';
           }
+          
+          const configScenario = scenarioConfigs.find(s => s.id === configId);
+          const rentProtected = configScenario ? configScenario.rentProtected : 0;
+          const rentalUplift = configScenario ? configScenario.rentalUplift : 0;
+          const totalBenefit = rentProtected + rentalUplift;
+          
+          const calculatedRentProtected = formatRent(rentProtected);
+          const calculatedRentUplift = formatRent(rentalUplift);
+          const totalRentBenefit = formatRent(totalBenefit);
           
           return (
             <CompactScenarioCard
@@ -194,16 +197,24 @@ export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionPr
               <tr className="border-b border-gray-100">
                 <td className="py-3 px-4 text-[#6B7280]">Rent Protected</td>
                 <td className="py-3 px-4 text-red-600">
-                  {meesSummary ? `-${formatRent(meesSummary.rentAtRisk2027)} at risk` : '-£1.2M at risk'}
+                  {(() => {
+                    const doNothingConfig = scenarioConfigs.find(s => s.id === 'do-nothing');
+                    return doNothingConfig ? `-${formatRent(doNothingConfig.rentProtected)} at risk` : '-£4.1M at risk';
+                  })()}
                 </td>
                 {scenarios.map((scenario) => {
-                  let calculatedRentBenefit = '—';
-                  if (rentCalculations) {
-                    const rentCalc = scenario.type === 'epc_c_2027' ? rentCalculations.epcC2027 : 
-                                   scenario.type === 'net_zero_2050' ? rentCalculations.netZero2050 : 
-                                   rentCalculations.bau;
-                    calculatedRentBenefit = formatRent(rentCalc.rentProtected + rentCalc.rentUplift);
+                  // Map database scenario names to config IDs
+                  let configId = '';
+                  if (scenario.name?.includes('EPC C') || scenario.name?.includes('epc_c')) {
+                    configId = 'epc-c-2027';
+                  } else if (scenario.name?.includes('Net Zero') || scenario.name?.includes('net_zero')) {
+                    configId = 'net-zero-2050';
                   }
+                  
+                  const configScenario = scenarioConfigs.find(s => s.id === configId);
+                  const rentProtected = configScenario ? configScenario.rentProtected : 0;
+                  const rentalUplift = configScenario ? configScenario.rentalUplift : 0;
+                  const totalBenefit = rentProtected + rentalUplift;
                   
                   return (
                     <td
@@ -212,7 +223,7 @@ export function OpportunitiesSection({ onScenarioClick }: OpportunitiesSectionPr
                         scenario.is_recommended ? 'bg-amber-50' : 'bg-green-50'
                       }`}
                     >
-                      {calculatedRentBenefit} protected
+                      {formatRent(totalBenefit)} protected
                     </td>
                   );
                 })}

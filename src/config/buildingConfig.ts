@@ -222,7 +222,7 @@ export const scenarioConfigs: ScenarioConfig[] = [
     capex: 0,
     annualSavings: 0,
     paybackYears: 0,
-    rentProtected: 0,
+    rentProtected: 4100000, // £4.1M - all rent at risk
     rentalUplift: 0,
     roi25y: 0,
     npv6percent: 0,
@@ -250,7 +250,7 @@ export const scenarioConfigs: ScenarioConfig[] = [
     capex: 2500000, // £2.5M
     annualSavings: 68000, // £68k/year
     paybackYears: 8.5,
-    rentProtected: 5700000, // £5.7M
+    rentProtected: 3300000, // £3.3M - partial protection
     rentalUplift: 0,
     roi25y: 8.4, // percentage
     npv6percent: -500000, // -£0.5M
@@ -278,8 +278,8 @@ export const scenarioConfigs: ScenarioConfig[] = [
     capex: 6200000, // £6.2M
     annualSavings: 142000, // £142k/year
     paybackYears: 11,
-    rentProtected: 6000000, // £6.0M
-    rentalUplift: 360000, // £360k ESG premium
+    rentProtected: 4100000, // £4.1M
+    rentalUplift: 205000, // £205k ESG premium
     roi25y: 12.3, // percentage
     npv6percent: -300000, // -£0.3M
     carbonPaybackYears: 12,

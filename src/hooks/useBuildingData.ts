@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../utils/supabase/queries';
-import type { Building, Unit, BuildingWithUnits } from '../utils/supabase/types';
+import { buildingConfig, type UnitData } from '../config/buildingConfig';
 import { calculateRentProtected, getDefaultRentParams, type RentProtectedResult } from '../utils/rentCalculations';
 
 export interface MEESComplianceSummary {
@@ -32,9 +31,21 @@ export interface UnitDetail {
   action: string;
 }
 
+export interface BuildingWithUnits {
+  id: string;
+  name: string;
+  address: string;
+  postcode: string;
+  buildingArea: number;
+  buildingAreaSqft: number;
+  constructionYear: number;
+  buildingType: string;
+  units: UnitData[];
+}
+
 export function useBuildingData(buildingId?: string, rentParams?: { epcAUpliftPercent: number; epcBUpliftPercent: number }) {
   const [building, setBuilding] = useState<BuildingWithUnits | null>(null);
-  const [units, setUnits] = useState<Unit[]>([]);
+  const [units, setUnits] = useState<UnitData[]>([]);
   const [meesSummary, setMeesSummary] = useState<MEESComplianceSummary | null>(null);
   const [epcDistribution, setEpcDistribution] = useState<EPCDistribution[]>([]);
   const [unitDetails, setUnitDetails] = useState<UnitDetail[]>([]);
@@ -47,83 +58,52 @@ export function useBuildingData(buildingId?: string, rentParams?: { epcAUpliftPe
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
+    try {
+      setLoading(true);
+      setError(null);
 
-    const fetchBuildingData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+      // Use config data instead of Supabase
+      const buildingData: BuildingWithUnits = {
+        id: buildingConfig.id,
+        name: buildingConfig.name,
+        address: buildingConfig.address,
+        postcode: buildingConfig.postcode,
+        buildingArea: buildingConfig.buildingArea,
+        buildingAreaSqft: buildingConfig.buildingAreaSqft,
+        constructionYear: buildingConfig.constructionYear,
+        buildingType: buildingConfig.buildingType,
+        units: buildingConfig.units,
+      };
 
-        // Get the first building if no ID provided
-        let targetBuildingId = buildingId;
-        if (!targetBuildingId) {
-          const { data: buildings, error: buildingsError } = await supabase
-            .from('buildings')
-            .select('id')
-            .limit(1);
-          
-          if (buildingsError) throw buildingsError;
-          if (!buildings || buildings.length === 0) {
-            throw new Error('No buildings found');
-          }
-          targetBuildingId = buildings[0].id;
-        }
+      setBuilding(buildingData);
+      setUnits(buildingConfig.units);
 
-        // Fetch building with all related data
-        const { data: buildingData, error: buildingError } = await supabase
-          .from('buildings')
-          .select(`
-            *,
-            units (*),
-            scenarios (*),
-            milestones (*)
-          `)
-          .eq('id', targetBuildingId)
-          .single();
+      // Calculate MEES compliance summary
+      const summary = calculateMEESSummary(buildingConfig.units);
+      setMeesSummary(summary);
 
-        if (buildingError) throw buildingError;
-        if (!isMounted) return;
+      // Calculate EPC distribution
+      const distribution = calculateEPCDistribution(buildingConfig.units);
+      setEpcDistribution(distribution);
 
-        setBuilding(buildingData);
-        setUnits(buildingData.units || []);
+      // Generate unit details
+      const details = generateUnitDetails(buildingConfig.units);
+      setUnitDetails(details);
 
-        // Calculate MEES compliance summary
-        const summary = calculateMEESSummary(buildingData.units || []);
-        setMeesSummary(summary);
+      // Calculate rent protected for each scenario
+      const params = rentParams || getDefaultRentParams();
+      const rentCalcs = {
+        epcC2027: calculateRentProtected(buildingConfig.units, 'epc_c_2027', params),
+        netZero2050: calculateRentProtected(buildingConfig.units, 'net_zero_2050', params),
+        bau: calculateRentProtected(buildingConfig.units, 'bau', params),
+      };
+      setRentCalculations(rentCalcs);
 
-        // Calculate EPC distribution
-        const distribution = calculateEPCDistribution(buildingData.units || []);
-        setEpcDistribution(distribution);
-
-        // Generate unit details
-        const details = generateUnitDetails(buildingData.units || []);
-        setUnitDetails(details);
-
-        // Calculate rent protected for each scenario
-        const params = rentParams || getDefaultRentParams();
-        const rentCalcs = {
-          epcC2027: calculateRentProtected(buildingData.units || [], 'epc_c_2027', params),
-          netZero2050: calculateRentProtected(buildingData.units || [], 'net_zero_2050', params),
-          bau: calculateRentProtected(buildingData.units || [], 'bau', params),
-        };
-        setRentCalculations(rentCalcs);
-
-      } catch (err) {
-        if (isMounted) {
-          setError(err instanceof Error ? err.message : 'Failed to fetch building data');
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchBuildingData();
-
-    return () => {
-      isMounted = false;
-    };
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load building data');
+    } finally {
+      setLoading(false);
+    }
   }, [buildingId, rentParams]);
 
   return {
@@ -142,27 +122,27 @@ export function useBuildingData(buildingId?: string, rentParams?: { epcAUpliftPe
   };
 }
 
-function calculateMEESSummary(units: Unit[]): MEESComplianceSummary {
+function calculateMEESSummary(units: UnitData[]): MEESComplianceSummary {
   const totalUnits = units.length;
   
   // Units at risk for 2027 (below EPC C)
   const unitsAtRisk2027 = units.filter(u => 
-    ['D', 'E', 'F', 'G'].includes(u.epc_rating || '')
+    ['D', 'E', 'F', 'G', 'Unknown'].includes(u.epcRating)
   ).length;
   
   // Units at risk for 2030 (below EPC B)
   const unitsAtRisk2030 = units.filter(u => 
-    ['C', 'D', 'E', 'F', 'G'].includes(u.epc_rating || '')
+    ['C', 'D', 'E', 'F', 'G', 'Unknown'].includes(u.epcRating)
   ).length;
   
   // Rent at risk calculations
   const rentAtRisk2027 = units
-    .filter(u => ['D', 'E', 'F', 'G'].includes(u.epc_rating || ''))
-    .reduce((sum, u) => sum + (u.current_rent || 0), 0);
+    .filter(u => ['D', 'E', 'F', 'G', 'Unknown'].includes(u.epcRating))
+    .reduce((sum, u) => sum + u.annualRent, 0);
     
   const rentAtRisk2030 = units
-    .filter(u => ['C', 'D', 'E', 'F', 'G'].includes(u.epc_rating || ''))
-    .reduce((sum, u) => sum + (u.current_rent || 0), 0);
+    .filter(u => ['C', 'D', 'E', 'F', 'G', 'Unknown'].includes(u.epcRating))
+    .reduce((sum, u) => sum + u.annualRent, 0);
 
   return {
     totalUnits,
@@ -175,12 +155,12 @@ function calculateMEESSummary(units: Unit[]): MEESComplianceSummary {
   };
 }
 
-function calculateEPCDistribution(units: Unit[]): EPCDistribution[] {
-  const ratings = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-  const colors = ['#22C55E', '#84CC16', '#EAB308', '#F59E0B', '#EF4444', '#DC2626', '#991B1B'];
+function calculateEPCDistribution(units: UnitData[]): EPCDistribution[] {
+  const ratings = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'Unknown'];
+  const colors = ['#22C55E', '#84CC16', '#EAB308', '#F59E0B', '#EF4444', '#DC2626', '#991B1B', '#6B7280'];
   
   return ratings.map((rating, index) => {
-    const count = units.filter(u => u.epc_rating === rating).length;
+    const count = units.filter(u => u.epcRating === rating).length;
     return {
       rating,
       count,
@@ -189,11 +169,11 @@ function calculateEPCDistribution(units: Unit[]): EPCDistribution[] {
   });
 }
 
-function generateUnitDetails(units: Unit[]): UnitDetail[] {
+function generateUnitDetails(units: UnitData[]): UnitDetail[] {
   return units.map(unit => {
-    const epcRating = unit.epc_rating || '';
-    const compliant2027 = !['D', 'E', 'F', 'G'].includes(epcRating);
-    const compliant2030 = !['C', 'D', 'E', 'F', 'G'].includes(epcRating);
+    const epcRating = unit.epcRating;
+    const compliant2027 = !['D', 'E', 'F', 'G', 'Unknown'].includes(epcRating);
+    const compliant2030 = !['C', 'D', 'E', 'F', 'G', 'Unknown'].includes(epcRating);
     
     let action = '';
     if (!compliant2027) {
@@ -208,10 +188,10 @@ function generateUnitDetails(units: Unit[]): UnitDetail[] {
       id: unit.id,
       name: unit.name,
       floor: unit.floor,
-      epc_rating: unit.epc_rating,
-      epc_score: unit.epc_score,
-      current_rent: unit.current_rent,
-      size_m2: unit.size_m2,
+      epc_rating: epcRating,
+      epc_score: unit.epcScore,
+      current_rent: unit.annualRent,
+      size_m2: unit.nia,
       compliant2027,
       compliant2030,
       action
